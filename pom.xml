@@ -65,6 +65,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 							<configuration>
 								<links>
 									<link>${javac.link.javaApi}</link>
+									<link>https://commons.apache.org/proper/commons-lang/javadocs/api-3.7/</link>
 									<link>https://aoindustries.com/ao-net-types/apidocs/</link>
 								</links>
 							</configuration>
@@ -76,6 +77,9 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 	</profiles>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>3.7</version>
+		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>ao-net-types</artifactId><version>1.1.0-SNAPSHOT</version>
 		</dependency>
