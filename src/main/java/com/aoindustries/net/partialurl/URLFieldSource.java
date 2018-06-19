@@ -23,7 +23,6 @@
 package com.aoindustries.net.partialurl;
 
 import com.aoindustries.net.HostAddress;
-import com.aoindustries.net.InetAddress;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.Port;
 import com.aoindustries.net.Protocol;
@@ -68,22 +67,7 @@ public class URLFieldSource implements FieldSource {
 	public HostAddress getHost() throws MalformedURLException {
 		if(host == null) {
 			try {
-				String urlHost = url.getHost();
-				int urlHostLen = urlHost.length();
-				if(
-					urlHostLen >= 2
-					&& urlHost.charAt(0) == '['
-					&& urlHost.charAt(urlHostLen - 1) == ']'
-				) {
-					// Strip [...] from IPv6
-					host = HostAddress.valueOf(
-						InetAddress.valueOf(
-							urlHost.substring(1, urlHostLen - 1)
-						)
-					);
-				} else {
-					host = HostAddress.valueOf(urlHost);
-				}
+				host = HostAddress.valueOf(url.getHost());
 			} catch(ValidationException e) {
 				MalformedURLException newErr = new MalformedURLException();
 				newErr.initCause(e);
