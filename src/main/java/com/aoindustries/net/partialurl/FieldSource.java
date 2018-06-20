@@ -52,10 +52,7 @@ public interface FieldSource {
 	HostAddress getHost() throws MalformedURLException;
 
 	/**
-	 * Gets the port number for this URL or {@code -1} if not set.
-	 * <p>
-	 * TODO: Support {@code -1} or generate port by scheme in {@link URLFieldSource#getPort()}?
-	 * </p>
+	 * Gets the port number for this URL.
 	 *
 	 * @throws MalformedURLException  When unable to obtain the port or the obtained port is invalid
 	 *

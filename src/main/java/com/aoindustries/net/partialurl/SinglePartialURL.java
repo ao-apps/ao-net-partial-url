@@ -218,7 +218,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 		return
 			(scheme == null || scheme.equals(fieldSource.getScheme().toLowerCase(Locale.ROOT)))
 			&& (host == null || host.equals(fieldSource.getHost()))
-			&& (port == null || port.equals(fieldSource.getPort())) // TODO: Handle -1 from port
+			&& (port == null || port.equals(fieldSource.getPort()))
 			&& (contextPath == null || contextPath.equals(fieldSource.getContextPath()))
 			&& (
 				prefix == null

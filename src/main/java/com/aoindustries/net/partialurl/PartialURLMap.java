@@ -141,7 +141,7 @@ public class PartialURLMap<V> {
 		Path[] contextPathSearchOrder = new Path[] {fieldSource.getContextPath(), null};
 		Path path = fieldSource.getPath();
 		String pathStr = (path == null) ? "" : path.toString();
-		Port[] portSearchOrder = new Port[] {fieldSource.getPort(), null}; // TODO: Deal with -1 port here or disallow it from FieldSource
+		Port[] portSearchOrder = new Port[] {fieldSource.getPort(), null};
 		String[] schemeSearchOrder = new String[] {fieldSource.getScheme().toLowerCase(Locale.ROOT), null};
 		// Note: readLock is releases once a match is found, but before toURL, so that all accesses to fieldSource are without holding the readLock
 		boolean unlocked = false;

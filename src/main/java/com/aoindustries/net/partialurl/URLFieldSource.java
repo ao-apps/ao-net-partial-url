@@ -83,13 +83,17 @@ public class URLFieldSource implements FieldSource {
 	 * @implNote  The implementation assumes {@link Protocol#TCP}.
 	 *
 	 * @see  URL#getPort()
+	 * @see  URL#getDefaultPort()
 	 */
 	@Override
 	public Port getPort() throws MalformedURLException {
 		if(port == null) {
 			try {
 				int urlPort = url.getPort();
-				if(urlPort == -1) urlPort = url.getDefaultPort();
+				if(urlPort == -1) {
+					urlPort = url.getDefaultPort();
+					if(urlPort == -1) throw new MalformedURLException("No default port for URL: " + url);
+				}
 				port = Port.valueOf(urlPort, Protocol.TCP);
 			} catch(ValidationException e) {
 				MalformedURLException newErr = new MalformedURLException();
