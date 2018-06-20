@@ -86,10 +86,25 @@ abstract public class PartialURL {
 
 	/**
 	 * Checks if the given {@link FieldSource} matches this partial URL.
+	 * <p>
+	 * The {@link SinglePartialURL} returned, if any, is also in the set of partial URLs provided by
+	 * {@link #getCombinations()}.  Specifically, the match must be equivalent to
+	 * the first match found by iterative calls to the results of {@link #getCombinations()},
+	 * using {@link SinglePartialURL#matches(com.aoindustries.net.partialurl.FieldSource)}
+	 * on each single partial.  The implementation, however, does not need to be iterative.
+	 * </p>
+	 * <p>
+	 * Ordering is consistent with:
+	 * </p>
+	 * <ul>
+	 *   <li>{@link #getCombinations()}</li>
+	 *   <li>{@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)}</li>
+	 *   <li>{@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}</li>
+	 * </ul>
+	 *
+	 * @return  The {@link SinglePartialURL} with non-null fields selected to match the field source, or {@code null} when does not match.
 	 */
-	// TODO: Return SinglePartialURL on a match, with selected matching values?
-	// TODO: Return a completed SinglePartialURL on match?
-	abstract public boolean matches(FieldSource fieldSource) throws MalformedURLException;
+	abstract public SinglePartialURL matches(FieldSource fieldSource) throws MalformedURLException;
 
 	/**
 	 * Checks if this partial URL is complete (has no {@code null} fields other than prefix).
@@ -111,8 +126,11 @@ abstract public class PartialURL {
 
 	/**
 	 * Gets all combinations of single partial URLs represented by this partial URL.
+	 * <p>
 	 * Ordering is consistent with:
+	 * </p>
 	 * <ul>
+	 *   <li>{@link #matches(com.aoindustries.net.partialurl.FieldSource)}</li>
 	 *   <li>{@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)}</li>
 	 *   <li>{@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}</li>
 	 * </ul>

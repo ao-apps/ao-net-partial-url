@@ -303,7 +303,7 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	@Override
-	public boolean matches(FieldSource fieldSource) throws MalformedURLException {
+	public SinglePartialURL matches(FieldSource fieldSource) throws MalformedURLException {
 		// TODO: Assertion to see if matches consistent with finding first match when iterating combinations and calling
 		//       per-SinglePartialURL matches?  This is most useful if we choose to return SinglePartialURL from the
 		//       matches method.

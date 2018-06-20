@@ -193,6 +193,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	/**
 	 * Ordering is consistent with:
 	 * <ul>
+	 *   <li>{@link PartialURL#matches(com.aoindustries.net.partialurl.FieldSource)}</li>
 	 *   <li>{@link PartialURL#getCombinations()}</li>
 	 *   <li>{@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}</li>
 	 * </ul>
@@ -212,8 +213,13 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 		return ObjectUtils.compare(scheme, other.scheme, true);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return  {@code this} when matches, or {@code null} when does not match.
+	 */
 	@Override
-	public boolean matches(FieldSource fieldSource) throws MalformedURLException {
+	public SinglePartialURL matches(FieldSource fieldSource) throws MalformedURLException {
 		Path fieldPath;
 		return
 			(scheme == null || scheme.equals(fieldSource.getScheme().toLowerCase(Locale.ROOT)))
@@ -226,7 +232,9 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 					(fieldPath = fieldSource.getPath()) != null
 					&& fieldPath.toString().startsWith(prefix.toString())
 				)
-			);
+			)
+			? this
+			: null;
 	}
 
 	@Override

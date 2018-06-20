@@ -123,8 +123,9 @@ public class PartialURLMap<V> {
 	 * Ordering is consistent with:
 	 * </p>
 	 * <ul>
-	 *   <li>{@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)}</li>
+	 *   <li>{@link PartialURL#matches(com.aoindustries.net.partialurl.FieldSource)}</li>
 	 *   <li>{@link PartialURL#getCombinations()}</li>
+	 *   <li>{@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)}</li>
 	 * </ul>
 	 *
 	 * @return  The matching value or {@code null} of no match
@@ -133,6 +134,7 @@ public class PartialURLMap<V> {
 	 *            or {@code 2 * 2 * (maxSlashCount + 1) * 2 * 2}, or {@code 16 * (maxSlashCount + 1)}.  The actual number of map lookups
 	 *            will typically be much less than this due to a sparsely populated index.
 	 */
+	@SuppressWarnings("deprecation") // Java 1.7: No longer suppress
 	public PartialURLMatch<V> get(FieldSource fieldSource) throws MalformedURLException {
 		// TODO: CompletePartialURL (subclassing single) instead of toURL?
 		// TODO: A sequential implementation for assertions, like in PathSpace?
@@ -189,8 +191,8 @@ public class PartialURLMap<V> {
 												if(match != null) {
 													readLock.unlock();
 													unlocked = true;
-													assert match.left.matches(fieldSource) : "Get inconsistent with matches";
-													assert match.middle.matches(fieldSource) : "Get inconsistent with matches";
+													assert ObjectUtils.equals(match.left.matches(fieldSource), match.middle) : "Get inconsistent with matches";
+													assert ObjectUtils.equals(match.middle.matches(fieldSource), match.middle) : "Get inconsistent with matches";
 													return new PartialURLMatch<V>(
 														match.left,
 														match.middle,
