@@ -166,7 +166,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // TODO: Java 1.7: No longer suppress
+	@SuppressWarnings("deprecation") // Java 1.7: No longer suppress
 	public boolean equals(Object obj) {
 		if(!(obj instanceof SinglePartialURL)) return false;
 		SinglePartialURL other = (SinglePartialURL)obj;
@@ -179,7 +179,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // TODO: Java 1.7: No longer suppress
+	@SuppressWarnings("deprecation") // Java 1.7: No longer suppress
 	public int hashCode() {
 		return ObjectUtils.hashCodeMulti(
 			scheme,

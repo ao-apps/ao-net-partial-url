@@ -42,7 +42,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
  */
 public class PartialURLMap<V> {
 
-	// TODO: Java 1.8: StampedLock since not needing reentrant
+	// Java 1.8: StampedLock since not needing reentrant
 	private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 	private final Lock readLock = readWriteLock.readLock();
 	private final Lock writeLock = readWriteLock.writeLock();
@@ -62,7 +62,7 @@ public class PartialURLMap<V> {
 			for(SinglePartialURL single : partialURL.getCombinations()) {
 				Path prefix = single.getPrefix();
 				@SuppressWarnings("deprecation")
-				String prefixStr = ObjectUtils.toString(prefix, null); // TODO: Java 1.7: Use Objects
+				String prefixStr = ObjectUtils.toString(prefix, null); // Java 1.7: Use Objects
 				int slashCount = (prefixStr == null) ? 0 : StringUtils.countMatches(prefixStr, Path.SEPARATOR_CHAR);
 				// host
 				HostAddress host = single.getHost();

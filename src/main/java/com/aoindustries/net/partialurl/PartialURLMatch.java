@@ -73,7 +73,7 @@ public class PartialURLMatch<V> {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // TODO: Java 1.7: Do not suppress
+	@SuppressWarnings("deprecation") // Java 1.7: Do not suppress
 	public int hashCode() {
 		int hash = partialURL.hashCode();
 		hash = hash * 31 + singleURL.hashCode();

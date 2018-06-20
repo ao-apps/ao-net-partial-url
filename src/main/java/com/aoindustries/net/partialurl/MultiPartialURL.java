@@ -278,7 +278,7 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // TODO: Java 1.7: No longer suppress
+	@SuppressWarnings("deprecation") // Java 1.7: No longer suppress
 	public boolean equals(Object obj) {
 		if(!(obj instanceof MultiPartialURL)) return false;
 		MultiPartialURL other = (MultiPartialURL)obj;
@@ -291,7 +291,7 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // TODO: Java 1.7: No longer suppress
+	@SuppressWarnings("deprecation") // Java 1.7: No longer suppress
 	public int hashCode() {
 		return ObjectUtils.hashCodeMulti(
 			schemes,
