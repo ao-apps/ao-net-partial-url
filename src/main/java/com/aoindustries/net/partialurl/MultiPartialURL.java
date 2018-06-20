@@ -27,6 +27,7 @@ import com.aoindustries.net.HostAddress;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.Port;
 import com.aoindustries.util.AoCollections;
+import com.aoindustries.validation.ValidationException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -302,12 +303,82 @@ public class MultiPartialURL extends PartialURL {
 		);
 	}
 
+	/**
+	 * Sequential implementation of {@link #matches(com.aoindustries.net.partialurl.FieldSource)}, only
+	 * used for assertions.  This verifies the matching defined in {@link PartialURL#matches(com.aoindustries.net.partialurl.FieldSource)}.
+	 *
+	 * @see  #matches(com.aoindustries.net.partialurl.FieldSource)
+	 * @see  PartialURL#matches(com.aoindustries.net.partialurl.FieldSource)
+	 * @see  #getCombinations()
+	 */
+	private SinglePartialURL matchesSequential(FieldSource fieldSource) throws MalformedURLException {
+		for(SinglePartialURL single : getCombinations()) {
+			SinglePartialURL match = single.matches(fieldSource);
+			if(match != null) {
+				assert match == single;
+				return single;
+			}
+		}
+		return null;
+	}
+
 	@Override
+	@SuppressWarnings("deprecation") // Java 1.7: Do not suppress
 	public SinglePartialURL matches(FieldSource fieldSource) throws MalformedURLException {
-		// TODO: Assertion to see if matches consistent with finding first match when iterating combinations and calling
-		//       per-SinglePartialURL matches?  This is most useful if we choose to return SinglePartialURL from the
-		//       matches method.
-		throw new NotImplementedException("TODO");
+		SinglePartialURL match;
+		String scheme = null;
+		if(schemes != null && !schemes.contains(scheme = fieldSource.getScheme().toLowerCase(Locale.ROOT))) {
+			match = null;
+		} else {
+			HostAddress host = null;
+			if(hosts != null && !hosts.contains(host = fieldSource.getHost())) {
+				match = null;
+			} else {
+				Port port = null;
+				if(ports != null && !ports.contains(port = fieldSource.getPort())) {
+					match = null;
+				} else {
+					Path contextPath = null;
+					if(contextPaths != null && !contextPaths.contains(contextPath = fieldSource.getContextPath())) {
+						match = null;
+					} else {
+						if(prefixes == null) {
+							match = SinglePartialURL.valueOf(scheme, host, port, contextPath, null);
+						} else {
+							Path path = fieldSource.getPath();
+							if(path == null) {
+								match = null;
+							} else {
+								String pathStr = path.toString();
+								// TODO: Max path length like in index?
+								// TODO: Max slashes like index?
+								int lastSlash = pathStr.lastIndexOf(Path.SEPARATOR_CHAR);
+								assert lastSlash != -1;
+								match = null;
+								do {
+									Path prefix;
+									try {
+										// TODO: Make a "prefix" method on Path object itself?  Which would not throw ValidationException (but IllegalArgumentException when len is 0)?
+										prefix = Path.valueOf(pathStr.substring(0, lastSlash + 1));
+									} catch(ValidationException e) {
+										AssertionError ae = new AssertionError("Prefix of a valid Path is also a valid Path");
+										ae.initCause(e);
+										throw ae;
+									}
+									if(prefixes.contains(prefix)) {
+										match = SinglePartialURL.valueOf(scheme, host, port, contextPath, prefix);
+										break;
+									}
+									lastSlash = pathStr.lastIndexOf(Path.SEPARATOR_CHAR, lastSlash - 1);
+								} while(lastSlash != -1);
+							}
+						}
+					}
+				}
+			}
+		}
+		assert ObjectUtils.equals(match, matchesSequential(fieldSource)) : "matches inconsistent with matchesSequential";
+		return match;
 	}
 
 	@Override
