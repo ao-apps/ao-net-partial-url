@@ -158,8 +158,10 @@ public class PartialURLMap<V> {
 							// TODO: Could store slash indexes in an array instead of searching back-and-forth
 							// TODO: Could also store the resulting substrings, too
 							// TODO: If doing this, track the maximum number of slashes anywhere in the index during put, and create the array this size
+							// TODO: Might not be worth this, because this slash scan is only done four times maximum (host, null) x (contextPath, null)
 							int slashCount = 0;
 							int lastSlashPos = -1;
+							// TODO: Track maximum path length in the index, and constrain that here, too, to avoid overhead for impossible-match lookups
 							while(slashCount < maxSlashCount) {
 								int slashPos = pathStr.indexOf(Path.SEPARATOR_CHAR, lastSlashPos + 1);
 								if(slashPos == -1) break;
