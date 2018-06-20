@@ -134,17 +134,19 @@ public class PartialURLMap<V> {
 	 *            will typically be much less than this due to a sparsely populated index.
 	 */
 	public PartialURLMatch<V> get(FieldSource fieldSource) throws MalformedURLException {
+		// TODO: CompletePartialURL (subclassing single) instead of toURL?
+		// TODO: A sequential implementation for assertions, like in PathSpace?
+		// TODO: Write tests
+		HostAddress[] hostSearchOrder = new HostAddress[] {fieldSource.getHost(), null};
+		Path[] contextPathSearchOrder = new Path[] {fieldSource.getContextPath(), null};
+		Path path = fieldSource.getPath();
+		String pathStr = (path == null) ? "" : path.toString();
+		Port[] portSearchOrder = new Port[] {fieldSource.getPort(), null}; // TODO: Deal with -1 port here or disallow it from FieldSource
+		String[] schemeLowerSearchOrder = new String[] {fieldSource.getScheme().toLowerCase(Locale.ROOT), null};
+		// Note: readLock is releases once a match is found, but before toURL, so that all accesses to fieldSource are without holding the readLock
+		boolean unlocked = false;
 		readLock.lock();
 		try {
-			// TODO: CompletePartialURL (subclassing single) instead of toURL?
-			// TODO: A sequential implementation for assertions, like in PathSpace?
-			// TODO: Write tests
-			HostAddress[] hostSearchOrder = new HostAddress[] {fieldSource.getHost(), null};
-			Path[] contextPathSearchOrder = new Path[] {fieldSource.getContextPath(), null};
-			Path path = fieldSource.getPath();
-			String pathStr = (path == null) ? "" : path.toString();
-			Port[] portSearchOrder = new Port[] {fieldSource.getPort(), null}; // TODO: Deal with -1 port here or disallow it from FieldSource
-			String[] schemeLowerSearchOrder = new String[] {fieldSource.getScheme().toLowerCase(Locale.ROOT), null};
 			for(HostAddress host : hostSearchOrder) {
 				Map<Path,MutablePair<Integer,Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>>> hostIndex = index.get(host);
 				if(hostIndex != null) {
@@ -183,6 +185,8 @@ public class PartialURLMap<V> {
 											for(String schemeLower : schemeLowerSearchOrder) {
 												ImmutableTriple<PartialURL,SinglePartialURL,V> match = portIndex.get(schemeLower);
 												if(match != null) {
+													readLock.unlock();
+													unlocked = true;
 													return new PartialURLMatch<V>(
 														match.left,
 														match.middle,
@@ -202,9 +206,9 @@ public class PartialURLMap<V> {
 					}
 				}
 			}
-			return null;
 		} finally {
-			readLock.unlock();
+			if(!unlocked) readLock.unlock();
 		}
+		return null;
 	}
 }
