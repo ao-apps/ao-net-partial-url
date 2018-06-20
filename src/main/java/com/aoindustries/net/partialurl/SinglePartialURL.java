@@ -27,6 +27,7 @@ import com.aoindustries.net.Path;
 import com.aoindustries.net.Port;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Locale;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -188,11 +189,11 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	/**
 	 * Ordering is consistent with:
 	 * <ul>
-	 * <li>{@link MultiPartialURL#iterateCombinations()}</li>
-	 * <li>TODO: Indexing</li>
+	 *   <li>{@link PartialURL#getCombinations()}</li>
+	 *   <li>{@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}</li>
 	 * </ul>
 	 *
-	 * @see  MultiPartialURL#iterateCombinations()
+	 * @see  PartialURL#getCombinations()
 	 */
 	@Override
 	public int compareTo(SinglePartialURL other) {
@@ -215,6 +216,28 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 			&& host != null
 			&& port != null
 			&& contextPath != null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return  {@code this} because it is already a single partial URL
+	 *
+	 * @implSpec  a partial URL is its own primary
+	 */
+	@Override
+	public SinglePartialURL getPrimary() {
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @implSpec  iterates over {@code this} only
+	 */
+	@Override
+	public Iterable<SinglePartialURL> getCombinations() {
+		return Collections.singleton(this);
 	}
 
 	@Override

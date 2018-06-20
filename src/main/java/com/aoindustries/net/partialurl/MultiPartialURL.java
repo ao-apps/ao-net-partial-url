@@ -31,7 +31,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -317,13 +316,11 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	/**
-	 * Gets the primary single partial URL for this multi-partial.
-	 * Uses the first value from each set.
-	 * This will always be the same as the first value returned from
-	 * {@link #iterateCombinations()}.
+	 * {@inheritDoc}
 	 *
-	 * @see  #iterateCombinations()
+	 * @implSpec Uses the first value from each set.
 	 */
+	@Override
 	public SinglePartialURL getPrimary() {
 		return primary;
 	}
@@ -338,8 +335,10 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	/**
-	 * Gets all combinations of single partial URLs represented by this multi-partial.
+	 * {@inheritDoc}
+	 * <p>
 	 * Sets are iterated in the following order:
+	 * </p>
 	 * <ol>
 	 * <li>{@link #getHosts()}</li>
 	 * <li>{@link #getContextPaths()}</li>
@@ -347,24 +346,14 @@ public class MultiPartialURL extends PartialURL {
 	 * <li>{@link #getPorts()}</li>
 	 * <li>{@link #getSchemes()} or {@link #getSchemeLowers()}</li>
 	 * </ol>
-	 * Ordering is consistent with:
-	 * <ul>
-	 * <li>{@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)}</li>
-	 * <li>TODO: Indexing</li>
-	 * </ul>
-	 * <p>
-	 * The first result of iteration will always be the same as {@link #getPrimary()}.
-	 * </p>
 	 * <p>
 	 * TODO: A more space-efficient implementation could generate these on-the-fly.
 	 * Or should we just return the generated {@link Set}?
 	 * Will depend on how his is used.
 	 * </p>
-	 *
-	 * @see  #getPrimary()
-	 * @see  SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)
 	 */
-	public Iterator<SinglePartialURL> iterateCombinations() {
+	@Override
+	public Iterable<SinglePartialURL> getCombinations() {
 		// Use lower schemes where it is a smaller set (to avoid redundant/overlapping combinations)
 		// TODO: Could select more carefully instead of just taking all lower-case.
 		//       For example, {HTTPS,HTTP,http} could become {HTTPS,http} insted of {https,http} like now.
@@ -430,7 +419,7 @@ public class MultiPartialURL extends PartialURL {
 			}
 		}
 		if(results.size() != combinations) throw new AssertionError("Unexpected number of combinations.  Expected " + combinations + ", got " + results.size());
-		return results.iterator();
+		return results;
 	}
 
 	/**

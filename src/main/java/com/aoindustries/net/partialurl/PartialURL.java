@@ -35,6 +35,7 @@ import java.net.URL;
  * an instance of {@link URL}, see {@link #toURL(com.aoindustries.net.partialurl.FieldSource)}.
  * </p>
  */
+// TODO: Should this be an interface?  All methods are abstract.
 abstract public class PartialURL {
 
 	/**
@@ -91,6 +92,31 @@ abstract public class PartialURL {
 	 * @see  #toURL(com.aoindustries.net.partialurl.FieldSource)
 	 */
 	abstract public boolean isComplete();
+
+	/**
+	 * Gets the primary single partial URL for this partial URL.
+	 * This will always be the same as the first value returned from
+	 * {@link #getCombinations()}.
+	 *
+	 * @see  #getCombinations()
+	 */
+	abstract public SinglePartialURL getPrimary();
+
+	/**
+	 * Gets all combinations of single partial URLs represented by this partial URL.
+	 * Ordering is consistent with:
+	 * <ul>
+	 *   <li>{@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)}</li>
+	 *   <li>{@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}</li>
+	 * </ul>
+	 * <p>
+	 * The first result of iteration will always be the same as {@link #getPrimary()}.
+	 * </p>
+	 *
+	 * @see  #getPrimary()
+	 * @see  SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)
+	 */
+	abstract public Iterable<SinglePartialURL> getCombinations();
 
 	/**
 	 * Gets the general-purpose representation of {@link URL} for this partial URL.
