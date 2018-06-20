@@ -31,9 +31,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.ObjectUtils;
 
 /**
@@ -307,6 +310,14 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	@Override
+	public boolean matches(FieldSource fieldSource) throws MalformedURLException {
+		// TODO: Assertion to see if matches consistent with finding first match when iterating combinations and calling
+		//       per-SinglePartialURL matches?  This is most useful if we choose to return SinglePartialURL from the
+		//       matches method.
+		throw new NotImplementedException("TODO");
+	}
+
+	@Override
 	public boolean isComplete() {
 		return
 			schemes != null
@@ -354,9 +365,6 @@ public class MultiPartialURL extends PartialURL {
 	 */
 	@Override
 	public Iterable<SinglePartialURL> getCombinations() {
-		// Use lower schemes where it is a smaller set (to avoid redundant/overlapping combinations)
-		// TODO: Could select more carefully instead of just taking all lower-case.
-		//       For example, {HTTPS,HTTP,http} could become {HTTPS,http} insted of {https,http} like now.
 		Set<String> schemeSet;
 		if(schemes == null) {
 			schemeSet = null;
@@ -364,7 +372,33 @@ public class MultiPartialURL extends PartialURL {
 			schemeSet = schemes;
 		} else {
 			assert schemeLowers.size() < schemes.size();
-			schemeSet = schemeLowers;
+			// Use lower schemes where it is a smaller set (to avoid redundant/overlapping combinations)
+			// Selects more carefully instead of just taking all lower-case.
+			//       For example, {HTTPS,HTTP,http} becomes {HTTPS,http} instead of {https,http}.
+			// TODO: Test if this works as desired
+			Map<String,Set<String>> schemesByLower = new LinkedHashMap<String,Set<String>>(schemeLowers.size()*4/3+1);
+			for(String scheme : schemes) {
+				String schemeLower = scheme.toLowerCase(Locale.ROOT);
+				Set<String> schemesForLower = schemesByLower.get(schemeLower);
+				if(schemesForLower == null) {
+					schemesForLower = new LinkedHashSet<String>(
+						2 // Stop at two, since only comparing if have one match below
+						*4/3+1
+					);
+					schemesByLower.put(schemeLower, schemesForLower);
+				}
+				// Stop at two, since only comparing if have one match below
+				if(schemesForLower.size() < 2) schemesForLower.add(scheme);
+			}
+			schemeSet = new LinkedHashSet<String>(schemesByLower.size()*4/3+1);
+			for(Map.Entry<String,Set<String>> entry : schemesByLower.entrySet()) {
+				// Keep original case of scheme when only one exists in lowercase
+				schemeSet.add(
+					entry.getValue().size() == 1
+						? entry.getValue().iterator().next()
+						: entry.getKey()
+				);
+			}
 		}
 		long combinations = SafeMath.multiply(
 			(hosts == null ? 1L : (long)hosts.size()),

@@ -210,6 +210,23 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	}
 
 	@Override
+	public boolean matches(FieldSource fieldSource) throws MalformedURLException {
+		Path fieldPath;
+		return
+			(schemeLower == null || schemeLower.equalsIgnoreCase(fieldSource.getScheme()))
+			&& (host == null || host.equals(fieldSource.getHost()))
+			&& (port == null || port.equals(fieldSource.getPort())) // TODO: Handle -1 from port
+			&& (contextPath == null || contextPath.equals(fieldSource.getContextPath()))
+			&& (
+				prefix == null
+				|| (
+					(fieldPath = fieldSource.getPath()) != null
+					&& fieldPath.toString().startsWith(prefix.toString())
+				)
+			);
+	}
+
+	@Override
 	public boolean isComplete() {
 		return
 			scheme != null

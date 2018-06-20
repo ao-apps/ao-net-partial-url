@@ -85,6 +85,13 @@ abstract public class PartialURL {
 	abstract public int hashCode();
 
 	/**
+	 * Checks if the given {@link FieldSource} matches this partial URL.
+	 */
+	// TODO: Return SinglePartialURL on a match, with selected matching values?
+	// TODO: Return a completed SinglePartialURL on match?
+	abstract public boolean matches(FieldSource fieldSource) throws MalformedURLException;
+
+	/**
 	 * Checks if this partial URL is complete (has no {@code null} fields other than prefix).
 	 * A complete URL may be converted to a {@link URL} without any
 	 * {@link FieldSource field source} provided.

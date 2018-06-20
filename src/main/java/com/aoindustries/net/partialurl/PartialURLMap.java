@@ -189,6 +189,8 @@ public class PartialURLMap<V> {
 												if(match != null) {
 													readLock.unlock();
 													unlocked = true;
+													assert match.left.matches(fieldSource) : "Get inconsistent with matches";
+													assert match.middle.matches(fieldSource) : "Get inconsistent with matches";
 													return new PartialURLMatch<V>(
 														match.left,
 														match.middle,
