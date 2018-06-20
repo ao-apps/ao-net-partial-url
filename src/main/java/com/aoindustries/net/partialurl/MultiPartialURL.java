@@ -31,10 +31,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.ObjectUtils;
@@ -374,30 +372,14 @@ public class MultiPartialURL extends PartialURL {
 			assert schemeLowers.size() < schemes.size();
 			// Use lower schemes where it is a smaller set (to avoid redundant/overlapping combinations)
 			// Selects more carefully instead of just taking all lower-case.
-			//       For example, {HTTPS,HTTP,http} becomes {HTTPS,http} instead of {https,http}.
+			//       For example, {HTTPS,HTTP,http} becomes {HTTPS,HTTP} instead of {https,http}.
+			//       And example, {HTTPS,http,HTTP} becomes {HTTPS,http} instead of {https,http}.
 			// TODO: Test if this works as desired
-			Map<String,Set<String>> schemesByLower = new LinkedHashMap<String,Set<String>>(schemeLowers.size()*4/3+1);
+			schemeSet = new LinkedHashSet<String>(schemeLowers.size()*4/3+1);
+			Set<String> lowersSeen = new LinkedHashSet<String>(schemeLowers.size()*4/3+1);
 			for(String scheme : schemes) {
 				String schemeLower = scheme.toLowerCase(Locale.ROOT);
-				Set<String> schemesForLower = schemesByLower.get(schemeLower);
-				if(schemesForLower == null) {
-					schemesForLower = new LinkedHashSet<String>(
-						2 // Stop at two, since only comparing if have one match below
-						*4/3+1
-					);
-					schemesByLower.put(schemeLower, schemesForLower);
-				}
-				// Stop at two, since only comparing if have one match below
-				if(schemesForLower.size() < 2) schemesForLower.add(scheme);
-			}
-			schemeSet = new LinkedHashSet<String>(schemesByLower.size()*4/3+1);
-			for(Map.Entry<String,Set<String>> entry : schemesByLower.entrySet()) {
-				// Keep original case of scheme when only one exists in lowercase
-				schemeSet.add(
-					entry.getValue().size() == 1
-						? entry.getValue().iterator().next()
-						: entry.getKey()
-				);
+				if(lowersSeen.add(schemeLower) && !schemeSet.add(scheme)) throw new AssertionError();
 			}
 		}
 		long combinations = SafeMath.multiply(
