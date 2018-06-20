@@ -46,7 +46,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	/**
 	 * Gets a partial URL supporting requests across multiple schemes/hosts/ports/...
 	 * 
-	 * @param scheme       (Optional) The scheme (http/https/...) to match and/or link to
+	 * @param scheme       (Optional) The scheme (http/https/...) to match and/or link to, converted to lower-case.
 	 * @param host         (Optional) The IP/host to match and/or link to
 	 * @param port         (Optional) The port to match and/or link to
 	 * @param contextPath  (Optional) The contextPath to match and/or link to
@@ -66,7 +66,13 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 		) {
 			return DEFAULT;
 		} else {
-			return new SinglePartialURL(scheme, host, port, contextPath, prefix);
+			return new SinglePartialURL(
+				(scheme == null) ? null : scheme.toLowerCase(Locale.ROOT),
+				host,
+				port,
+				contextPath,
+				prefix
+			);
 		}
 	}
 
@@ -83,7 +89,6 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	}
 
 	private final String scheme;
-	private final String schemeLower;
 	private final HostAddress host;
 	private final Port port;
 	private final Path contextPath;
@@ -94,7 +99,6 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	 */
 	private SinglePartialURL(String scheme, HostAddress host, Port port, Path contextPath, Path prefix) {
 		this.scheme = scheme;
-		this.schemeLower = (scheme == null) ? null : scheme.toLowerCase(Locale.ROOT);
 		this.host = host;
 		this.port = port;
 		if(contextPath != null && contextPath != Path.ROOT) {
@@ -126,8 +130,8 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 		} else {
 			int portNum = port.getPort();
 			if(
-				(HTTP.equals(schemeLower) && portNum == 80)
-				|| (HTTPS.equals(schemeLower) && portNum == 443)
+				(HTTP.equals(scheme) && portNum == 80)
+				|| (HTTPS.equals(scheme) && portNum == 443)
 			) {
 				portStr = null;
 			} else {
@@ -167,7 +171,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 		if(!(obj instanceof SinglePartialURL)) return false;
 		SinglePartialURL other = (SinglePartialURL)obj;
 		return
-			ObjectUtils.equals(schemeLower, other.schemeLower)
+			ObjectUtils.equals(scheme, other.scheme)
 			&& ObjectUtils.equals(host, other.host)
 			&& ObjectUtils.equals(port, other.port)
 			&& ObjectUtils.equals(contextPath, other.contextPath)
@@ -178,7 +182,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	@SuppressWarnings("deprecation") // TODO: Java 1.7: No longer suppress
 	public int hashCode() {
 		return ObjectUtils.hashCodeMulti(
-			schemeLower,
+			scheme,
 			host,
 			port,
 			contextPath,
@@ -205,15 +209,14 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 		if(diff != 0) return diff;
 		diff = ObjectUtils.compare(port, other.port, true);
 		if(diff != 0) return diff;
-		// use schemeLower to be consistent with equals
-		return ObjectUtils.compare(schemeLower, other.schemeLower, true);
+		return ObjectUtils.compare(scheme, other.scheme, true);
 	}
 
 	@Override
 	public boolean matches(FieldSource fieldSource) throws MalformedURLException {
 		Path fieldPath;
 		return
-			(schemeLower == null || schemeLower.equalsIgnoreCase(fieldSource.getScheme()))
+			(scheme == null || scheme.equals(fieldSource.getScheme().toLowerCase(Locale.ROOT)))
 			&& (host == null || host.equals(fieldSource.getHost()))
 			&& (port == null || port.equals(fieldSource.getPort())) // TODO: Handle -1 from port
 			&& (contextPath == null || contextPath.equals(fieldSource.getContextPath()))
@@ -303,7 +306,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	}
 
 	/**
-	 * Gets the scheme (such as https/http/other) for this partial URL.
+	 * Gets the lower-case scheme (such as https/http/other) for this partial URL.
 	 *
 	 * @return  The scheme or {@code null} when {@link FieldSource#getScheme()} should be used.
 	 *
@@ -314,21 +317,6 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	 */
 	public String getScheme() {
 		return scheme;
-	}
-
-	/**
-	 * Gets the lower-case scheme (such as https/http/other) for this partial URL.
-	 *
-	 * @return  The lower-case scheme or {@code null} when {@link FieldSource#getScheme()} should be used.
-	 *
-	 * @see  #HTTP
-	 * @see  #HTTPS
-	 *
-	 * @see  FieldSource#getScheme()
-	 */
-	// TODO: Should we just convert all schemes to lower-case and avoid this redundancy?
-	public String getSchemeLower() {
-		return schemeLower;
 	}
 
 	/**

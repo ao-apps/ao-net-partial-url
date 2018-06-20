@@ -98,9 +98,9 @@ public class PartialURLMap<V> {
 					portIndex = new HashMap<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>();
 					prefixIndex.put(port, portIndex);
 				}
-				// schemeLower
-				String schemeLower = single.getSchemeLower();
-				ImmutableTriple<PartialURL,SinglePartialURL,V> existing = portIndex.get(schemeLower);
+				// scheme
+				String scheme = single.getScheme();
+				ImmutableTriple<PartialURL,SinglePartialURL,V> existing = portIndex.get(scheme);
 				if(existing != null) {
 					throw new IllegalStateException(
 						"Partial URL already in index: partialURL = " + partialURL
@@ -108,7 +108,7 @@ public class PartialURLMap<V> {
 							+ ", existing = " + existing.getLeft());
 				}
 				portIndex.put(
-					schemeLower,
+					scheme,
 					ImmutableTriple.of(partialURL, single, value)
 				);
 			}
@@ -129,7 +129,7 @@ public class PartialURLMap<V> {
 	 *
 	 * @return  The matching value or {@code null} of no match
 	 *
-	 * @implNote  The maximum number of internal map lookups is: {@code (host, null) * (contextPath, null) * (maxSlashCount + 1) * (schemeLower, null) * (port, null)},
+	 * @implNote  The maximum number of internal map lookups is: {@code (host, null) * (contextPath, null) * (maxSlashCount + 1) * (scheme, null) * (port, null)},
 	 *            or {@code 2 * 2 * (maxSlashCount + 1) * 2 * 2}, or {@code 16 * (maxSlashCount + 1)}.  The actual number of map lookups
 	 *            will typically be much less than this due to a sparsely populated index.
 	 */
@@ -142,7 +142,7 @@ public class PartialURLMap<V> {
 		Path path = fieldSource.getPath();
 		String pathStr = (path == null) ? "" : path.toString();
 		Port[] portSearchOrder = new Port[] {fieldSource.getPort(), null}; // TODO: Deal with -1 port here or disallow it from FieldSource
-		String[] schemeLowerSearchOrder = new String[] {fieldSource.getScheme().toLowerCase(Locale.ROOT), null};
+		String[] schemeSearchOrder = new String[] {fieldSource.getScheme().toLowerCase(Locale.ROOT), null};
 		// Note: readLock is releases once a match is found, but before toURL, so that all accesses to fieldSource are without holding the readLock
 		boolean unlocked = false;
 		readLock.lock();
@@ -184,8 +184,8 @@ public class PartialURLMap<V> {
 									for(Port port : portSearchOrder) {
 										Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>> portIndex = prefixIndex.get(port);
 										if(portIndex != null) {
-											for(String schemeLower : schemeLowerSearchOrder) {
-												ImmutableTriple<PartialURL,SinglePartialURL,V> match = portIndex.get(schemeLower);
+											for(String scheme : schemeSearchOrder) {
+												ImmutableTriple<PartialURL,SinglePartialURL,V> match = portIndex.get(scheme);
 												if(match != null) {
 													readLock.unlock();
 													unlocked = true;

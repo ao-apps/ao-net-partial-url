@@ -46,7 +46,7 @@ public class MultiPartialURL extends PartialURL {
 	/**
 	 * Gets a partial URL supporting requests across multiple schemes/hosts/ports/...
 	 * 
-	 * @param scheme       (Optional) The scheme (http/https/...) to match and/or link to
+	 * @param scheme       (Optional) The scheme (http/https/...) to match and/or link to, converted to lower-case.
 	 * @param host         (Optional) The IP/host to match and/or link to
 	 * @param port         (Optional) The port to match and/or link to
 	 * @param contextPath  (Optional) The contextPath to match and/or link to
@@ -67,7 +67,9 @@ public class MultiPartialURL extends PartialURL {
 		Set<String> schemeSet;
 		if(schemes == null) schemeSet = null;
 		else {
-			schemeSet = AoCollections.unmodifiableCopySet(schemes);
+			Set<String> schemesLower = new LinkedHashSet<String>();
+			for(String scheme : schemes) schemesLower.add(scheme.toLowerCase(Locale.ROOT));
+			schemeSet = AoCollections.optimalUnmodifiableSet(schemesLower);
 			if(schemeSet.isEmpty()) schemeSet = null;
 		}
 		Set<HostAddress> hostSet;
@@ -138,7 +140,6 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	private final Set<String> schemes;
-	private final Set<String> schemeLowers;
 	private final Set<HostAddress> hosts;
 	private final Set<Port> ports;
 	private final Set<Path> contextPaths;
@@ -151,12 +152,6 @@ public class MultiPartialURL extends PartialURL {
 	 */
 	private MultiPartialURL(Set<String> schemes, Set<HostAddress> hosts, Set<Port> ports, Set<Path> contextPaths, Set<Path> prefixes) {
 		this.schemes = schemes;
-		if(schemes == null) this.schemeLowers = null;
-		else {
-			Set<String> lowerSet = new LinkedHashSet<String>(schemes.size()*4/3+1);
-			for(String scheme : schemes) lowerSet.add(scheme.toLowerCase(Locale.ROOT));
-			this.schemeLowers = AoCollections.optimalUnmodifiableSet(lowerSet);
-		}
 		this.hosts = hosts;
 		this.ports = ports;
 		if(contextPaths != null) {
@@ -226,17 +221,17 @@ public class MultiPartialURL extends PartialURL {
 			toString.append(':').append(WILDCARD_CHAR);
 		} else if(ports.size() == 1) {
 			// Check if there is only one scheme, hide port when is default
-			String schemeLower;
-			if(schemeLowers == null || schemeLowers.size() > 1) {
-				schemeLower = null;
+			String scheme;
+			if(schemes == null || schemes.size() > 1) {
+				scheme = null;
 			} else {
-				assert schemeLowers.size() == 1;
-				schemeLower = schemeLowers.iterator().next();
+				assert schemes.size() == 1;
+				scheme = schemes.iterator().next();
 			}
 			int portNum = ports.iterator().next().getPort();
 			if(
-				!(HTTP.equals(schemeLower) && portNum == 80)
-				&& !(HTTPS.equals(schemeLower) && portNum == 443)
+				!(HTTP.equals(scheme) && portNum == 80)
+				&& !(HTTPS.equals(scheme) && portNum == 443)
 			) {
 				toString.append(':').append(portNum);
 			}
@@ -288,7 +283,7 @@ public class MultiPartialURL extends PartialURL {
 		if(!(obj instanceof MultiPartialURL)) return false;
 		MultiPartialURL other = (MultiPartialURL)obj;
 		return
-			ObjectUtils.equals(schemeLowers, other.schemeLowers)
+			ObjectUtils.equals(schemes, other.schemes)
 			&& ObjectUtils.equals(hosts, other.hosts)
 			&& ObjectUtils.equals(ports, other.ports)
 			&& ObjectUtils.equals(contextPaths, other.contextPaths)
@@ -299,7 +294,7 @@ public class MultiPartialURL extends PartialURL {
 	@SuppressWarnings("deprecation") // TODO: Java 1.7: No longer suppress
 	public int hashCode() {
 		return ObjectUtils.hashCodeMulti(
-			schemeLowers,
+			schemes,
 			hosts,
 			ports,
 			contextPaths,
@@ -353,7 +348,7 @@ public class MultiPartialURL extends PartialURL {
 	 * <li>{@link #getContextPaths()}</li>
 	 * <li>{@link #getPrefixes()}</li>
 	 * <li>{@link #getPorts()}</li>
-	 * <li>{@link #getSchemes()} or {@link #getSchemeLowers()}</li>
+	 * <li>{@link #getSchemes()}</li>
 	 * </ol>
 	 * <p>
 	 * TODO: A more space-efficient implementation could generate these on-the-fly.
@@ -363,31 +358,12 @@ public class MultiPartialURL extends PartialURL {
 	 */
 	@Override
 	public Iterable<SinglePartialURL> getCombinations() {
-		Set<String> schemeSet;
-		if(schemes == null) {
-			schemeSet = null;
-		} else if(schemes.size() == schemeLowers.size()) {
-			schemeSet = schemes;
-		} else {
-			assert schemeLowers.size() < schemes.size();
-			// Use lower schemes where it is a smaller set (to avoid redundant/overlapping combinations)
-			// Selects more carefully instead of just taking all lower-case.
-			//       For example, {HTTPS,HTTP,http} becomes {HTTPS,HTTP} instead of {https,http}.
-			//       And example, {HTTPS,http,HTTP} becomes {HTTPS,http} instead of {https,http}.
-			// TODO: Test if this works as desired
-			schemeSet = new LinkedHashSet<String>(schemeLowers.size()*4/3+1);
-			Set<String> lowersSeen = new LinkedHashSet<String>(schemeLowers.size()*4/3+1);
-			for(String scheme : schemes) {
-				String schemeLower = scheme.toLowerCase(Locale.ROOT);
-				if(lowersSeen.add(schemeLower) && !schemeSet.add(scheme)) throw new AssertionError();
-			}
-		}
 		long combinations = SafeMath.multiply(
 			(hosts == null ? 1L : (long)hosts.size()),
 			(contextPaths == null ? 1L : (long)contextPaths.size()),
 			(prefixes == null ? 1L : (long)prefixes.size()),
 			(ports == null ? 1L : (long)ports.size()),
-			(schemeSet == null ? 1L : (long)schemeSet.size())
+			(schemes == null ? 1L : (long)schemes.size())
 		);
 		if(combinations > Integer.MAX_VALUE) throw new IllegalStateException("Too many combinations: " + combinations);
 		long capacity = combinations*4/3+1;
@@ -411,8 +387,8 @@ public class MultiPartialURL extends PartialURL {
 		else portIter = ports;
 
 		Iterable<String> schemesIter;
-		if(schemeSet == null) schemesIter = nullIterable();
-		else schemesIter = schemeSet;
+		if(schemes == null) schemesIter = nullIterable();
+		else schemesIter = schemes;
 
 		for(HostAddress host : hostIter) {
 			for(Path contextPath : contextPathIter) {
@@ -421,7 +397,6 @@ public class MultiPartialURL extends PartialURL {
 						for(String scheme : schemesIter) {
 							SinglePartialURL single = SinglePartialURL.valueOf(scheme, host, port, contextPath, prefix);
 							// Use existing primary object for first element in the results.
-							// This will maintain scheme case even when others might be converted to lower-case.
 							if(single.equals(primary)) {
 								if(!results.isEmpty()) throw new AssertionError("Primary must be the first element in the results: " + single);
 								single = primary;
@@ -454,7 +429,7 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	/**
-	 * Gets the unmodifiable set of schemes (such as https/http/other) for this partial URL.
+	 * Gets the unmodifiable set of lower-case schemes (such as https/http/other) for this partial URL.
 	 *
 	 * @return  The schemes or {@code null} when {@link FieldSource#getScheme()} should be used.
 	 *
@@ -465,21 +440,6 @@ public class MultiPartialURL extends PartialURL {
 	 */
 	public Set<String> getSchemes() {
 		return schemes;
-	}
-
-	/**
-	 * Gets the unmodifiable set of lower-case schemes (such as https/http/other) for this partial URL.
-	 *
-	 * @return  The lower-case schemes or {@code null} when {@link FieldSource#getScheme()} should be used.
-	 *
-	 * @see  #HTTP
-	 * @see  #HTTPS
-	 *
-	 * @see  FieldSource#getScheme()
-	 */
-	// TODO: Should we just convert all schemes to lower-case and avoid this redundancy?
-	public Set<String> getSchemeLowers() {
-		return schemeLowers;
 	}
 
 	/**
