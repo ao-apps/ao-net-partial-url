@@ -35,7 +35,8 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
-import org.apache.commons.lang3.NotImplementedException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import org.apache.commons.lang3.ObjectUtils;
 
 /**
@@ -417,7 +418,7 @@ public class MultiPartialURL extends PartialURL {
 	 * <ol>
 	 * <li>{@link #getHosts()}</li>
 	 * <li>{@link #getContextPaths()}</li>
-	 * <li>{@link #getPrefixes()}</li>
+	 * <li>{@link #getPrefixes() (sorted by deepest first for consistency with {@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)})</li>
 	 * <li>{@link #getPorts()}</li>
 	 * <li>{@link #getSchemes()}</li>
 	 * </ol>
@@ -451,7 +452,11 @@ public class MultiPartialURL extends PartialURL {
 
 		Iterable<Path> prefixIter;
 		if(prefixes == null) prefixIter = nullIterable();
-		else prefixIter = prefixes;
+		else {
+			SortedSet<Path> sortedPrefixes = new TreeSet<Path>(SinglePartialURL.prefixComparator);
+			sortedPrefixes.addAll(prefixes);
+			prefixIter = sortedPrefixes;
+		}
 
 		Iterable<Port> portIter;
 		if(ports == null) portIter = nullIterable();

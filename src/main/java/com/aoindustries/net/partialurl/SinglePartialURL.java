@@ -28,6 +28,7 @@ import com.aoindustries.net.Port;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -40,6 +41,10 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	/**
 	 * A {@link SinglePartialURL} consisting of all null fields that will match
 	 * all requests and can serve as a match for a default host.
+	 * <p>
+	 * This default host is after all others in {@link #compareTo(com.aoindustries.net.partialurl.SinglePartialURL)}
+	 * and {@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}.
+	 * </p>
 	 */
 	public static final SinglePartialURL DEFAULT = new SinglePartialURL(null, null, null, null, null);
 
@@ -118,9 +123,11 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	public String toString() {
 		String hostStr = (host == null ? WILDCARD_STRING : host.toBracketedString());
 		int toStringLen =
-			(scheme == null) ? 0 : (
-				scheme.length()
-				+ 1 // ':'
+			(
+				(scheme == null) ? 0 : (
+					scheme.length()
+					+ 1 // ':'
+				)
 			)
 			+ 2 // "//"
 			+ hostStr.length();
@@ -161,7 +168,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 			toString.append(':').append(portStr);
 		}
 		toString.append(contextPathStr).append(prefixStr);
-		assert toStringLen == toString.length();
+		assert toStringLen == toString.length() : "toStringLen != toString.length(): " +  toStringLen + " != " + toString.length();
 		return toString.toString();
 	}
 
@@ -191,6 +198,28 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	}
 
 	/**
+	 * Sorts nulls after non-nulls, deeper prefixes first, then by {@link Path#compareTo(com.aoindustries.net.Path)}.
+	 */
+	static final Comparator<Path> prefixComparator = new Comparator<Path>() {
+		@Override
+		public int compare(Path prefix1, Path prefix2) {
+			if(prefix1 == null) {
+				if(prefix2 == null) return 0;
+				else return 1; // Nulls after
+			} else {
+				if(prefix2 == null) return -1; // Nulls after
+				String prefix1Str = prefix1.toString();
+				String prefix2Str = prefix2.toString();
+				// Deeper prefixes first
+				if(prefix1Str.equals(prefix2Str)) return 0;
+				if(prefix1Str.startsWith(prefix2Str)) return -1;
+				if(prefix2Str.startsWith(prefix1Str)) return 1;
+				return prefix1.compareTo(prefix2);
+			}
+		}
+	};
+
+	/**
 	 * Ordering is consistent with:
 	 * <ul>
 	 *   <li>{@link PartialURL#matches(com.aoindustries.net.partialurl.FieldSource)}</li>
@@ -206,7 +235,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 		if(diff != 0) return diff;
 		diff = ObjectUtils.compare(contextPath, other.contextPath, true);
 		if(diff != 0) return diff;
-		diff = ObjectUtils.compare(prefix, other.prefix, true);
+		diff = prefixComparator.compare(prefix, other.prefix);
 		if(diff != 0) return diff;
 		diff = ObjectUtils.compare(port, other.port, true);
 		if(diff != 0) return diff;

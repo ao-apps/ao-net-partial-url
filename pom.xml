@@ -78,6 +78,10 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 
 	<dependencies>
 		<dependency>
+			<groupId>junit</groupId><artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>3.7</version>
 		</dependency>
 		<dependency>
