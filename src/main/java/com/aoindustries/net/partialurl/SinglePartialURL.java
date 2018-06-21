@@ -200,6 +200,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	/**
 	 * Sorts nulls after non-nulls, deeper prefixes first, then by {@link Path#compareTo(com.aoindustries.net.Path)}.
 	 */
+	// TODO: Move to Path class as a "depth-first comparator"?
 	static final Comparator<Path> prefixComparator = new Comparator<Path>() {
 		@Override
 		public int compare(Path prefix1, Path prefix2) {
