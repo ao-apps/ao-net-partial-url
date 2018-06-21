@@ -102,6 +102,8 @@ abstract public class PartialURL {
 	 *   <li>{@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}</li>
 	 * </ul>
 	 *
+	 * @param  fieldSource  When all fields are non-null (this is {@link #DEFAULT}, this is not used and may be {@code null}.
+	 *
 	 * @return  The {@link SinglePartialURL} with non-null fields selected to match the field source, or {@code null} when does not match.
 	 */
 	abstract public SinglePartialURL matches(FieldSource fieldSource) throws MalformedURLException;
