@@ -428,6 +428,10 @@ public class MultiPartialURL extends PartialURL {
 	 * Will depend on how his is used.
 	 * </p>
 	 */
+	// TODO: First result might not be primary due to prefix reordering
+	//       Make a test that catches this issue, then re-order prefixes on MultiPartialURL creation.
+	//       Document that primary URL is the deepest path, or result of ordering.
+	//       Alternatively, no longer make it such that primary is the first returned be getCombinations.
 	@Override
 	public Iterable<SinglePartialURL> getCombinations() {
 		long combinations = SafeMath.multiply(
