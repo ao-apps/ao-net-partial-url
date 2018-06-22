@@ -29,8 +29,10 @@ import com.aoindustries.util.AoCollections;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.collections4.functors.NotNullPredicate;
@@ -173,13 +175,14 @@ abstract public class PartialURL {
 			schemeSet = AoCollections.optimalUnmodifiableSet(schemesLower);
 			if(schemeSet.isEmpty()) schemeSet = null;
 		}
-		Set<HostAddress> hostSet;
-		if(hosts == null) hostSet = null;
+		Map<HostAddress,HostAddress> hostMap;
+		if(hosts == null) hostMap = null;
 		else {
-			hostSet = AoCollections.unmodifiableCopySet(
-				IterableUtils.filteredIterable(hosts, NotNullPredicate.notNullPredicate())
-			);
-			if(hostSet.isEmpty()) hostSet = null;
+			Map<HostAddress,HostAddress> copyMap = new LinkedHashMap<HostAddress,HostAddress>();
+			for(HostAddress host : IterableUtils.filteredIterable(hosts, NotNullPredicate.notNullPredicate())) {
+				copyMap.put(host, host);
+			}
+			hostMap = copyMap.isEmpty() ? null : AoCollections.optimalUnmodifiableMap(copyMap);
 		}
 		Set<Port> portSet;
 		if(ports == null) portSet = null;
@@ -207,20 +210,20 @@ abstract public class PartialURL {
 		}
 		if(
 			(schemeSet == null || schemeSet.size() == 1)
-			&& (hostSet == null || hostSet.size() == 1)
+			&& (hostMap == null || hostMap.size() == 1)
 			&& (portSet == null || portSet.size() == 1)
 			&& (contextPathSet == null || contextPathSet.size() == 1)
 			&& (prefixSet == null || prefixSet.size() == 1)
 		) {
 			return PartialURL.valueOf(
 				schemeSet == null ? null : schemeSet.iterator().next(),
-				hostSet == null ? null : hostSet.iterator().next(),
+				hostMap == null ? null : hostMap.keySet().iterator().next(),
 				portSet == null ? null : portSet.iterator().next(),
 				contextPathSet == null ? null : contextPathSet.iterator().next(),
 				prefixSet == null ? null : prefixSet.iterator().next()
 			);
 		} else {
-			return new MultiPartialURL(schemeSet, hostSet, portSet, contextPathSet, prefixSet);
+			return new MultiPartialURL(schemeSet, hostMap, portSet, contextPathSet, prefixSet);
 		}
 	}
 
@@ -328,8 +331,9 @@ abstract public class PartialURL {
 
 	/**
 	 * Gets the primary single partial URL for this partial URL.
-	 * This will always be the same as the first value returned from
-	 * {@link #getCombinations()}.
+	 * <p>
+	 * This will always be found in {@link #getCombinations()}.
+	 * </p>
 	 *
 	 * @see  #getCombinations()
 	 */
@@ -346,7 +350,8 @@ abstract public class PartialURL {
 	 *   <li>{@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}</li>
 	 * </ul>
 	 * <p>
-	 * The first result of iteration will always be the same as {@link #getPrimary()}.
+	 * When one of the results is {@link SinglePartialURL#equals(java.lang.Object) equal} to the
+	 * {@link #getPrimary() primary}, returns the same object instance as {@link #getPrimary()}.
 	 * </p>
 	 *
 	 * @see  #getPrimary()

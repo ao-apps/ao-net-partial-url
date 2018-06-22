@@ -32,6 +32,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -44,7 +45,10 @@ import org.apache.commons.lang3.ObjectUtils;
 public class MultiPartialURL extends PartialURL {
 
 	private final Set<String> schemes;
-	private final Set<HostAddress> hosts;
+	/**
+	 * Maps to self for canonicalization
+	 */
+	private final Map<HostAddress,HostAddress> hosts;
 	private final Set<Port> ports;
 	private final Set<Path> contextPaths;
 	private final Set<Path> prefixes;
@@ -54,7 +58,7 @@ public class MultiPartialURL extends PartialURL {
 	/**
 	 * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
 	 */
-	MultiPartialURL(Set<String> schemes, Set<HostAddress> hosts, Set<Port> ports, Set<Path> contextPaths, Set<Path> prefixes) {
+	MultiPartialURL(Set<String> schemes, Map<HostAddress,HostAddress> hosts, Set<Port> ports, Set<Path> contextPaths, Set<Path> prefixes) {
 		this.schemes = schemes;
 		this.hosts = hosts;
 		this.ports = ports;
@@ -80,7 +84,7 @@ public class MultiPartialURL extends PartialURL {
 		// Generate primary now
 		primary = valueOf(
 			schemes == null ? null : schemes.iterator().next(),
-			hosts == null ? null : hosts.iterator().next(),
+			hosts == null ? null : hosts.keySet().iterator().next(),
 			ports == null ? null : ports.iterator().next(),
 			contextPaths == null ? null : contextPaths.iterator().next(),
 			prefixes == null ? null : prefixes.iterator().next()
@@ -110,11 +114,11 @@ public class MultiPartialURL extends PartialURL {
 		if(hosts == null) {
 			toString.append(WILDCARD_CHAR);
 		} else if(hosts.size() == 1) {
-			toString.append(hosts.iterator().next().toBracketedString());
+			toString.append(hosts.keySet().iterator().next().toBracketedString());
 		} else {
 			toString.append('{');
 			boolean didOne = false;
-			for(HostAddress host : hosts) {
+			for(HostAddress host : hosts.keySet()) {
 				if(didOne) toString.append(',');
 				else didOne = true;
 				toString.append(host.toBracketedString());
@@ -188,7 +192,7 @@ public class MultiPartialURL extends PartialURL {
 		MultiPartialURL other = (MultiPartialURL)obj;
 		return
 			ObjectUtils.equals(schemes, other.schemes)
-			&& ObjectUtils.equals(hosts, other.hosts)
+			&& ObjectUtils.equals(hosts.keySet(), other.hosts.keySet())
 			&& ObjectUtils.equals(ports, other.ports)
 			&& ObjectUtils.equals(contextPaths, other.contextPaths)
 			&& ObjectUtils.equals(prefixes, other.prefixes);
@@ -199,7 +203,7 @@ public class MultiPartialURL extends PartialURL {
 	public int hashCode() {
 		return ObjectUtils.hashCodeMulti(
 			schemes,
-			hosts,
+			hosts.keySet(),
 			ports,
 			contextPaths,
 			prefixes
@@ -234,7 +238,7 @@ public class MultiPartialURL extends PartialURL {
 			match = null;
 		} else {
 			HostAddress host = null;
-			if(hosts != null && !hosts.contains(host = fieldSource.getHost())) {
+			if(hosts != null && !hosts.containsKey(host = fieldSource.getHost())) {
 				match = null;
 			} else {
 				Port port = null;
@@ -295,8 +299,14 @@ public class MultiPartialURL extends PartialURL {
 
 	/**
 	 * {@inheritDoc}
+	 * <p>
+	 * When there is not more than one {@link #getPrefixes() prefix}, this will
+	 * be the first value returned from {@link #getCombinations()}.
+	 * </p>
 	 *
 	 * @implSpec Uses the first value from each set.
+	 *
+	 * @see  #getCombinations()
 	 */
 	@Override
 	public SinglePartialURL getPrimary() {
@@ -325,23 +335,29 @@ public class MultiPartialURL extends PartialURL {
 	 * <li>{@link #getSchemes()}</li>
 	 * </ol>
 	 * <p>
+	 * When there is not more than one {@link #getPrefixes() prefix}, the first value returned
+	 * will be the {@link #getPrimary() primary}.
+	 * </p>
+	 * <p>
 	 * TODO: A more space-efficient implementation could generate these on-the-fly.
 	 * Or should we just return the generated {@link Set}?
 	 * Will depend on how his is used.
 	 * </p>
+	 *
+	 * @implSpec  This currently generates the full set at the time of method invocation.
+	 *            This is not a performance-oriented implementation.  Please see
+	 *            {@link  PartialURLMap} for a fast way to index partial URLs.
+	 *
+	 * @see  #getPrimary()
 	 */
-	// TODO: First result might not be primary due to prefix reordering
-	//       Make a test that catches this issue, then re-order prefixes on MultiPartialURL creation.
-	//       Document that primary URL is the deepest path, or result of ordering.
-	//       Alternatively, no longer make it such that primary is the first returned be getCombinations.
 	@Override
 	public Iterable<SinglePartialURL> getCombinations() {
 		long combinations = SafeMath.multiply(
-			(hosts == null ? 1L : (long)hosts.size()),
-			(contextPaths == null ? 1L : (long)contextPaths.size()),
-			(prefixes == null ? 1L : (long)prefixes.size()),
-			(ports == null ? 1L : (long)ports.size()),
-			(schemes == null ? 1L : (long)schemes.size())
+			(hosts        == null ? 1 : hosts.size()),
+			(contextPaths == null ? 1 : contextPaths.size()),
+			(prefixes     == null ? 1 : prefixes.size()),
+			(ports        == null ? 1 : ports.size()),
+			(schemes      == null ? 1 : schemes.size())
 		);
 		if(combinations > Integer.MAX_VALUE) throw new IllegalStateException("Too many combinations: " + combinations);
 		long capacity = combinations*4/3+1;
@@ -350,7 +366,7 @@ public class MultiPartialURL extends PartialURL {
 
 		Iterable<HostAddress> hostIter;
 		if(hosts == null) hostIter = nullIterable();
-		else hostIter = hosts;
+		else hostIter = hosts.keySet();
 
 		Iterable<Path> contextPathIter;
 		if(contextPaths == null) contextPathIter = nullIterable();
@@ -378,9 +394,8 @@ public class MultiPartialURL extends PartialURL {
 					for(Port port : portIter) {
 						for(String scheme : schemesIter) {
 							SinglePartialURL single = valueOf(scheme, host, port, contextPath, prefix);
-							// Use existing primary object for first element in the results.
+							// Use existing primary object when matches the result
 							if(single.equals(primary)) {
-								if(!results.isEmpty()) throw new AssertionError("Primary must be the first element in the results: " + single);
 								single = primary;
 							}
 							if(!results.add(single)) {
@@ -398,16 +413,93 @@ public class MultiPartialURL extends PartialURL {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @implSpec  This uses the {@link #getPrimary() primary} to create the URL.
-	 *
-	 * @see  #getPrimary()
-	 * @see  SinglePartialURL#toURL(com.aoindustries.net.partialurl.FieldSource)
+	 * @implSpec  This selects the specifically matching fields from each set when field source is non-null.
 	 */
-	// TODO: Should this use the value matching field source from each set, instead of assuming primary?  Could fall-back to primary when fieldSource not provided.
-	// TODO: Should this method only exist on SinglePartialURL?
 	@Override
 	public URL toURL(FieldSource fieldSource) throws MalformedURLException {
-		return getPrimary().toURL(fieldSource);
+		String schemeStr;
+		{
+			if(schemes == null) {
+				assert fieldSource != null;
+				schemeStr = fieldSource.getScheme();
+			} else {
+				String sourceSchemeLower;
+				if(fieldSource != null && schemes.contains(sourceSchemeLower = fieldSource.getScheme().toLowerCase(Locale.ROOT))) {
+					schemeStr = sourceSchemeLower;
+				} else {
+					schemeStr = schemes.iterator().next();
+				}
+			}
+		}
+		int portNum;
+		{
+			if(ports == null) {
+				assert fieldSource != null;
+				portNum = fieldSource.getPort().getPort();
+			} else {
+				Port sourcePort;
+				if(fieldSource != null && ports.contains(sourcePort = fieldSource.getPort())) {
+					portNum = sourcePort.getPort();
+				} else {
+					portNum = ports.iterator().next().getPort();
+				}
+			}
+		}
+		if(
+			// TODO: Could use URL#getDefaultPort() and moved this hard-coded check to HttpServletRequestFieldSource
+			(HTTP.equalsIgnoreCase(schemeStr) && portNum == 80)
+			|| (HTTPS.equalsIgnoreCase(schemeStr) && portNum == 443)
+		) {
+			portNum = -1;
+		}
+		String hostStr;
+		{
+			if(hosts == null) {
+				assert fieldSource != null;
+				hostStr = fieldSource.getHost().toBracketedString();
+			} else {
+				HostAddress canonical;
+				if(fieldSource != null && (canonical = hosts.get(fieldSource.getHost())) != null) {
+					hostStr = canonical.toBracketedString();
+				} else {
+					hostStr = hosts.keySet().iterator().next().toBracketedString();
+				}
+			}
+		}
+		Path contextPath;
+		{
+			if(contextPaths == null) {
+				assert fieldSource != null;
+				contextPath = fieldSource.getContextPath();
+			} else {
+				Path sourceContextPath;
+				if(fieldSource != null && contextPaths.contains(sourceContextPath = fieldSource.getContextPath())) {
+					contextPath = sourceContextPath;
+				} else {
+					contextPath = contextPaths.iterator().next();
+				}
+			}
+		}
+		String file;
+		if(contextPath == Path.ROOT) {
+			file = (prefixes == null) ? "" : prefixes.iterator().next().toString();
+		} else {
+			if(prefixes == null) {
+				file = contextPath.toString();
+			} else {
+				file = contextPath.toString() + prefixes.iterator().next().toString();
+			}
+		}
+		try {
+			return new URL(
+				schemeStr,
+				hostStr,
+				portNum,
+				file
+			);
+		} catch(MalformedURLException e) {
+			throw new AssertionError(e);
+		}
 	}
 
 	/**
@@ -425,14 +517,14 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	/**
-	 * Gets the unmodifiable set of IP addresses or hostnamees for this partial URL.
+	 * Gets the unmodifiable set of IP addresses or hostnames for this partial URL.
 	 *
 	 * @return  The IP addresses/hostnames or {@code null} when {@link FieldSource#getHost()} should be used.
 	 *
 	 * @see  FieldSource#getHost()
 	 */
 	public Set<HostAddress> getHosts() {
-		return hosts;
+		return hosts.keySet();
 	}
 
 	/**

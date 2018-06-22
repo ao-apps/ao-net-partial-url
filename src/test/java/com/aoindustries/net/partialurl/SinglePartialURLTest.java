@@ -176,7 +176,7 @@ public class SinglePartialURLTest {
 	}
 
 	@Test
-	public void testToStringCompleteHttpPort80() throws ValidationException {
+	public void testToStringCompleteHttpsPort80() throws ValidationException {
 		assertEquals(
 			"https://aoindustries.com:80/",
 			PartialURL.valueOf(
@@ -570,17 +570,17 @@ public class SinglePartialURLTest {
 			PartialURL.valueOf(
 				"https",
 				HostAddress.valueOf("aoindustries.com"),
-				Port.valueOf(443, Protocol.UDP),
+				Port.valueOf(443, Protocol.TCP),
 				Path.ROOT,
 				Path.ROOT
 			).isComplete()
 		);
 		assertTrue(
-			"Is also complete with prefix",
+			"Is also complete without prefix",
 			PartialURL.valueOf(
 				"https",
 				HostAddress.valueOf("aoindustries.com"),
-				Port.valueOf(443, Protocol.UDP),
+				Port.valueOf(443, Protocol.TCP),
 				Path.ROOT,
 				null
 			).isComplete()
@@ -593,7 +593,7 @@ public class SinglePartialURLTest {
 			PartialURL.valueOf(
 				null,
 				HostAddress.valueOf("aoindustries.com"),
-				Port.valueOf(443, Protocol.UDP),
+				Port.valueOf(443, Protocol.TCP),
 				Path.ROOT,
 				Path.ROOT
 			).isComplete()
@@ -606,7 +606,7 @@ public class SinglePartialURLTest {
 			PartialURL.valueOf(
 				"https",
 				null,
-				Port.valueOf(443, Protocol.UDP),
+				Port.valueOf(443, Protocol.TCP),
 				Path.ROOT,
 				Path.ROOT
 			).isComplete()
@@ -632,7 +632,7 @@ public class SinglePartialURLTest {
 			PartialURL.valueOf(
 				"https",
 				HostAddress.valueOf("aoindustries.com"),
-				Port.valueOf(443, Protocol.UDP),
+				Port.valueOf(443, Protocol.TCP),
 				null,
 				Path.ROOT
 			).isComplete()
@@ -654,7 +654,7 @@ public class SinglePartialURLTest {
 		SinglePartialURL singleURL = PartialURL.valueOf(
 			"https",
 			HostAddress.valueOf("aoindustries.com"),
-			Port.valueOf(443, Protocol.UDP),
+			Port.valueOf(443, Protocol.TCP),
 			Path.ROOT,
 			Path.ROOT
 		);
@@ -679,7 +679,7 @@ public class SinglePartialURLTest {
 		SinglePartialURL singleURL = PartialURL.valueOf(
 			"https",
 			HostAddress.valueOf("aoindustries.com"),
-			Port.valueOf(443, Protocol.UDP),
+			Port.valueOf(443, Protocol.TCP),
 			Path.ROOT,
 			Path.ROOT
 		);
