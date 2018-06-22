@@ -32,6 +32,8 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
+import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.collections4.functors.NotNullPredicate;
 
 /**
  * A {@link PartialURL} matches and completes URLs.
@@ -138,11 +140,16 @@ abstract public class PartialURL {
 	 * Gets a partial URL supporting requests across multiple schemes/hosts/ports/...
 	 * 
 	 * @param schemes       (Optional) The scheme (http/https/...) to match and/or link to, converted to lower-case.
+	 *                                 {@code null} elements are skipped.
 	 * @param hosts         (Optional) The IP/host to match and/or link to
+	 *                                 {@code null} elements are skipped.
 	 * @param ports         (Optional) The port to match and/or link to
+	 *                                 {@code null} elements are skipped.
 	 * @param contextPaths  (Optional) The contextPath to match and/or link to
+	 *                                 {@code null} elements are skipped.
 	 * @param prefixes      (Optional) The prefix to match against the path or {@code null} to match all.
 	 *                                 Must be either {@code null} or always ends in a slash (/).
+	 *                                 {@code null} elements are skipped.
 	 *
 	 * @see  MultiPartialURL#MultiPartialURL(java.util.Set, java.util.Set, java.util.Set, java.util.Set, java.util.Set)
 	 */
@@ -157,32 +164,42 @@ abstract public class PartialURL {
 		if(schemes == null) schemeSet = null;
 		else {
 			Set<String> schemesLower = new LinkedHashSet<String>();
-			for(String scheme : schemes) schemesLower.add(scheme.toLowerCase(Locale.ROOT));
+			for(String scheme : IterableUtils.filteredIterable(schemes, NotNullPredicate.notNullPredicate())) {
+				schemesLower.add(scheme.toLowerCase(Locale.ROOT));
+			}
 			schemeSet = AoCollections.optimalUnmodifiableSet(schemesLower);
 			if(schemeSet.isEmpty()) schemeSet = null;
 		}
 		Set<HostAddress> hostSet;
 		if(hosts == null) hostSet = null;
 		else {
-			hostSet = AoCollections.unmodifiableCopySet(hosts);
+			hostSet = AoCollections.unmodifiableCopySet(
+				IterableUtils.filteredIterable(hosts, NotNullPredicate.notNullPredicate())
+			);
 			if(hostSet.isEmpty()) hostSet = null;
 		}
 		Set<Port> portSet;
 		if(ports == null) portSet = null;
 		else {
-			portSet = AoCollections.unmodifiableCopySet(ports);
+			portSet = AoCollections.unmodifiableCopySet(
+				IterableUtils.filteredIterable(ports, NotNullPredicate.notNullPredicate())
+			);
 			if(portSet.isEmpty()) portSet = null;
 		}
 		Set<Path> contextPathSet;
 		if(contextPaths == null) contextPathSet = null;
 		else {
-			contextPathSet = AoCollections.unmodifiableCopySet(contextPaths);
+			contextPathSet = AoCollections.unmodifiableCopySet(
+				IterableUtils.filteredIterable(contextPaths, NotNullPredicate.notNullPredicate())
+			);
 			if(contextPathSet.isEmpty()) contextPathSet = null;
 		}
 		Set<Path> prefixSet;
 		if(prefixes == null) prefixSet = null;
 		else {
-			prefixSet = AoCollections.unmodifiableCopySet(prefixes);
+			prefixSet = AoCollections.unmodifiableCopySet(
+				IterableUtils.filteredIterable(prefixes, NotNullPredicate.notNullPredicate())
+			);
 			if(prefixSet.isEmpty()) prefixSet = null;
 		}
 		if(
@@ -208,11 +225,16 @@ abstract public class PartialURL {
 	 * Gets a partial URL supporting requests across multiple schemes/hosts/ports/...
 	 * 
 	 * @param schemes       (Optional) The scheme (http/https/...) to match and/or link to, converted to lower-case.
+	 *                                 {@code null} elements are skipped.
 	 * @param hosts         (Optional) The IP/host to match and/or link to
+	 *                                 {@code null} elements are skipped.
 	 * @param ports         (Optional) The port to match and/or link to
+	 *                                 {@code null} elements are skipped.
 	 * @param contextPaths  (Optional) The contextPath to match and/or link to
+	 *                                 {@code null} elements are skipped.
 	 * @param prefixes      (Optional) The prefix to match against the path or {@code null} to match all.
 	 *                                 Must be either {@code null} or always ends in a slash (/).
+	 *                                 {@code null} elements are skipped.
 	 *
 	 * @see  #of(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
 	 */
