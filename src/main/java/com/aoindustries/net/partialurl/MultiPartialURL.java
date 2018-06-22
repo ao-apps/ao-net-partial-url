@@ -52,7 +52,7 @@ public class MultiPartialURL extends PartialURL {
 	private final SinglePartialURL primary;
 
 	/**
-	 * @see  #of(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
+	 * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
 	 */
 	MultiPartialURL(Set<String> schemes, Set<HostAddress> hosts, Set<Port> ports, Set<Path> contextPaths, Set<Path> prefixes) {
 		this.schemes = schemes;
@@ -78,7 +78,7 @@ public class MultiPartialURL extends PartialURL {
 		}
 		this.prefixes = prefixes;
 		// Generate primary now
-		primary = of(
+		primary = valueOf(
 			schemes == null ? null : schemes.iterator().next(),
 			hosts == null ? null : hosts.iterator().next(),
 			ports == null ? null : ports.iterator().next(),
@@ -246,7 +246,7 @@ public class MultiPartialURL extends PartialURL {
 						match = null;
 					} else {
 						if(prefixes == null) {
-							match = of(scheme, host, port, contextPath, null);
+							match = valueOf(scheme, host, port, contextPath, null);
 						} else {
 							Path path = fieldSource.getPath();
 							if(path == null) {
@@ -269,7 +269,7 @@ public class MultiPartialURL extends PartialURL {
 										throw ae;
 									}
 									if(prefixes.contains(prefix)) {
-										match = of(scheme, host, port, contextPath, prefix);
+										match = valueOf(scheme, host, port, contextPath, prefix);
 										break;
 									}
 									lastSlash = pathStr.lastIndexOf(Path.SEPARATOR_CHAR, lastSlash - 1);
@@ -377,7 +377,7 @@ public class MultiPartialURL extends PartialURL {
 				for(Path prefix : prefixIter) {
 					for(Port port : portIter) {
 						for(String scheme : schemesIter) {
-							SinglePartialURL single = of(scheme, host, port, contextPath, prefix);
+							SinglePartialURL single = valueOf(scheme, host, port, contextPath, prefix);
 							// Use existing primary object for first element in the results.
 							if(single.equals(primary)) {
 								if(!results.isEmpty()) throw new AssertionError("Primary must be the first element in the results: " + single);

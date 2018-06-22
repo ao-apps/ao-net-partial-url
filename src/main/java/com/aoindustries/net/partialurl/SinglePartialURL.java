@@ -45,7 +45,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	private final Path prefix;
 
 	/**
-	 * @see  #of(java.lang.String, com.aoindustries.net.HostAddress, com.aoindustries.net.Port, com.aoindustries.net.Path, com.aoindustries.net.Path)
+	 * @see  #valueOf(java.lang.String, com.aoindustries.net.HostAddress, com.aoindustries.net.Port, com.aoindustries.net.Path, com.aoindustries.net.Path)
 	 */
 	SinglePartialURL(String scheme, HostAddress host, Port port, Path contextPath, Path prefix) {
 		this.scheme = scheme;

@@ -43,6 +43,9 @@ import org.apache.commons.collections4.functors.NotNullPredicate;
  * fields specifically used for matching a request to a virtual host (TODO: Links to projects).  For
  * an instance of {@link URL}, see {@link #toURL(com.aoindustries.net.partialurl.FieldSource)}.
  * </p>
+ * <p>
+ * All partial URLs are immutable value types.
+ * </p>
  */
 // TODO: Should this be an interface?  All methods are abstract.
 abstract public class PartialURL {
@@ -104,7 +107,7 @@ abstract public class PartialURL {
 	 * @see  SinglePartialURL#SinglePartialURL(java.lang.String, com.aoindustries.net.HostAddress, com.aoindustries.net.Port, com.aoindustries.net.Path, com.aoindustries.net.Path)
 	 */
 	// TODO: String/integer-only overloads?
-	public static SinglePartialURL of(String scheme, HostAddress host, Port port, Path contextPath, Path prefix) {
+	public static SinglePartialURL valueOf(String scheme, HostAddress host, Port port, Path contextPath, Path prefix) {
 		if(
 			scheme == null
 			&& host == null
@@ -130,10 +133,10 @@ abstract public class PartialURL {
 	 * @param prefix       (Optional) The prefix to match against the path or {@code null} to match all.
 	 *                                Must be either {@code null} or always ends in a slash (/).
 	 *
-	 * @see  #of(java.lang.String, com.aoindustries.net.HostAddress, com.aoindustries.net.Port, com.aoindustries.net.Path, com.aoindustries.net.Path)
+	 * @see  #valueOf(java.lang.String, com.aoindustries.net.HostAddress, com.aoindustries.net.Port, com.aoindustries.net.Path, com.aoindustries.net.Path)
 	 */
-	public static SinglePartialURL of(Path prefix) {
-		return of(null, null, null, null, prefix);
+	public static SinglePartialURL valueOf(Path prefix) {
+		return PartialURL.valueOf(null, null, null, null, prefix);
 	}
 
 	/**
@@ -153,7 +156,7 @@ abstract public class PartialURL {
 	 *
 	 * @see  MultiPartialURL#MultiPartialURL(java.util.Set, java.util.Set, java.util.Set, java.util.Set, java.util.Set)
 	 */
-	public static PartialURL of(
+	public static PartialURL valueOf(
 		Iterable<? extends String> schemes,
 		Iterable<? extends HostAddress> hosts,
 		Iterable<? extends Port> ports,
@@ -209,7 +212,7 @@ abstract public class PartialURL {
 			&& (contextPathSet == null || contextPathSet.size() == 1)
 			&& (prefixSet == null || prefixSet.size() == 1)
 		) {
-			return of(
+			return PartialURL.valueOf(
 				schemeSet == null ? null : schemeSet.iterator().next(),
 				hostSet == null ? null : hostSet.iterator().next(),
 				portSet == null ? null : portSet.iterator().next(),
@@ -236,16 +239,16 @@ abstract public class PartialURL {
 	 *                                 Must be either {@code null} or always ends in a slash (/).
 	 *                                 {@code null} elements are skipped.
 	 *
-	 * @see  #of(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
+	 * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
 	 */
-	public static PartialURL of(
+	public static PartialURL valueOf(
 		String[] schemes,
 		HostAddress[] hosts,
 		Port[] ports,
 		Path[] contextPaths,
 		Path ... prefixes
 	) {
-		return of(
+		return PartialURL.valueOf(
 			schemes == null ? null : Arrays.asList(schemes),
 			hosts == null ? null : Arrays.asList(hosts),
 			ports == null ? null : Arrays.asList(ports),
@@ -260,10 +263,10 @@ abstract public class PartialURL {
 	 * @param prefix       (Optional) The prefix to match against the path or {@code null} to match all.
 	 *                                Must be either {@code null} or always ends in a slash (/).
 	 *
-	 * @see  #of(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
+	 * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
 	 */
-	public static PartialURL of(Iterable<? extends Path> prefixes) {
-		return of(null, null, null, null, prefixes);
+	public static PartialURL valueOf(Iterable<? extends Path> prefixes) {
+		return PartialURL.valueOf(null, null, null, null, prefixes);
 	}
 
 	/**
@@ -272,10 +275,10 @@ abstract public class PartialURL {
 	 * @param prefix       (Optional) The prefix to match against the path or {@code null} to match all.
 	 *                                Must be either {@code null} or always ends in a slash (/).
 	 *
-	 * @see  #of(java.lang.Iterable)
+	 * @see  #valueOf(java.lang.Iterable)
 	 */
-	public static PartialURL of(Path ... prefixes) {
-		return of(Arrays.asList(prefixes));
+	public static PartialURL valueOf(Path ... prefixes) {
+		return PartialURL.valueOf(Arrays.asList(prefixes));
 	}
 
 	protected PartialURL() {
