@@ -493,12 +493,20 @@ public class MultiPartialURL extends PartialURL {
 			}
 		}
 		try {
-			return new URL(
+			URL url = new URL(
 				schemeStr,
 				hostStr,
 				portNum,
 				file
 			);
+			SinglePartialURL match;
+			assert !(
+				fieldSource != null
+				&& (prefixes == null || prefixes.size() == 1) // toURL prefix by original order, matches by deepest, but will be same order always when zero or one prefix
+				&& (match = matches(fieldSource)) != null
+				&& !match.toURL(fieldSource).equals(url)
+			) : "matches().toURL() must be consistent with toURL() when fieldSource provided and less than two prefixes";
+			return url;
 		} catch(MalformedURLException e) {
 			throw new AssertionError(e);
 		}
