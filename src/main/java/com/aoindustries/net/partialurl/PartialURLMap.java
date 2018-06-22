@@ -25,6 +25,7 @@ package com.aoindustries.net.partialurl;
 import com.aoindustries.net.HostAddress;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.Port;
+import com.aoindustries.util.MinimalMap;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -68,6 +69,9 @@ public class PartialURLMap<V> {
 
 	/**
 	 * Adds a new partial URL to this map while checking for conflicts.
+	 * <p>
+	 * TODO: Use {@link MinimalMap} in the index?
+	 * </p>
 	 *
 	 * @implNote  Currently, when an exception occurs, the index may be in a partial state.  Changes are not rolled-back.
 	 *
