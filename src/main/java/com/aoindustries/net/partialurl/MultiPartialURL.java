@@ -192,7 +192,7 @@ public class MultiPartialURL extends PartialURL {
 		MultiPartialURL other = (MultiPartialURL)obj;
 		return
 			ObjectUtils.equals(schemes, other.schemes)
-			&& ObjectUtils.equals(hosts.keySet(), other.hosts.keySet())
+			&& ObjectUtils.equals((hosts == null) ? null : hosts.keySet(), (other.hosts == null) ? null : other.hosts.keySet())
 			&& ObjectUtils.equals(ports, other.ports)
 			&& ObjectUtils.equals(contextPaths, other.contextPaths)
 			&& ObjectUtils.equals(prefixes, other.prefixes);
