@@ -222,6 +222,7 @@ public class MultiPartialURL extends PartialURL {
 		for(SinglePartialURL single : getCombinations()) {
 			SinglePartialURL match = single.matches(fieldSource);
 			if(match != null) {
+				assert !(match.equals(primary) && match != primary) : "match must be same object as primary when they are equal";
 				assert match == single;
 				return single;
 			}
@@ -284,6 +285,7 @@ public class MultiPartialURL extends PartialURL {
 				}
 			}
 		}
+		if(match != null && match.equals(primary)) match = primary;
 		assert ObjectUtils.equals(match, matchesSequential(fieldSource)) : "matches inconsistent with matchesSequential";
 		return match;
 	}

@@ -317,6 +317,8 @@ abstract public class PartialURL {
 	 * @param  fieldSource  When all fields are {@code null} (this is {@link #DEFAULT}), this is not used and may be {@code null}.
 	 *
 	 * @return  The {@link SinglePartialURL} with non-null fields selected to match the field source, or {@code null} when does not match.
+	 *          When the match is {@link SinglePartialURL#equals(java.lang.Object) equals} the {@link #getPrimary() primary}, returns
+	 *          the same object as {@link #getPrimary()}.
 	 */
 	abstract public SinglePartialURL matches(FieldSource fieldSource) throws MalformedURLException;
 
