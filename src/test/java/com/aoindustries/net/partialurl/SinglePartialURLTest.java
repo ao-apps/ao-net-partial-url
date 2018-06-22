@@ -110,7 +110,7 @@ public class SinglePartialURLTest {
 	}
 
 	@Test
-	public void testToStringContextPathOnlyRoot() throws ValidationException {
+	public void testToStringContextPathOnlyRoot() {
 		assertEquals(
 			"//*:*/**",
 			PartialURL.valueOf(null, null, null, Path.ROOT, null).toString()
@@ -126,7 +126,7 @@ public class SinglePartialURLTest {
 	}
 
 	@Test
-	public void testToStringPrefixOnlyRoot() throws ValidationException {
+	public void testToStringPrefixOnlyRoot() {
 		assertEquals(
 			"//*:*/*/",
 			PartialURL.valueOf(null, null, null, null, Path.ROOT).toString()
@@ -201,7 +201,7 @@ public class SinglePartialURLTest {
 	}
 
 	@Test
-	public void testCompareToContextPathOnlyBeforeDefault() throws ValidationException {
+	public void testCompareToContextPathOnlyBeforeDefault() {
 		assertTrue(
 			PartialURL.valueOf(null, null, null, Path.ROOT, null).compareTo(
 				PartialURL.DEFAULT
@@ -210,7 +210,7 @@ public class SinglePartialURLTest {
 	}
 
 	@Test
-	public void testCompareToPrefixOnlyBeforeDefault() throws ValidationException {
+	public void testCompareToPrefixOnlyBeforeDefault() {
 		assertTrue(
 			PartialURL.valueOf(null, null, null, null, Path.ROOT).compareTo(
 				PartialURL.DEFAULT
@@ -228,7 +228,7 @@ public class SinglePartialURLTest {
 	}
 
 	@Test
-	public void testCompareToSchemeOnlyBeforeDefault() throws ValidationException {
+	public void testCompareToSchemeOnlyBeforeDefault() {
 		assertTrue(
 			PartialURL.valueOf("other", null, null, null, null).compareTo(
 				PartialURL.DEFAULT
@@ -291,7 +291,7 @@ public class SinglePartialURLTest {
 	}
 
 	@Test
-	public void testCompareToSchemeHttpBeforeHttps() throws ValidationException {
+	public void testCompareToSchemeHttpBeforeHttps() {
 		assertTrue(
 			PartialURL.valueOf("http", null, null, null, null).compareTo(
 				PartialURL.valueOf("HTTPS", null, null, null, null)
@@ -515,7 +515,7 @@ public class SinglePartialURLTest {
 	}
 
 	@Test
-	public void testPrefixMatchesRoot() throws ValidationException, MalformedURLException {
+	public void testPrefixMatchesRoot() throws MalformedURLException {
 		SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, null, Path.ROOT);
 		assertEquals(
 			singleURL,
