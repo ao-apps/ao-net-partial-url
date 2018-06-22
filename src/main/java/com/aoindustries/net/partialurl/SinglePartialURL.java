@@ -38,63 +38,6 @@ import org.apache.commons.lang3.ObjectUtils;
  */
 public class SinglePartialURL extends PartialURL implements Comparable<SinglePartialURL> {
 
-	/**
-	 * A {@link SinglePartialURL} consisting of all null fields that will match
-	 * all requests and can serve as a match for a default host.
-	 * <p>
-	 * This default host is after all others in {@link #compareTo(com.aoindustries.net.partialurl.SinglePartialURL)}
-	 * and {@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}.
-	 * </p>
-	 */
-	public static final SinglePartialURL DEFAULT = new SinglePartialURL(null, null, null, null, null);
-
-	/**
-	 * Gets a partial URL supporting requests across multiple schemes/hosts/ports/...
-	 * 
-	 * @param scheme       (Optional) The scheme (http/https/...) to match and/or link to, converted to lower-case.
-	 * @param host         (Optional) The IP/host to match and/or link to
-	 * @param port         (Optional) The port to match and/or link to
-	 * @param contextPath  (Optional) The contextPath to match and/or link to
-	 * @param prefix       (Optional) The prefix to match against the path or {@code null} to match all.
-	 *                                Must be either {@code null} or always ends in a slash (/).
-	 *
-	 * @see  #valueOf(com.aoindustries.net.Path)
-	 * @see  #SinglePartialURL(java.lang.String, com.aoindustries.net.HostAddress, com.aoindustries.net.Port, com.aoindustries.net.Path, com.aoindustries.net.Path)
-	 */
-	// TODO: String/integer-only overloads?
-	// TODO: "of" only?
-	public static SinglePartialURL valueOf(String scheme, HostAddress host, Port port, Path contextPath, Path prefix) {
-		if(
-			scheme == null
-			&& host == null
-			&& port == null
-			&& contextPath == null
-			&& prefix == null
-		) {
-			return DEFAULT;
-		} else {
-			return new SinglePartialURL(
-				(scheme == null) ? null : scheme.toLowerCase(Locale.ROOT),
-				host,
-				port,
-				contextPath,
-				prefix
-			);
-		}
-	}
-
-	/**
-	 * Gets a partial URL always within the current request.
-	 *
-	 * @param prefix       (Optional) The prefix to match against the path or {@code null} to match all.
-	 *                                Must be either {@code null} or always ends in a slash (/).
-	 *
-	 * @see  #valueOf(java.lang.String, com.aoindustries.net.HostAddress, com.aoindustries.net.Port, com.aoindustries.net.Path, com.aoindustries.net.Path)
-	 */
-	public static SinglePartialURL valueOf(Path prefix) {
-		return valueOf(null, null, null, null, prefix);
-	}
-
 	private final String scheme;
 	private final HostAddress host;
 	private final Port port;
@@ -102,9 +45,9 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	private final Path prefix;
 
 	/**
-	 * @see  #valueOf(java.lang.String, com.aoindustries.net.HostAddress, com.aoindustries.net.Port, com.aoindustries.net.Path, com.aoindustries.net.Path)
+	 * @see  #of(java.lang.String, com.aoindustries.net.HostAddress, com.aoindustries.net.Port, com.aoindustries.net.Path, com.aoindustries.net.Path)
 	 */
-	private SinglePartialURL(String scheme, HostAddress host, Port port, Path contextPath, Path prefix) {
+	SinglePartialURL(String scheme, HostAddress host, Port port, Path contextPath, Path prefix) {
 		this.scheme = scheme;
 		this.host = host;
 		this.port = port;

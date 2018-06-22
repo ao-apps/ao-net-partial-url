@@ -26,11 +26,9 @@ import com.aoindustries.math.SafeMath;
 import com.aoindustries.net.HostAddress;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.Port;
-import com.aoindustries.util.AoCollections;
 import com.aoindustries.validation.ValidationException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Locale;
@@ -45,102 +43,6 @@ import org.apache.commons.lang3.ObjectUtils;
  */
 public class MultiPartialURL extends PartialURL {
 
-	/**
-	 * Gets a partial URL supporting requests across multiple schemes/hosts/ports/...
-	 * 
-	 * @param scheme       (Optional) The scheme (http/https/...) to match and/or link to, converted to lower-case.
-	 * @param host         (Optional) The IP/host to match and/or link to
-	 * @param port         (Optional) The port to match and/or link to
-	 * @param contextPath  (Optional) The contextPath to match and/or link to
-	 * @param prefix       (Optional) The prefix to match against the path or {@code null} to match all.
-	 *                                Must be either {@code null} or always ends in a slash (/).
-	 *
-	 * @see  #valueOf(java.lang.Iterable)
-	 * @see  #valueOf(com.aoindustries.net.Path...)
-	 * @see  #MultiPartialURL(java.util.Set, java.util.Set, java.util.Set, java.util.Set, java.util.Set)
-	 */
-	public static PartialURL valueOf(
-		Iterable<? extends String> schemes,
-		Iterable<? extends HostAddress> hosts,
-		Iterable<? extends Port> ports,
-		Iterable<? extends Path> contextPaths,
-		Iterable<? extends Path> prefixes
-	) {
-		Set<String> schemeSet;
-		if(schemes == null) schemeSet = null;
-		else {
-			Set<String> schemesLower = new LinkedHashSet<String>();
-			for(String scheme : schemes) schemesLower.add(scheme.toLowerCase(Locale.ROOT));
-			schemeSet = AoCollections.optimalUnmodifiableSet(schemesLower);
-			if(schemeSet.isEmpty()) schemeSet = null;
-		}
-		Set<HostAddress> hostSet;
-		if(hosts == null) hostSet = null;
-		else {
-			hostSet = AoCollections.unmodifiableCopySet(hosts);
-			if(hostSet.isEmpty()) hostSet = null;
-		}
-		Set<Port> portSet;
-		if(ports == null) portSet = null;
-		else {
-			portSet = AoCollections.unmodifiableCopySet(ports);
-			if(portSet.isEmpty()) portSet = null;
-		}
-		Set<Path> contextPathSet;
-		if(contextPaths == null) contextPathSet = null;
-		else {
-			contextPathSet = AoCollections.unmodifiableCopySet(contextPaths);
-			if(contextPathSet.isEmpty()) contextPathSet = null;
-		}
-		Set<Path> prefixSet;
-		if(prefixes == null) prefixSet = null;
-		else {
-			prefixSet = AoCollections.unmodifiableCopySet(prefixes);
-			if(prefixSet.isEmpty()) prefixSet = null;
-		}
-		if(
-			(schemeSet == null || schemeSet.size() == 1)
-			&& (hostSet == null || hostSet.size() == 1)
-			&& (portSet == null || portSet.size() == 1)
-			&& (contextPathSet == null || contextPathSet.size() == 1)
-			&& (prefixSet == null || prefixSet.size() == 1)
-		) {
-			return SinglePartialURL.valueOf(
-				schemeSet == null ? null : schemeSet.iterator().next(),
-				hostSet == null ? null : hostSet.iterator().next(),
-				portSet == null ? null : portSet.iterator().next(),
-				contextPathSet == null ? null : contextPathSet.iterator().next(),
-				prefixSet == null ? null : prefixSet.iterator().next()
-			);
-		} else {
-			return new MultiPartialURL(schemeSet, hostSet, portSet, contextPathSet, prefixSet);
-		}
-	}
-
-	/**
-	 * Gets a partial URL always within the current request.
-	 *
-	 * @param prefix       (Optional) The prefix to match against the path or {@code null} to match all.
-	 *                                Must be either {@code null} or always ends in a slash (/).
-	 *
-	 * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
-	 */
-	public static PartialURL valueOf(Iterable<? extends Path> prefixes) {
-		return valueOf(null, null, null, null, prefixes);
-	}
-
-	/**
-	 * Gets a partial URL always within the current request.
-	 *
-	 * @param prefix       (Optional) The prefix to match against the path or {@code null} to match all.
-	 *                                Must be either {@code null} or always ends in a slash (/).
-	 *
-	 * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
-	 */
-	public static PartialURL valueOf(Path ... prefixes) {
-		return valueOf(Arrays.asList(prefixes));
-	}
-
 	private final Set<String> schemes;
 	private final Set<HostAddress> hosts;
 	private final Set<Port> ports;
@@ -150,9 +52,9 @@ public class MultiPartialURL extends PartialURL {
 	private final SinglePartialURL primary;
 
 	/**
-	 * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
+	 * @see  #of(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
 	 */
-	private MultiPartialURL(Set<String> schemes, Set<HostAddress> hosts, Set<Port> ports, Set<Path> contextPaths, Set<Path> prefixes) {
+	MultiPartialURL(Set<String> schemes, Set<HostAddress> hosts, Set<Port> ports, Set<Path> contextPaths, Set<Path> prefixes) {
 		this.schemes = schemes;
 		this.hosts = hosts;
 		this.ports = ports;
@@ -176,7 +78,7 @@ public class MultiPartialURL extends PartialURL {
 		}
 		this.prefixes = prefixes;
 		// Generate primary now
-		primary = SinglePartialURL.valueOf(
+		primary = of(
 			schemes == null ? null : schemes.iterator().next(),
 			hosts == null ? null : hosts.iterator().next(),
 			ports == null ? null : ports.iterator().next(),
@@ -344,7 +246,7 @@ public class MultiPartialURL extends PartialURL {
 						match = null;
 					} else {
 						if(prefixes == null) {
-							match = SinglePartialURL.valueOf(scheme, host, port, contextPath, null);
+							match = of(scheme, host, port, contextPath, null);
 						} else {
 							Path path = fieldSource.getPath();
 							if(path == null) {
@@ -367,7 +269,7 @@ public class MultiPartialURL extends PartialURL {
 										throw ae;
 									}
 									if(prefixes.contains(prefix)) {
-										match = SinglePartialURL.valueOf(scheme, host, port, contextPath, prefix);
+										match = of(scheme, host, port, contextPath, prefix);
 										break;
 									}
 									lastSlash = pathStr.lastIndexOf(Path.SEPARATOR_CHAR, lastSlash - 1);
@@ -475,7 +377,7 @@ public class MultiPartialURL extends PartialURL {
 				for(Path prefix : prefixIter) {
 					for(Port port : portIter) {
 						for(String scheme : schemesIter) {
-							SinglePartialURL single = SinglePartialURL.valueOf(scheme, host, port, contextPath, prefix);
+							SinglePartialURL single = of(scheme, host, port, contextPath, prefix);
 							// Use existing primary object for first element in the results.
 							if(single.equals(primary)) {
 								if(!results.isEmpty()) throw new AssertionError("Primary must be the first element in the results: " + single);
