@@ -65,6 +65,8 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 							<configuration>
 								<links>
 									<link>${javac.link.javaApi}</link>
+									<!-- TODO: https://commons.apache.org/proper/commons-collections/javadocs/api-4.1/ once exists -->
+									<link>https://commons.apache.org/proper/commons-collections/javadocs/api-release/</link>
 									<link>https://commons.apache.org/proper/commons-lang/javadocs/api-3.7/</link>
 									<link>https://aoindustries.com/ao-net-types/apidocs/</link>
 								</links>
@@ -80,6 +82,9 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 		<dependency>
 			<groupId>junit</groupId><artifactId>junit</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId><artifactId>commons-collections4</artifactId><version>4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>3.7</version>
