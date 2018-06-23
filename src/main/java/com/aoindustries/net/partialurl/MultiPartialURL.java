@@ -26,7 +26,6 @@ import com.aoindustries.math.SafeMath;
 import com.aoindustries.net.HostAddress;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.Port;
-import com.aoindustries.validation.ValidationException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -264,15 +263,7 @@ public class MultiPartialURL extends PartialURL {
 								assert lastSlash != -1;
 								match = null;
 								do {
-									Path prefix;
-									try {
-										// TODO: Make a "prefix" method on Path object itself?  Which would not throw ValidationException (but IllegalArgumentException when len is 0)?
-										prefix = Path.valueOf(pathStr.substring(0, lastSlash + 1));
-									} catch(ValidationException e) {
-										AssertionError ae = new AssertionError("Prefix of a valid Path is also a valid Path");
-										ae.initCause(e);
-										throw ae;
-									}
+									Path prefix = path.prefix(lastSlash + 1);
 									if(prefixes.contains(prefix)) {
 										match = valueOf(scheme, host, port, contextPath, prefix);
 										break;
