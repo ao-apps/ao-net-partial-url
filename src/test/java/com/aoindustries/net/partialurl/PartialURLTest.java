@@ -42,7 +42,7 @@ import org.junit.Test;
  */
 public class PartialURLTest {
 
-	// <editor-fold defaultstate="collapsed" desc="Test of">
+	// <editor-fold defaultstate="collapsed" desc="Test valueOf">
 	@Test
 	public void testOfDefault() {
 		List<String> emptySchemes = Collections.emptyList();
