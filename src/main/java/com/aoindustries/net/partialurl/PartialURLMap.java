@@ -213,7 +213,7 @@ public class PartialURLMap<V> {
 								}
 							}
 							// Work up the path one slash at a time
-							lastSlashPos = pathStr.lastIndexOf(Path.SEPARATOR_CHAR, slashCount - 1);
+							lastSlashPos = pathStr.lastIndexOf(Path.SEPARATOR_CHAR, lastSlashPos - 1);
 							slashCount--;
 						}
 					}
