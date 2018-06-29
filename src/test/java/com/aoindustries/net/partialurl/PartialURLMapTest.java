@@ -40,25 +40,45 @@ import org.junit.Test;
  */
 public class PartialURLMapTest {
 
-	// <editor-fold defaultstate="collapsed" desc="Test single fields with single values">
 	private static final SinglePartialURL httpsOnly;
+	private static final SinglePartialURL httpOnly;
 	private static final SinglePartialURL aorepoOnly;
+	private static final SinglePartialURL wwwAorepoOnly;
 	private static final SinglePartialURL port443Only;
+	private static final SinglePartialURL port80Only;
 	private static final SinglePartialURL contextOnly;
+	private static final SinglePartialURL contextSubOnly;
 	private static final SinglePartialURL prefixOnly;
+	private static final SinglePartialURL prefixSubOnly;
+	private static final PartialURL schemesOnly;
+	private static final PartialURL hostsOnly;
+	private static final PartialURL portsOnly;
+	private static final PartialURL contextsOnly;
+	private static final PartialURL prefixesOnly;
 	static {
 		try {
 			httpsOnly = PartialURL.valueOf("https", null, null, null, null);
+			httpOnly = PartialURL.valueOf("http", null, null, null, null);
 			aorepoOnly = PartialURL.valueOf(null, HostAddress.valueOf("aorepo.org"), null, null, null);
+			wwwAorepoOnly = PartialURL.valueOf(null, HostAddress.valueOf("www.aorepo.org"), null, null, null);
 			port443Only = PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.TCP), null, null);
+			port80Only = PartialURL.valueOf(null, null, Port.valueOf(80, Protocol.TCP), null, null);
 			contextOnly = PartialURL.valueOf(null, null, null, Path.valueOf("/context"), null);
+			contextSubOnly = PartialURL.valueOf(null, null, null, Path.valueOf("/context/sub"), null);
 			prefixOnly = PartialURL.valueOf(null, null, null, null, Path.valueOf("/prefix/"));
+			prefixSubOnly = PartialURL.valueOf(null, null, null, null, Path.valueOf("/prefix/sub/"));
+			schemesOnly = PartialURL.valueOf(new String[] {"https", "http"}, null, null, null);
+			hostsOnly = PartialURL.valueOf(null, new HostAddress[] {HostAddress.valueOf("aorepo.org"), HostAddress.valueOf("www.aorepo.org")}, null, null);
+			portsOnly = PartialURL.valueOf(null, null, new Port[] {Port.valueOf(443, Protocol.TCP), Port.valueOf(80, Protocol.TCP)}, null);
+			contextsOnly = PartialURL.valueOf(null, null, null, new Path[] {Path.valueOf("/context"), Path.valueOf("/context/sub")});
+			prefixesOnly = PartialURL.valueOf(null, null, null, null, new Path[] {Path.valueOf("/prefix/"), Path.valueOf("/prefix/sub/")});
 		} catch(ValidationException e) {
 			throw new AssertionError(e);
 		}
 	}
 
-	private static PartialURLMap<Integer> getTestSingleFieldMap() {
+	// <editor-fold defaultstate="collapsed" desc="Test single fields with single values">
+	private static PartialURLMap<Integer> getTestSingleFieldSingleMap() {
 		PartialURLMap<Integer> testMap = new PartialURLMap<Integer>();
 		testMap.put(httpsOnly, 1);
 		testMap.put(aorepoOnly, 2);
@@ -77,14 +97,14 @@ public class PartialURLMapTest {
 				new URL("https://aoindustries.com:80"),
 				1
 			),
-			getTestSingleFieldMap().get(new URLFieldSource(new URL("HTTPS://aoindustries.com:80/")))
+			getTestSingleFieldSingleMap().get(new URLFieldSource(new URL("HTTPS://aoindustries.com:80/")))
 		);
 	}
 
 	@Test
 	public void testGetBySchemeNotMatches() throws MalformedURLException {
 		assertNull(
-			getTestSingleFieldMap().get(new URLFieldSource(new URL("HTTP://aoindustries.com:80/")))
+			getTestSingleFieldSingleMap().get(new URLFieldSource(new URL("HTTP://aoindustries.com:80/")))
 		);
 	}
 
@@ -97,14 +117,14 @@ public class PartialURLMapTest {
 				new URL("http://aorepo.org"),
 				2
 			),
-			getTestSingleFieldMap().get(new URLFieldSource(new URL("http://AOREPO.ORG:80/")))
+			getTestSingleFieldSingleMap().get(new URLFieldSource(new URL("http://AOREPO.ORG:80/")))
 		);
 	}
 
 	@Test
 	public void testGetByHostNotMatches() throws MalformedURLException {
 		assertNull(
-			getTestSingleFieldMap().get(new URLFieldSource(new URL("http://WWW.AOREPO.ORG:80/")))
+			getTestSingleFieldSingleMap().get(new URLFieldSource(new URL("http://WWW.AOREPO.ORG:80/")))
 		);
 	}
 
@@ -117,14 +137,14 @@ public class PartialURLMapTest {
 				new URL("http://aoindustries.com:443"),
 				3
 			),
-			getTestSingleFieldMap().get(new URLFieldSource(new URL("http://aoindustries.com:443/")))
+			getTestSingleFieldSingleMap().get(new URLFieldSource(new URL("http://aoindustries.com:443/")))
 		);
 	}
 
 	@Test
 	public void testGetByPortNotMatches() throws MalformedURLException {
 		assertNull(
-			getTestSingleFieldMap().get(new URLFieldSource(new URL("http://aoindustries.com:80/")))
+			getTestSingleFieldSingleMap().get(new URLFieldSource(new URL("http://aoindustries.com:80/")))
 		);
 	}
 
@@ -137,7 +157,7 @@ public class PartialURLMapTest {
 				new URL("http://aoindustries.com:80/context"),
 				4
 			),
-			getTestSingleFieldMap().get(
+			getTestSingleFieldSingleMap().get(
 				new URLFieldSource(new URL("http://aoindustries.com:80/")) {
 					@Override
 					public Path getContextPath() {
@@ -155,7 +175,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByContextNotMatchesPrefix() throws MalformedURLException {
 		assertNull(
-			getTestSingleFieldMap().get(
+			getTestSingleFieldSingleMap().get(
 				new URLFieldSource(new URL("http://aoindustries.com:80/")) {
 					@Override
 					public Path getContextPath() {
@@ -169,7 +189,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByContextNotMatchesSuffix() throws MalformedURLException {
 		assertNull(
-			getTestSingleFieldMap().get(
+			getTestSingleFieldSingleMap().get(
 				new URLFieldSource(new URL("http://aoindustries.com:80/")) {
 					@Override
 					public Path getContextPath() {
@@ -193,7 +213,7 @@ public class PartialURLMapTest {
 				new URL("http://aoindustries.com:80/prefix/"),
 				5
 			),
-			getTestSingleFieldMap().get(new URLFieldSource(new URL("http://aoindustries.com:80/prefix/")))
+			getTestSingleFieldSingleMap().get(new URLFieldSource(new URL("http://aoindustries.com:80/prefix/")))
 		);
 	}
 
@@ -207,27 +227,311 @@ public class PartialURLMapTest {
 				new URL("http://aoindustries.com:80/prefix/"),
 				5
 			),
-			getTestSingleFieldMap().get(new URLFieldSource(new URL("http://aoindustries.com:80/prefix/suffix")))
+			getTestSingleFieldSingleMap().get(new URLFieldSource(new URL("http://aoindustries.com:80/prefix/suffix")))
+		);
+	}
+
+	@Test
+	public void testGetByPrefixNotMatchesNoSlash() throws MalformedURLException {
+		assertNull(
+			getTestSingleFieldSingleMap().get(new URLFieldSource(new URL("http://aoindustries.com:80/prefix")))
 		);
 	}
 
 	@Test
 	public void testGetByPrefixNotMatchesRoot() throws MalformedURLException {
 		assertNull(
-			getTestSingleFieldMap().get(new URLFieldSource(new URL("http://aoindustries.com:80/")))
+			getTestSingleFieldSingleMap().get(new URLFieldSource(new URL("http://aoindustries.com:80/")))
 		);
 	}
 
 	@Test
 	public void testGetByPrefixNotMatchesBlank() throws MalformedURLException {
 		assertNull(
-			getTestSingleFieldMap().get(new URLFieldSource(new URL("http://aoindustries.com:80")))
+			getTestSingleFieldSingleMap().get(new URLFieldSource(new URL("http://aoindustries.com:80")))
 		);
 	}
 	// </editor-fold>
 
-	// TODO: Test multiple fields
+	// <editor-fold defaultstate="collapsed" desc="Test single fields with multiple values">
+	private static PartialURLMap<Integer> getTestSingleFieldMultiMap() {
+		PartialURLMap<Integer> testMap = new PartialURLMap<Integer>();
+		testMap.put(schemesOnly, 1);
+		testMap.put(hostsOnly, 2);
+		testMap.put(portsOnly, 3);
+		testMap.put(contextsOnly, 4);
+		testMap.put(prefixesOnly, 5);
+		return testMap;
+	}
 
-	// TODO: Test ordering when multiple fields match
+	@Test
+	public void testGetBySchemesMatches1() throws MalformedURLException {
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				schemesOnly,
+				httpsOnly,
+				new URL("https://aoindustries.com:81"),
+				1
+			),
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("HTTPS://aoindustries.com:81/")))
+		);
+	}
+
+	@Test
+	public void testGetBySchemesMatches2() throws MalformedURLException {
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				schemesOnly,
+				httpOnly,
+				new URL("http://aoindustries.com:81"),
+				1
+			),
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("HTTP://aoindustries.com:81/")))
+		);
+	}
+
+	@Test
+	public void testGetBySchemesNotMatches() throws MalformedURLException {
+		assertNull(
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("FTP://aoindustries.com:81/")))
+		);
+	}
+
+	@Test
+	public void testGetByHostsMatches1() throws MalformedURLException {
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				hostsOnly,
+				aorepoOnly,
+				new URL("ftp://aorepo.org:81"),
+				2
+			),
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://AOREPO.ORG:81/")))
+		);
+	}
+
+	@Test
+	public void testGetByHostsMatches2() throws MalformedURLException {
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				hostsOnly,
+				wwwAorepoOnly,
+				new URL("ftp://www.aorepo.org:81"),
+				2
+			),
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://WWW.AOREPO.ORG:81/")))
+		);
+	}
+
+	@Test
+	public void testGetByHostsNotMatches() throws MalformedURLException {
+		assertNull(
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://WWW2.AOREPO.ORG:81/")))
+		);
+	}
+
+	@Test
+	public void testGetByPortMatches1() throws MalformedURLException {
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				portsOnly,
+				port443Only,
+				new URL("ftp://aoindustries.com:443"),
+				3
+			),
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://aoindustries.com:443/")))
+		);
+	}
+
+	@Test
+	public void testGetByPortMatches2() throws MalformedURLException {
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				portsOnly,
+				port80Only,
+				new URL("ftp://aoindustries.com:80"),
+				3
+			),
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://aoindustries.com:80/")))
+		);
+	}
+
+	@Test
+	public void testGetByPortsNotMatches() throws MalformedURLException {
+		assertNull(
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://aoindustries.com:81/")))
+		);
+	}
+
+	@Test
+	public void testGetByContextsMatches1() throws MalformedURLException {
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				contextsOnly,
+				contextOnly,
+				new URL("ftp://aoindustries.com:81/context"),
+				4
+			),
+			getTestSingleFieldMultiMap().get(
+				new URLFieldSource(new URL("ftp://aoindustries.com:81/")) {
+					@Override
+					public Path getContextPath() {
+						try {
+							return Path.valueOf("/context");
+						} catch(ValidationException e) {
+							throw new AssertionError(e);
+						}
+					}
+				}
+			)
+		);
+	}
+
+	@Test
+	public void testGetByContextsMatches2() throws MalformedURLException {
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				contextsOnly,
+				contextSubOnly,
+				new URL("ftp://aoindustries.com:81/context/sub"),
+				4
+			),
+			getTestSingleFieldMultiMap().get(
+				new URLFieldSource(new URL("ftp://aoindustries.com:81/")) {
+					@Override
+					public Path getContextPath() {
+						try {
+							return Path.valueOf("/context/sub");
+						} catch(ValidationException e) {
+							throw new AssertionError(e);
+						}
+					}
+				}
+			)
+		);
+	}
+
+	@Test
+	public void testGetByContextsNotMatchesPrefix() throws MalformedURLException {
+		assertNull(
+			getTestSingleFieldMultiMap().get(
+				new URLFieldSource(new URL("ftp://aoindustries.com:81/")) {
+					@Override
+					public Path getContextPath() {
+						return Path.ROOT;
+					}
+				}
+			)
+		);
+	}
+
+	@Test
+	public void testGetByContextsNotMatchesSuffix() throws MalformedURLException {
+		assertNull(
+			getTestSingleFieldMultiMap().get(
+				new URLFieldSource(new URL("ftp://aoindustries.com:81/")) {
+					@Override
+					public Path getContextPath() {
+						try {
+							return Path.valueOf("/context/other");
+						} catch(ValidationException e) {
+							throw new AssertionError(e);
+						}
+					}
+				}
+			)
+		);
+	}
+
+	@Test
+	public void testGetByPrefixesMatchesExact1() throws MalformedURLException {
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				prefixesOnly,
+				prefixOnly,
+				new URL("ftp://aoindustries.com:81/prefix/"),
+				5
+			),
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://aoindustries.com:81/prefix/")))
+		);
+	}
+
+	@Test
+	public void testGetByPrefixesMatchesExact2() throws MalformedURLException {
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				prefixesOnly,
+				prefixSubOnly,
+				new URL("ftp://aoindustries.com:81/prefix/sub/"),
+				5
+			),
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://aoindustries.com:81/prefix/sub/")))
+		);
+	}
+
+	@Test
+	public void testGetByPrefixesMatchesSuffix1() throws MalformedURLException {
+		// TODO: Return and test path in result: /suffix in this case
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				prefixesOnly,
+				prefixOnly,
+				new URL("ftp://aoindustries.com:81/prefix/"),
+				5
+			),
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://aoindustries.com:81/prefix/suffix")))
+		);
+	}
+
+	@Test
+	public void testGetByPrefixesMatchesSuffix2() throws MalformedURLException {
+		// TODO: Return and test path in result: /suffix in this case
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				prefixesOnly,
+				prefixSubOnly,
+				new URL("ftp://aoindustries.com:81/prefix/sub/"),
+				5
+			),
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://aoindustries.com:81/prefix/sub/suffix")))
+		);
+	}
+
+	@Test
+	public void testGetByPrefixesNotMatchesNoSlash1() throws MalformedURLException {
+		assertNull(
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://aoindustries.com:81/prefix")))
+		);
+	}
+
+	@Test
+	public void testGetByPrefixesNotMatchesNoSlash2() throws MalformedURLException {
+		assertEquals(
+			new PartialURLMatch<Integer>(
+				prefixesOnly,
+				prefixOnly,
+				new URL("ftp://aoindustries.com:81/prefix/"),
+				5
+			),
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://aoindustries.com:81/prefix/sub")))
+		);
+	}
+
+	@Test
+	public void testGetByPrefixesNotMatchesRoot() throws MalformedURLException {
+		assertNull(
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://aoindustries.com:81/")))
+		);
+	}
+
+	@Test
+	public void testGetByPrefixesNotMatchesBlank() throws MalformedURLException {
+		assertNull(
+			getTestSingleFieldMultiMap().get(new URLFieldSource(new URL("ftp://aoindustries.com:81")))
+		);
+	}
+	// </editor-fold>
+
+	// TODO: Test multiple fields with multiple values, while testing ordering when multiple fields match
 
 }
