@@ -35,7 +35,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 		datePublished="2018-06-18T22:02:15-0500"
 	>
 		<core:child page="changelog.jspx" />
-		<core:child page="apidocs/" />
+		<core:child page="apidocs/index.jspx" />
 		<core:child book="/ao-net-partial-url/servlet" />
 		<ao:include
 			page="/ao-badges/badges.inc.jspx"
