@@ -64,9 +64,9 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 						<configuration>
 							<links>
 								<link>${javac.link.javaApi}</link>
-								<link>https://commons.apache.org/proper/commons-collections/javadocs/api-4.3</link>
-								<link>https://commons.apache.org/proper/commons-lang/javadocs/api-3.8.1</link>
-								<link>https://aoindustries.com/ao-net-types/apidocs</link>
+								<link>https://commons.apache.org/proper/commons-collections/javadocs/api-4.3/</link>
+								<link>https://commons.apache.org/proper/commons-lang/javadocs/api-3.8.1/</link>
+								<link>https://aoindustries.com/ao-net-types/apidocs/</link>
 							</links>
 						</configuration>
 					</plugin>
