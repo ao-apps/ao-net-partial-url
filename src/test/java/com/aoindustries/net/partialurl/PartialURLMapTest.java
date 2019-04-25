@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -79,7 +79,7 @@ public class PartialURLMapTest {
 
 	// <editor-fold defaultstate="collapsed" desc="Test single fields with single values">
 	private static PartialURLMap<Integer> getTestSingleFieldSingleMap() {
-		PartialURLMap<Integer> testMap = new PartialURLMap<Integer>();
+		PartialURLMap<Integer> testMap = new PartialURLMap<>();
 		testMap.put(httpsOnly, 1);
 		testMap.put(aorepoOnly, 2);
 		testMap.put(port443Only, 3);
@@ -91,7 +91,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetBySchemeMatches() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				httpsOnly,
 				httpsOnly,
 				new URL("https://aoindustries.com:80"),
@@ -111,7 +111,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByHostMatches() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				aorepoOnly,
 				aorepoOnly,
 				new URL("http://aorepo.org"),
@@ -131,7 +131,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByPortMatches() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				port443Only,
 				port443Only,
 				new URL("http://aoindustries.com:443"),
@@ -151,7 +151,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByContextMatches() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				contextOnly,
 				contextOnly,
 				new URL("http://aoindustries.com:80/context"),
@@ -207,7 +207,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByPrefixMatchesExact() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				prefixOnly,
 				prefixOnly,
 				new URL("http://aoindustries.com:80/prefix/"),
@@ -221,7 +221,7 @@ public class PartialURLMapTest {
 	public void testGetByPrefixMatchesSuffix() throws MalformedURLException {
 		// TODO: Return and test path in result: /suffix in this case
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				prefixOnly,
 				prefixOnly,
 				new URL("http://aoindustries.com:80/prefix/"),
@@ -255,7 +255,7 @@ public class PartialURLMapTest {
 
 	// <editor-fold defaultstate="collapsed" desc="Test single fields with multiple values">
 	private static PartialURLMap<Integer> getTestSingleFieldMultiMap() {
-		PartialURLMap<Integer> testMap = new PartialURLMap<Integer>();
+		PartialURLMap<Integer> testMap = new PartialURLMap<>();
 		testMap.put(schemesOnly, 1);
 		testMap.put(hostsOnly, 2);
 		testMap.put(portsOnly, 3);
@@ -267,7 +267,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetBySchemesMatches1() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				schemesOnly,
 				httpsOnly,
 				new URL("https://aoindustries.com:81"),
@@ -280,7 +280,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetBySchemesMatches2() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				schemesOnly,
 				httpOnly,
 				new URL("http://aoindustries.com:81"),
@@ -300,7 +300,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByHostsMatches1() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				hostsOnly,
 				aorepoOnly,
 				new URL("ftp://aorepo.org:81"),
@@ -313,7 +313,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByHostsMatches2() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				hostsOnly,
 				wwwAorepoOnly,
 				new URL("ftp://www.aorepo.org:81"),
@@ -333,7 +333,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByPortMatches1() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				portsOnly,
 				port443Only,
 				new URL("ftp://aoindustries.com:443"),
@@ -346,7 +346,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByPortMatches2() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				portsOnly,
 				port80Only,
 				new URL("ftp://aoindustries.com:80"),
@@ -366,7 +366,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByContextsMatches1() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				contextsOnly,
 				contextOnly,
 				new URL("ftp://aoindustries.com:81/context"),
@@ -390,7 +390,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByContextsMatches2() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				contextsOnly,
 				contextSubOnly,
 				new URL("ftp://aoindustries.com:81/context/sub"),
@@ -446,7 +446,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByPrefixesMatchesExact1() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				prefixesOnly,
 				prefixOnly,
 				new URL("ftp://aoindustries.com:81/prefix/"),
@@ -459,7 +459,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByPrefixesMatchesExact2() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				prefixesOnly,
 				prefixSubOnly,
 				new URL("ftp://aoindustries.com:81/prefix/sub/"),
@@ -473,7 +473,7 @@ public class PartialURLMapTest {
 	public void testGetByPrefixesMatchesSuffix1() throws MalformedURLException {
 		// TODO: Return and test path in result: /suffix in this case
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				prefixesOnly,
 				prefixOnly,
 				new URL("ftp://aoindustries.com:81/prefix/"),
@@ -487,7 +487,7 @@ public class PartialURLMapTest {
 	public void testGetByPrefixesMatchesSuffix2() throws MalformedURLException {
 		// TODO: Return and test path in result: /suffix in this case
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				prefixesOnly,
 				prefixSubOnly,
 				new URL("ftp://aoindustries.com:81/prefix/sub/"),
@@ -507,7 +507,7 @@ public class PartialURLMapTest {
 	@Test
 	public void testGetByPrefixesNotMatchesNoSlash2() throws MalformedURLException {
 		assertEquals(
-			new PartialURLMatch<Integer>(
+			new PartialURLMatch<>(
 				prefixesOnly,
 				prefixOnly,
 				new URL("ftp://aoindustries.com:81/prefix/"),

@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -168,7 +168,7 @@ abstract public class PartialURL {
 		Set<String> schemeSet;
 		if(schemes == null) schemeSet = null;
 		else {
-			Set<String> schemesLower = new LinkedHashSet<String>();
+			Set<String> schemesLower = new LinkedHashSet<>();
 			for(String scheme : IterableUtils.filteredIterable(schemes, NotNullPredicate.notNullPredicate())) {
 				schemesLower.add(scheme.toLowerCase(Locale.ROOT));
 			}
@@ -178,7 +178,7 @@ abstract public class PartialURL {
 		Map<HostAddress,HostAddress> hostMap;
 		if(hosts == null) hostMap = null;
 		else {
-			Map<HostAddress,HostAddress> copyMap = new LinkedHashMap<HostAddress,HostAddress>();
+			Map<HostAddress,HostAddress> copyMap = new LinkedHashMap<>();
 			for(HostAddress host : IterableUtils.filteredIterable(hosts, NotNullPredicate.notNullPredicate())) {
 				copyMap.put(host, host);
 			}

@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -32,10 +32,10 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import org.apache.commons.lang3.ObjectUtils;
 
 /**
  * A {@link PartialURL} that may contains multiple values for each field matched.
@@ -185,22 +185,20 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // Java 1.7: No longer suppress
 	public boolean equals(Object obj) {
 		if(!(obj instanceof MultiPartialURL)) return false;
 		MultiPartialURL other = (MultiPartialURL)obj;
 		return
-			ObjectUtils.equals(schemes, other.schemes)
-			&& ObjectUtils.equals((hosts == null) ? null : hosts.keySet(), (other.hosts == null) ? null : other.hosts.keySet())
-			&& ObjectUtils.equals(ports, other.ports)
-			&& ObjectUtils.equals(contextPaths, other.contextPaths)
-			&& ObjectUtils.equals(prefixes, other.prefixes);
+			Objects.equals(schemes, other.schemes)
+			&& Objects.equals((hosts == null) ? null : hosts.keySet(), (other.hosts == null) ? null : other.hosts.keySet())
+			&& Objects.equals(ports, other.ports)
+			&& Objects.equals(contextPaths, other.contextPaths)
+			&& Objects.equals(prefixes, other.prefixes);
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // Java 1.7: No longer suppress
 	public int hashCode() {
-		return ObjectUtils.hashCodeMulti(
+		return Objects.hash(
 			schemes,
 			hosts.keySet(),
 			ports,
@@ -230,7 +228,6 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // Java 1.7: Do not suppress
 	public SinglePartialURL matches(FieldSource fieldSource) throws MalformedURLException {
 		SinglePartialURL match;
 		String scheme = null;
@@ -277,7 +274,7 @@ public class MultiPartialURL extends PartialURL {
 			}
 		}
 		if(match != null && match.equals(primary)) match = primary;
-		assert ObjectUtils.equals(match, matchesSequential(fieldSource)) : "matches inconsistent with matchesSequential";
+		assert Objects.equals(match, matchesSequential(fieldSource)) : "matches inconsistent with matchesSequential";
 		return match;
 	}
 
@@ -355,7 +352,7 @@ public class MultiPartialURL extends PartialURL {
 		if(combinations > Integer.MAX_VALUE) throw new IllegalStateException("Too many combinations: " + combinations);
 		long capacity = combinations*4/3+1;
 		if(capacity > Integer.MAX_VALUE) throw new IllegalStateException("Too many combinations: " + combinations);
-		Set<SinglePartialURL> results = new LinkedHashSet<SinglePartialURL>((int)capacity);
+		Set<SinglePartialURL> results = new LinkedHashSet<>((int)capacity);
 
 		Iterable<HostAddress> hostIter;
 		if(hosts == null) hostIter = nullIterable();
@@ -368,7 +365,7 @@ public class MultiPartialURL extends PartialURL {
 		Iterable<Path> prefixIter;
 		if(prefixes == null) prefixIter = nullIterable();
 		else {
-			SortedSet<Path> sortedPrefixes = new TreeSet<Path>(SinglePartialURL.prefixComparator);
+			SortedSet<Path> sortedPrefixes = new TreeSet<>(SinglePartialURL.prefixComparator);
 			sortedPrefixes.addAll(prefixes);
 			prefixIter = sortedPrefixes;
 		}

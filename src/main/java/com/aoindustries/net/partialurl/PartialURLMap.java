@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -30,12 +30,12 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -58,7 +58,7 @@ public class PartialURLMap<V> {
 	private final Lock readLock = readWriteLock.readLock();
 	private final Lock writeLock = readWriteLock.writeLock();
 
-	private final Map<HostAddress,Map<Path,MutablePair<Integer,Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>>>> index = new HashMap<HostAddress,Map<Path,MutablePair<Integer,Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>>>>();
+	private final Map<HostAddress,Map<Path,MutablePair<Integer,Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>>>> index = new HashMap<>();
 
 	/**
 	 * For sequential implementation used for assertions only.
@@ -83,13 +83,13 @@ public class PartialURLMap<V> {
 			for(SinglePartialURL singleURL : partialURL.getCombinations()) {
 				Path prefix = singleURL.getPrefix();
 				@SuppressWarnings("deprecation")
-				String prefixStr = ObjectUtils.toString(prefix, null); // Java 1.7: Use Objects
+				String prefixStr = Objects.toString(prefix, null);
 				int slashCount = (prefixStr == null) ? 0 : StringUtils.countMatches(prefixStr, Path.SEPARATOR_CHAR);
 				// host
 				HostAddress host = singleURL.getHost();
 				Map<Path,MutablePair<Integer,Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>>> hostIndex = index.get(host);
 				if(hostIndex == null) {
-					hostIndex = new HashMap<Path,MutablePair<Integer,Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>>>();
+					hostIndex = new HashMap<>();
 					index.put(host, hostIndex);
 				}
 				// contextPath
@@ -109,14 +109,14 @@ public class PartialURLMap<V> {
 				// prefix
 				Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>> prefixIndex = contextPathIndex.get(prefixStr);
 				if(prefixIndex == null) {
-					prefixIndex = new HashMap<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>();
+					prefixIndex = new HashMap<>();
 					contextPathIndex.put(prefixStr, prefixIndex);
 				}
 				// port
 				Port port = singleURL.getPort();
 				Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>> portIndex = prefixIndex.get(port);
 				if(portIndex == null) {
-					portIndex = new HashMap<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>();
+					portIndex = new HashMap<>();
 					prefixIndex.put(port, portIndex);
 				}
 				// scheme
@@ -147,7 +147,6 @@ public class PartialURLMap<V> {
 	 * @see  #index
 	 * @see  #get(com.aoindustries.net.partialurl.FieldSource)
 	 */
-	@SuppressWarnings("deprecation") // Java 1.7: No longer suppress
 	private PartialURLMatch<V> getIndexed(FieldSource fieldSource) throws MalformedURLException {
 		// Must be holding readLock already
 		// TODO: CompletePartialURL (subclassing single) instead of toURL?
@@ -199,9 +198,9 @@ public class PartialURLMap<V> {
 										for(String scheme : schemeSearchOrder) {
 											ImmutableTriple<PartialURL,SinglePartialURL,V> match = portIndex.get(scheme);
 											if(match != null) {
-												assert ObjectUtils.equals(match.left.matches(fieldSource), match.middle) : "Get inconsistent with matches";
-												assert ObjectUtils.equals(match.middle.matches(fieldSource), match.middle) : "Get inconsistent with matches";
-												return new PartialURLMatch<V>(
+												assert Objects.equals(match.left.matches(fieldSource), match.middle) : "Get inconsistent with matches";
+												assert Objects.equals(match.middle.matches(fieldSource), match.middle) : "Get inconsistent with matches";
+												return new PartialURLMatch<>(
 													match.left,
 													match.middle,
 													match.middle.toURL(fieldSource),
@@ -239,7 +238,7 @@ public class PartialURLMap<V> {
 			if(match != null) {
 				assert match == singleURL;
 				ImmutablePair<PartialURL,V> pair = entry.getValue();
-				return new PartialURLMatch<V>(
+				return new PartialURLMatch<>(
 					pair.left,
 					singleURL,
 					singleURL.toURL(fieldSource),
@@ -267,7 +266,6 @@ public class PartialURLMap<V> {
 	 *            or {@code 2 * 2 * (maxSlashCount + 1) * 2 * 2}, or {@code 16 * (maxSlashCount + 1)}.  The actual number of map lookups
 	 *            will typically be much less than this due to a sparsely populated index.
 	 */
-	@SuppressWarnings("deprecation") // Java 1.7: No longer suppress
 	public PartialURLMatch<V> get(FieldSource fieldSource) throws MalformedURLException {
 		PartialURLMatch<V> indexedMatch;
 		PartialURLMatch<V> sequentialMatch;
@@ -278,7 +276,7 @@ public class PartialURLMap<V> {
 		} finally {
 			readLock.unlock();
 		}
-		if(ASSERTIONS_ENABLED && !ObjectUtils.equals(indexedMatch, sequentialMatch)) {
+		if(ASSERTIONS_ENABLED && !Objects.equals(indexedMatch, sequentialMatch)) {
 			throw new AssertionError("getIndexed is inconsistent with getSequential: indexedMatch = " + indexedMatch + ", sequentialMatch = " + sequentialMatch);
 		}
 		return indexedMatch;

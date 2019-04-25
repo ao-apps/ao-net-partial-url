@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.Objects;
 import org.apache.commons.lang3.ObjectUtils;
 
 /**
@@ -118,22 +119,20 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // Java 1.7: No longer suppress
 	public boolean equals(Object obj) {
 		if(!(obj instanceof SinglePartialURL)) return false;
 		SinglePartialURL other = (SinglePartialURL)obj;
 		return
-			ObjectUtils.equals(scheme, other.scheme)
-			&& ObjectUtils.equals(host, other.host)
-			&& ObjectUtils.equals(port, other.port)
-			&& ObjectUtils.equals(contextPath, other.contextPath)
-			&& ObjectUtils.equals(prefix, other.prefix);
+			Objects.equals(scheme, other.scheme)
+			&& Objects.equals(host, other.host)
+			&& Objects.equals(port, other.port)
+			&& Objects.equals(contextPath, other.contextPath)
+			&& Objects.equals(prefix, other.prefix);
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // Java 1.7: No longer suppress
 	public int hashCode() {
-		return ObjectUtils.hashCodeMulti(
+		return Objects.hash(
 			scheme,
 			host,
 			port,

@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,7 +23,7 @@
 package com.aoindustries.net.partialurl;
 
 import java.net.URL;
-import org.apache.commons.lang3.ObjectUtils;
+import java.util.Objects;
 
 /**
  * The result of a call to {@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)
@@ -73,12 +73,11 @@ public class PartialURLMatch<V> {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // Java 1.7: Do not suppress
 	public int hashCode() {
 		int hash = partialURL.hashCode();
 		hash = hash * 31 + singleURL.hashCode();
 		hash = hash * 31 + url.hashCode();
-		hash = hash * 31 + ObjectUtils.hashCode(value);
+		hash = hash * 31 + Objects.hashCode(value);
 		return hash;
 	}
 

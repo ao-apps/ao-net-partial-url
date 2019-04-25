@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -76,7 +76,7 @@ public class PartialURLTest {
 	@Test
 	public void testOfLowerSchemes() {
 		assertEquals(
-			new LinkedHashSet<String>(Arrays.asList("https", "http")),
+			new LinkedHashSet<>(Arrays.asList("https", "http")),
 			((MultiPartialURL)PartialURL.valueOf(new String[] {"HTTPS", "HTTP"}, null, null, null)).getSchemes()
 		);
 	}
