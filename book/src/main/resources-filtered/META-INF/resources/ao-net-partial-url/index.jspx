@@ -37,7 +37,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 	>
 		<core:child page="changelog.jspx" />
 		<core:child page="apidocs/index.jspx" />
-		<core:child book="/ao-net-partial-url/servlet" />
+		<core:child book="/ao-net-partial-url/servlet" page="/index.jspx" />
 		<header>
 			<ao:include
 				page="/ao-badges/badges.inc.jspx"
@@ -63,7 +63,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 		</section:nav>
 		<section:section label="Modules">
 			<ul>
-				<li><core:link book="/ao-net-partial-url/servlet" /></li>
+				<li><core:link book="/ao-net-partial-url/servlet" page="/index.jspx" /></li>
 			</ul>
 		</section:section>
 	</core:page>
