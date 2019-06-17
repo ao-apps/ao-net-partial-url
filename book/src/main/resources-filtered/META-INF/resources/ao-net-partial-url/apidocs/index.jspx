@@ -39,5 +39,4 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 		datePublished="2018-06-18T21:57:56-0500"
 		dateModified="${ao:getLastModified('index.html')}"
 	/>
-	<!-- TODO: Pick-up javadocs version, not pom version, in title, here and elsewhere -->
 </jsp:root>
