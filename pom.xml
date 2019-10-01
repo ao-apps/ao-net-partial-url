@@ -67,7 +67,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 								<!-- Direct -->
 								<link>https://aoindustries.com/ao-lang/apidocs/</link>
 								<link>https://aoindustries.com/ao-net-types/apidocs/</link>
-								<link>https://commons.apache.org/proper/commons-collections/javadocs/api-4.3/</link>
+								<link>https://commons.apache.org/proper/commons-collections/javadocs/api-4.4/</link>
 								<link>https://commons.apache.org/proper/commons-lang/javadocs/api-3.9/</link>
 							</links>
 						</configuration>
@@ -91,7 +91,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 				<groupId>com.aoindustries</groupId><artifactId>ao-net-types</artifactId><version>1.2.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.commons</groupId><artifactId>commons-collections4</artifactId><version>4.3</version>
+				<groupId>org.apache.commons</groupId><artifactId>commons-collections4</artifactId><version>4.4</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>3.9</version>
