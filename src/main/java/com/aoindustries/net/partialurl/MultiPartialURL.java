@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -293,8 +293,10 @@ public class MultiPartialURL extends PartialURL {
 	 * When there is not more than one {@link #getPrefixes() prefix}, this will
 	 * be the first value returned from {@link #getCombinations()}.
 	 * </p>
-	 *
-	 * @implSpec Uses the first value from each set.
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * Uses the first value from each set.
+	 * </p>
 	 *
 	 * @see  #getCombinations()
 	 */
@@ -320,7 +322,7 @@ public class MultiPartialURL extends PartialURL {
 	 * <ol>
 	 * <li>{@link #getHosts()}</li>
 	 * <li>{@link #getContextPaths()}</li>
-	 * <li>{@link #getPrefixes() (sorted by deepest first for consistency with {@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)})</li>
+	 * <li>{@link #getPrefixes()} (sorted by deepest first for consistency with {@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)})</li>
 	 * <li>{@link #getPorts()}</li>
 	 * <li>{@link #getSchemes()}</li>
 	 * </ol>
@@ -333,10 +335,12 @@ public class MultiPartialURL extends PartialURL {
 	 * Or should we just return the generated {@link Set}?
 	 * Will depend on how his is used.
 	 * </p>
-	 *
-	 * @implSpec  This currently generates the full set at the time of method invocation.
-	 *            This is not a performance-oriented implementation.  Please see
-	 *            {@link  PartialURLMap} for a fast way to index partial URLs.
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This currently generates the full set at the time of method invocation.
+	 * This is not a performance-oriented implementation.  Please see
+	 * {@link  PartialURLMap} for a fast way to index partial URLs.
+	 * </p>
 	 *
 	 * @see  #getPrimary()
 	 */
@@ -402,8 +406,10 @@ public class MultiPartialURL extends PartialURL {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @implSpec  This selects the specifically matching fields from each set when field source is non-null.
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This selects the specifically matching fields from each set when field source is non-null.
+	 * </p>
 	 */
 	@Override
 	public URL toURL(FieldSource fieldSource) throws MalformedURLException {

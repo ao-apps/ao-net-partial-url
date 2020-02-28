@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -156,7 +156,7 @@ abstract public class PartialURL {
 	 *                                 Must be either {@code null} or always ends in a slash (/).
 	 *                                 {@code null} elements are skipped.
 	 *
-	 * @see  MultiPartialURL#MultiPartialURL(java.util.Set, java.util.Set, java.util.Set, java.util.Set, java.util.Set)
+	 * @see  MultiPartialURL#MultiPartialURL(java.util.Set, java.util.Map, java.util.Set, java.util.Set, java.util.Set)
 	 */
 	public static PartialURL valueOf(
 		Iterable<? extends String> schemes,
@@ -263,8 +263,8 @@ abstract public class PartialURL {
 	/**
 	 * Gets a partial URL always within the current request.
 	 *
-	 * @param prefix       (Optional) The prefix to match against the path or {@code null} to match all.
-	 *                                Must be either {@code null} or always ends in a slash (/).
+	 * @param prefixes  (Optional) The prefix to match against the path or {@code null} to match all.
+	 *                             Must be either {@code null} or always ends in a slash (/).
 	 *
 	 * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
 	 */
@@ -275,8 +275,8 @@ abstract public class PartialURL {
 	/**
 	 * Gets a partial URL always within the current request.
 	 *
-	 * @param prefix       (Optional) The prefix to match against the path or {@code null} to match all.
-	 *                                Must be either {@code null} or always ends in a slash (/).
+	 * @param prefixes  (Optional) The prefix to match against the path or {@code null} to match all.
+	 *                             Must be either {@code null} or always ends in a slash (/).
 	 *
 	 * @see  #valueOf(java.lang.Iterable)
 	 */

@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -222,10 +222,12 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 
 	/**
 	 * {@inheritDoc}
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * a partial URL is its own primary
+	 * </p>
 	 *
 	 * @return  {@code this} because it is already a single partial URL
-	 *
-	 * @implSpec  a partial URL is its own primary
 	 */
 	@Override
 	public SinglePartialURL getPrimary() {
@@ -234,8 +236,10 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @implSpec  iterates over {@code this} only
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * iterates over {@code this} only
+	 * </p>
 	 */
 	@Override
 	public Iterable<SinglePartialURL> getCombinations() {

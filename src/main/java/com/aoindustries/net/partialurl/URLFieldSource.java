@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -32,8 +32,10 @@ import java.net.URL;
 
 /**
  * Obtains fields for {@link PartialURL} from a {@link URL}.
- *
- * @implSpec  This implementation is not thread safe due to results caching.
+ * <p>
+ * <b>Implementation Note:</b><br />
+ * This implementation is not thread safe due to results caching.
+ * </p>
  */
 public class URLFieldSource implements FieldSource {
 
@@ -79,8 +81,10 @@ public class URLFieldSource implements FieldSource {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @implNote  The implementation assumes {@link Protocol#TCP}.
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * The implementation assumes {@link Protocol#TCP}.
+	 * </p>
 	 *
 	 * @see  URL#getPort()
 	 * @see  URL#getDefaultPort()
@@ -106,8 +110,10 @@ public class URLFieldSource implements FieldSource {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @implNote  This always returns {@link Path#ROOT}.
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This always returns {@link Path#ROOT}.
+	 * </p>
 	 */
 	@Override
 	public Path getContextPath() {

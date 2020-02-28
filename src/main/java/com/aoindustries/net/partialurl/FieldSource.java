@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -38,7 +38,7 @@ public interface FieldSource {
 	 *
 	 * @throws MalformedURLException  When unable to obtain the scheme or the obtained scheme is invalid
 	 *
-	 * @see  PartialURL#getScheme()
+	 * @see  SinglePartialURL#getScheme()
 	 */
 	String getScheme() throws MalformedURLException;
 
@@ -47,7 +47,7 @@ public interface FieldSource {
 	 *
 	 * @throws MalformedURLException  When unable to obtain the host or the obtained host is invalid
 	 *
-	 * @see  PartialURL#getHost()
+	 * @see  SinglePartialURL#getHost()
 	 */
 	HostAddress getHost() throws MalformedURLException;
 
@@ -56,7 +56,7 @@ public interface FieldSource {
 	 *
 	 * @throws MalformedURLException  When unable to obtain the port or the obtained port is invalid
 	 *
-	 * @see  PartialURL#getPort()
+	 * @see  SinglePartialURL#getPort()
 	 */
 	Port getPort() throws MalformedURLException;
 
@@ -66,7 +66,7 @@ public interface FieldSource {
 	 *
 	 * @throws MalformedURLException  When unable to obtain the context path or the obtained context path is invalid
 	 *
-	 * @see  PartialURL#getContextPath()
+	 * @see  SinglePartialURL#getContextPath()
 	 */
 	Path getContextPath() throws MalformedURLException;
 
@@ -75,7 +75,7 @@ public interface FieldSource {
 	 *
 	 * @throws MalformedURLException  When unable to obtain the path or the obtained path is invalid
 	 *
-	 * @see  PartialURL#getPrefix()
+	 * @see  SinglePartialURL#getPrefix()
 	 */
 	Path getPath() throws MalformedURLException;
 }
