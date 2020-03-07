@@ -46,15 +46,15 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 	</properties>
 
 	<name>AO Net Partial URL</name>
-	<url>https://aoindustries.com/${project.artifactId}/</url>
+	<url>https://aoindustries.com/ao-net-partial-url/</url>
 	<description>Matches and resolves partial URLs.</description>
 	<inceptionYear>2018</inceptionYear>
 
 	<scm>
 		<!-- Can't inherit due to multi-module -->
-		<connection>scm:git:git://github.com/aoindustries/${project.artifactId}.git</connection>
-		<developerConnection>scm:git:git@github.com:aoindustries/${project.artifactId}.git</developerConnection>
-		<url>https://github.com/aoindustries/${project.artifactId}</url>
+		<connection>scm:git:git://github.com/aoindustries/ao-net-partial-url.git</connection>
+		<developerConnection>scm:git:git@github.com:aoindustries/ao-net-partial-url.git</developerConnection>
+		<url>https://github.com/aoindustries/ao-net-partial-url</url>
 		<tag>HEAD</tag>
 	</scm>
 
