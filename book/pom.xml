@@ -35,8 +35,6 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 	<properties>
 		<!-- These values are copied from the project being documented -->
 		<documented.artifactId>ao-net-partial-url</documented.artifactId>
-		<documented.javaVersion>1.8</documented.javaVersion>
-		<documented.javac.link.javaApi>${javac.link.javaApi.jdk8}</documented.javac.link.javaApi>
 		<documented.name>AO Net Partial URL</documented.name>
 		<documented.description>Matches and resolves partial URLs.</documented.description>
 
