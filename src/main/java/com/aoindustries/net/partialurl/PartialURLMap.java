@@ -65,7 +65,7 @@ public class PartialURLMap<V> {
 	 *
 	 * @see  #getSequential(com.aoindustries.net.partialurl.FieldSource)
 	 */
-	private final SortedMap<SinglePartialURL,ImmutablePair<PartialURL,V>> sequential = ASSERTIONS_ENABLED ? new TreeMap<SinglePartialURL,ImmutablePair<PartialURL,V>>() : null;
+	private final SortedMap<SinglePartialURL,ImmutablePair<PartialURL,V>> sequential = ASSERTIONS_ENABLED ? new TreeMap<>() : null;
 
 	/**
 	 * Adds a new partial URL to this map while checking for conflicts.
