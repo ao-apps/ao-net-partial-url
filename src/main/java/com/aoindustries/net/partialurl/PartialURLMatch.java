@@ -103,7 +103,7 @@ public class PartialURLMatch<V> {
 	 * Gets the completed {@link URL}, with {@code null} fields selected from the {@link FieldSource} used in
 	 * {@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}.
 	 * <p>
-	 * <b>Implementation Note:</b><br />
+	 * <b>Implementation Note:</b><br>
 	 * this implementation uses {@link SinglePartialURL#toURL(com.aoindustries.net.partialurl.FieldSource)} on
 	 * {@link #getSingleURL()}.
 	 * </p>

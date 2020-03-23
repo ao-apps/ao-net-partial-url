@@ -220,7 +220,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * <b>Implementation Note:</b><br />
+	 * <b>Implementation Note:</b><br>
 	 * a partial URL is its own primary
 	 * </p>
 	 *
@@ -234,7 +234,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * <b>Implementation Note:</b><br />
+	 * <b>Implementation Note:</b><br>
 	 * iterates over {@code this} only
 	 * </p>
 	 */

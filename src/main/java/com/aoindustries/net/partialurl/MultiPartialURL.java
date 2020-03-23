@@ -294,7 +294,7 @@ public class MultiPartialURL extends PartialURL {
 	 * be the first value returned from {@link #getCombinations()}.
 	 * </p>
 	 * <p>
-	 * <b>Implementation Note:</b><br />
+	 * <b>Implementation Note:</b><br>
 	 * Uses the first value from each set.
 	 * </p>
 	 *
@@ -336,7 +336,7 @@ public class MultiPartialURL extends PartialURL {
 	 * Will depend on how his is used.
 	 * </p>
 	 * <p>
-	 * <b>Implementation Note:</b><br />
+	 * <b>Implementation Note:</b><br>
 	 * This currently generates the full set at the time of method invocation.
 	 * This is not a performance-oriented implementation.  Please see
 	 * {@link  PartialURLMap} for a fast way to index partial URLs.
@@ -407,7 +407,7 @@ public class MultiPartialURL extends PartialURL {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * <b>Implementation Note:</b><br />
+	 * <b>Implementation Note:</b><br>
 	 * This selects the specifically matching fields from each set when field source is non-null.
 	 * </p>
 	 */

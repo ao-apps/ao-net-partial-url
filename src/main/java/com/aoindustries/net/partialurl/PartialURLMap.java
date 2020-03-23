@@ -73,7 +73,7 @@ public class PartialURLMap<V> {
 	 * TODO: Use {@link MinimalMap} in the index?
 	 * </p>
 	 * <p>
-	 * <b>Implementation Note:</b><br />
+	 * <b>Implementation Note:</b><br>
 	 * Currently, when an exception occurs, the index may be in a partial state.  Changes are not rolled-back.
 	 * </p>
 	 *
@@ -262,7 +262,7 @@ public class PartialURLMap<V> {
 	 *   <li>{@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)}</li>
 	 * </ul>
 	 * <p>
-	 * <b>Implementation Note:</b><br />
+	 * <b>Implementation Note:</b><br>
 	 * The maximum number of internal map lookups is: {@code (host, null) * (contextPath, null) * (maxSlashCount + 1) * (scheme, null) * (port, null)},
 	 * or {@code 2 * 2 * (maxSlashCount + 1) * 2 * 2}, or {@code 16 * (maxSlashCount + 1)}.  The actual number of map lookups
 	 * will typically be much less than this due to a sparsely populated index.
