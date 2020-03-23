@@ -145,22 +145,19 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	 * Sorts nulls after non-nulls, deeper prefixes first, then by {@link Path#compareTo(com.aoindustries.net.Path)}.
 	 */
 	// TODO: Move to Path class as a "depth-first comparator"?
-	static final Comparator<Path> prefixComparator = new Comparator<Path>() {
-		@Override
-		public int compare(Path prefix1, Path prefix2) {
-			if(prefix1 == null) {
-				if(prefix2 == null) return 0;
-				else return 1; // Nulls after
-			} else {
-				if(prefix2 == null) return -1; // Nulls after
-				String prefix1Str = prefix1.toString();
-				String prefix2Str = prefix2.toString();
-				// Deeper prefixes first
-				if(prefix1Str.equals(prefix2Str)) return 0;
-				if(prefix1Str.startsWith(prefix2Str)) return -1;
-				if(prefix2Str.startsWith(prefix1Str)) return 1;
-				return prefix1.compareTo(prefix2);
-			}
+	static final Comparator<Path> prefixComparator = (prefix1, prefix2) -> {
+		if(prefix1 == null) {
+			if(prefix2 == null) return 0;
+			else return 1; // Nulls after
+		} else {
+			if(prefix2 == null) return -1; // Nulls after
+			String prefix1Str = prefix1.toString();
+			String prefix2Str = prefix2.toString();
+			// Deeper prefixes first
+			if(prefix1Str.equals(prefix2Str)) return 0;
+			if(prefix1Str.startsWith(prefix2Str)) return -1;
+			if(prefix2Str.startsWith(prefix1Str)) return 1;
+			return prefix1.compareTo(prefix2);
 		}
 	};
 
