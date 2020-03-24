@@ -22,10 +22,10 @@
  */
 package com.aoindustries.net.partialurl;
 
+import com.aoindustries.collections.AoCollections;
 import com.aoindustries.net.HostAddress;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.Port;
-import com.aoindustries.util.AoCollections;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;

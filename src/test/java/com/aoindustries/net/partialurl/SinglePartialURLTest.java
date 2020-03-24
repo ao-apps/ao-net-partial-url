@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,11 +22,11 @@
  */
 package com.aoindustries.net.partialurl;
 
+import com.aoindustries.collections.AoCollections;
 import com.aoindustries.net.HostAddress;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.Port;
 import com.aoindustries.net.Protocol;
-import com.aoindustries.util.AoCollections;
 import com.aoindustries.validation.ValidationException;
 import java.net.MalformedURLException;
 import java.net.URL;
