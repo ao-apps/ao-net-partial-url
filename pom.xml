@@ -39,6 +39,8 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 				<li><a target="_top" href="https://aoindustries.com/ao-net-partial-url/servlet/">AO Net Partial URL Servlet</a></li>
 			</ul>
 		</div>]]></javadoc.modules>
+		<!-- Dependencies -->
+		<org.apache.commons:commons-lang3:version>3.9</org.apache.commons:commons-lang3:version>
 	</properties>
 
 	<name>AO Net Partial URL</name>
@@ -69,7 +71,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 								<link>https://aoindustries.com/ao-lang/apidocs/</link>
 								<link>https://aoindustries.com/ao-net-types/apidocs/</link>
 								<link>https://commons.apache.org/proper/commons-collections/javadocs/api-4.4/</link>
-								<link>https://commons.apache.org/proper/commons-lang/javadocs/api-3.9/</link>
+								<link>https://commons.apache.org/proper/commons-lang/javadocs/api-${org.apache.commons:commons-lang3:version}/</link>
 							</links>
 						</configuration>
 					</plugin>
@@ -98,7 +100,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 				<groupId>org.apache.commons</groupId><artifactId>commons-collections4</artifactId><version>4.4</version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>3.9</version>
+				<groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>${org.apache.commons:commons-lang3:version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
