@@ -56,6 +56,11 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 		<tag>HEAD</tag>
 	</scm>
 
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/aoindustries/ao-net-partial-url/issues</url>
+	</issueManagement>
+
 	<profiles>
 		<profile>
 			<id>release</id>
