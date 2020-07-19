@@ -41,7 +41,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 		</div>]]></javadoc.modules>
 		<!-- Dependencies -->
 		<commons-collections4.version>4.4</commons-collections4.version>
-		<commons-lang3.version>3.10</commons-lang3.version>
+		<commons-lang3.version>3.11</commons-lang3.version>
 	</properties>
 
 	<name>AO Net Partial URL</name>
