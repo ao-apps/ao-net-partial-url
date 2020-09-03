@@ -44,6 +44,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 /**
  * Maps {@link PartialURL partial URLs} to arbitrary values and provides fast lookups.
  */
+@SuppressWarnings("AssertWithSideEffects")
 public class PartialURLMap<V> {
 
 	private static final boolean ASSERTIONS_ENABLED;

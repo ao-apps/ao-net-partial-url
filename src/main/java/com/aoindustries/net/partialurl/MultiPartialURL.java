@@ -412,6 +412,7 @@ public class MultiPartialURL extends PartialURL {
 	 * </p>
 	 */
 	@Override
+	@SuppressWarnings("AssertWithSideEffects")
 	public URL toURL(FieldSource fieldSource) throws MalformedURLException {
 		String schemeStr;
 		{
@@ -516,6 +517,7 @@ public class MultiPartialURL extends PartialURL {
 	 *
 	 * @see  FieldSource#getScheme()
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<String> getSchemes() {
 		return schemes;
 	}
@@ -538,6 +540,7 @@ public class MultiPartialURL extends PartialURL {
 	 *
 	 * @see  FieldSource#getPort()
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<Port> getPorts() {
 		return ports;
 	}
@@ -550,6 +553,7 @@ public class MultiPartialURL extends PartialURL {
 	 *
 	 * @see  FieldSource#getContextPath()
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<Path> getContextPaths() {
 		return contextPaths;
 	}
@@ -561,6 +565,7 @@ public class MultiPartialURL extends PartialURL {
 	 * @see  FieldSource#getPath()
 	 * @see  Path#SEPARATOR_CHAR
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<Path> getPrefixes() {
 		return prefixes;
 	}
