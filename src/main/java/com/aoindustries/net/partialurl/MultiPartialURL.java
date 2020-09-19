@@ -22,6 +22,7 @@
  */
 package com.aoindustries.net.partialurl;
 
+import com.aoindustries.collections.AoCollections;
 import com.aoindustries.math.SafeMath;
 import com.aoindustries.net.HostAddress;
 import com.aoindustries.net.Path;
@@ -29,7 +30,6 @@ import com.aoindustries.net.Port;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -354,9 +354,7 @@ public class MultiPartialURL extends PartialURL {
 			(schemes      == null ? 1 : schemes.size())
 		);
 		if(combinations > Integer.MAX_VALUE) throw new IllegalStateException("Too many combinations: " + combinations);
-		long capacity = combinations*4/3+1;
-		if(capacity > Integer.MAX_VALUE) throw new IllegalStateException("Too many combinations: " + combinations);
-		Set<SinglePartialURL> results = new LinkedHashSet<>((int)capacity);
+		Set<SinglePartialURL> results = AoCollections.newLinkedHashSet((int)combinations);
 
 		Iterable<HostAddress> hostIter;
 		if(hosts == null) hostIter = nullIterable();
