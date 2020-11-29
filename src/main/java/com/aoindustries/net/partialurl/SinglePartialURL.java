@@ -185,8 +185,6 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
 	 * @return  {@code this} when matches, or {@code null} when does not match.
 	 */
 	@Override

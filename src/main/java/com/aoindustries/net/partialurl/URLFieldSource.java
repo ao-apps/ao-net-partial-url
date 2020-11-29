@@ -51,8 +51,6 @@ public class URLFieldSource implements FieldSource {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
 	 * @see  URL#getProtocol()
 	 */
 	@Override
@@ -61,8 +59,6 @@ public class URLFieldSource implements FieldSource {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
 	 * @see  URL#getHost()
 	 */
 	@Override
@@ -121,8 +117,6 @@ public class URLFieldSource implements FieldSource {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
 	 * @see  URL#getPath()
 	 */
 	@Override
