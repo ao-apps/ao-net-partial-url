@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -47,7 +47,7 @@ public class MultiPartialURL extends PartialURL {
 	/**
 	 * Maps to self for canonicalization
 	 */
-	private final Map<HostAddress,HostAddress> hosts;
+	private final Map<HostAddress, HostAddress> hosts;
 	private final Set<Port> ports;
 	private final Set<Path> contextPaths;
 	private final Set<Path> prefixes;
@@ -57,7 +57,7 @@ public class MultiPartialURL extends PartialURL {
 	/**
 	 * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
 	 */
-	MultiPartialURL(Set<String> schemes, Map<HostAddress,HostAddress> hosts, Set<Port> ports, Set<Path> contextPaths, Set<Path> prefixes) {
+	MultiPartialURL(Set<String> schemes, Map<HostAddress, HostAddress> hosts, Set<Port> ports, Set<Path> contextPaths, Set<Path> prefixes) {
 		this.schemes = schemes;
 		this.hosts = hosts;
 		this.ports = ports;

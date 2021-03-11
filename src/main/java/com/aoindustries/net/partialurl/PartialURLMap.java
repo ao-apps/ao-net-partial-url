@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -59,14 +59,36 @@ public class PartialURLMap<V> {
 	private final Lock readLock = readWriteLock.readLock();
 	private final Lock writeLock = readWriteLock.writeLock();
 
-	private final Map<HostAddress,Map<Path,MutablePair<Integer,Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>>>> index = new HashMap<>();
+	private final Map<
+		HostAddress,
+		Map<
+			Path,
+			MutablePair<
+				Integer,
+				Map<
+					String,
+					Map<
+						Port,
+						Map<
+							String,
+							ImmutableTriple<
+								PartialURL,
+								SinglePartialURL,
+								V
+							>
+						>
+					>
+				>
+			>
+		>
+	> index = new HashMap<>();
 
 	/**
 	 * For sequential implementation used for assertions only.
 	 *
 	 * @see  #getSequential(com.aoindustries.net.partialurl.FieldSource)
 	 */
-	private final SortedMap<SinglePartialURL,ImmutablePair<PartialURL,V>> sequential = ASSERTIONS_ENABLED ? new TreeMap<>() : null;
+	private final SortedMap<SinglePartialURL, ImmutablePair<PartialURL, V>> sequential = ASSERTIONS_ENABLED ? new TreeMap<>() : null;
 
 	/**
 	 * Adds a new partial URL to this map while checking for conflicts.
@@ -90,41 +112,41 @@ public class PartialURLMap<V> {
 				int slashCount = (prefixStr == null) ? 0 : StringUtils.countMatches(prefixStr, Path.SEPARATOR_CHAR);
 				// host
 				HostAddress host = singleURL.getHost();
-				Map<Path,MutablePair<Integer,Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>>> hostIndex = index.get(host);
+				Map<Path, MutablePair<Integer, Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>>> hostIndex = index.get(host);
 				if(hostIndex == null) {
 					hostIndex = new HashMap<>();
 					index.put(host, hostIndex);
 				}
 				// contextPath
 				Path contextPath = singleURL.getContextPath();
-				MutablePair<Integer,Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>> contextPathPair = hostIndex.get(contextPath);
+				MutablePair<Integer, Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>> contextPathPair = hostIndex.get(contextPath);
 				if(contextPathPair == null) {
 					contextPathPair = MutablePair.of(
 						slashCount,
-						(Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>)new HashMap<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>()
+						(Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>)new HashMap<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>()
 					);
 					hostIndex.put(contextPath, contextPathPair);
 				} else {
 					// Store the maximum path depth for prefix-based match, only parse this far while inside "get"
 					if(slashCount > contextPathPair.left) contextPathPair.left = slashCount;
 				}
-				Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>> contextPathIndex = contextPathPair.right;
+				Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>> contextPathIndex = contextPathPair.right;
 				// prefix
-				Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>> prefixIndex = contextPathIndex.get(prefixStr);
+				Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>> prefixIndex = contextPathIndex.get(prefixStr);
 				if(prefixIndex == null) {
 					prefixIndex = new HashMap<>();
 					contextPathIndex.put(prefixStr, prefixIndex);
 				}
 				// port
 				Port port = singleURL.getPort();
-				Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>> portIndex = prefixIndex.get(port);
+				Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>> portIndex = prefixIndex.get(port);
 				if(portIndex == null) {
 					portIndex = new HashMap<>();
 					prefixIndex.put(port, portIndex);
 				}
 				// scheme
 				String scheme = singleURL.getScheme();
-				ImmutableTriple<PartialURL,SinglePartialURL,V> existing = portIndex.get(scheme);
+				ImmutableTriple<PartialURL, SinglePartialURL, V> existing = portIndex.get(scheme);
 				if(existing != null) {
 					throw new IllegalStateException(
 						"Partial URL already in index: partialURL = " + partialURL
@@ -162,13 +184,13 @@ public class PartialURLMap<V> {
 		Port[] portSearchOrder = new Port[] {fieldSource.getPort(), null};
 		String[] schemeSearchOrder = new String[] {fieldSource.getScheme().toLowerCase(Locale.ROOT), null};
 		for(HostAddress host : hostSearchOrder) {
-			Map<Path,MutablePair<Integer,Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>>> hostIndex = index.get(host);
+			Map<Path, MutablePair<Integer, Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>>> hostIndex = index.get(host);
 			if(hostIndex != null) {
 				for(Path contextPath : contextPathSearchOrder) {
-					MutablePair<Integer,Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>>> contextPathPair = hostIndex.get(contextPath);
+					MutablePair<Integer, Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>> contextPathPair = hostIndex.get(contextPath);
 					if(contextPathPair != null) {
 						final int maxSlashCount = contextPathPair.left;
-						Map<String,Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>>> contextPathIndex = contextPathPair.right;
+						Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>> contextPathIndex = contextPathPair.right;
 						// TODO: Could store slash indexes in an array instead of searching back-and-forth
 						// TODO: Could also store the resulting substrings, too
 						// TODO: If doing this, track the maximum number of slashes anywhere in the index during put, and create the array this size
@@ -193,13 +215,13 @@ public class PartialURLMap<V> {
 								assert lastSlashPos != -1;
 								prefix = pathStr.substring(0, lastSlashPos + 1);
 							}
-							Map<Port,Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>>> prefixIndex = contextPathIndex.get(prefix);
+							Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>> prefixIndex = contextPathIndex.get(prefix);
 							if(prefixIndex != null) {
 								for(Port port : portSearchOrder) {
-									Map<String,ImmutableTriple<PartialURL,SinglePartialURL,V>> portIndex = prefixIndex.get(port);
+									Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>> portIndex = prefixIndex.get(port);
 									if(portIndex != null) {
 										for(String scheme : schemeSearchOrder) {
-											ImmutableTriple<PartialURL,SinglePartialURL,V> match = portIndex.get(scheme);
+											ImmutableTriple<PartialURL, SinglePartialURL, V> match = portIndex.get(scheme);
 											if(match != null) {
 												assert Objects.equals(match.left.matches(fieldSource), match.middle) : "Get inconsistent with matches";
 												assert Objects.equals(match.middle.matches(fieldSource), match.middle) : "Get inconsistent with matches";
@@ -235,12 +257,12 @@ public class PartialURLMap<V> {
 	 */
 	private PartialURLMatch<V> getSequential(FieldSource fieldSource) throws MalformedURLException {
 		// Must be holding readLock already
-		for(Map.Entry<SinglePartialURL,ImmutablePair<PartialURL,V>> entry : sequential.entrySet()) {
+		for(Map.Entry<SinglePartialURL, ImmutablePair<PartialURL, V>> entry : sequential.entrySet()) {
 			SinglePartialURL singleURL = entry.getKey();
 			SinglePartialURL match = singleURL.matches(fieldSource);
 			if(match != null) {
 				assert match == singleURL;
-				ImmutablePair<PartialURL,V> pair = entry.getValue();
+				ImmutablePair<PartialURL, V> pair = entry.getValue();
 				return new PartialURLMatch<>(
 					pair.left,
 					singleURL,
