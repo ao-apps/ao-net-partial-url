@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -20,11 +20,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aoindustries.net.partialurl;
+package com.aoapps.net.partialurl;
 
-import com.aoindustries.net.HostAddress;
-import com.aoindustries.net.Path;
-import com.aoindustries.net.Port;
+import com.aoapps.net.HostAddress;
+import com.aoapps.net.Path;
+import com.aoapps.net.Port;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -46,7 +46,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	private final Path prefix;
 
 	/**
-	 * @see  #valueOf(java.lang.String, com.aoindustries.net.HostAddress, com.aoindustries.net.Port, com.aoindustries.net.Path, com.aoindustries.net.Path)
+	 * @see  #valueOf(java.lang.String, com.aoapps.net.HostAddress, com.aoapps.net.Port, com.aoapps.net.Path, com.aoapps.net.Path)
 	 */
 	SinglePartialURL(String scheme, HostAddress host, Port port, Path contextPath, Path prefix) {
 		this.scheme = scheme;
@@ -142,7 +142,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	}
 
 	/**
-	 * Sorts nulls after non-nulls, deeper prefixes first, then by {@link Path#compareTo(com.aoindustries.net.Path)}.
+	 * Sorts nulls after non-nulls, deeper prefixes first, then by {@link Path#compareTo(com.aoapps.net.Path)}.
 	 */
 	// TODO: Move to Path class as a "depth-first comparator"?
 	static final Comparator<Path> prefixComparator = (prefix1, prefix2) -> {
@@ -164,9 +164,9 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 	/**
 	 * Ordering is consistent with:
 	 * <ul>
-	 *   <li>{@link PartialURL#matches(com.aoindustries.net.partialurl.FieldSource)}</li>
+	 *   <li>{@link PartialURL#matches(com.aoapps.net.partialurl.FieldSource)}</li>
 	 *   <li>{@link PartialURL#getCombinations()}</li>
-	 *   <li>{@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}</li>
+	 *   <li>{@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}</li>
 	 * </ul>
 	 *
 	 * @see  PartialURL#getCombinations()

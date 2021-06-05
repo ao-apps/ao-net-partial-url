@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -20,13 +20,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aoindustries.net.partialurl;
+package com.aoapps.net.partialurl;
 
 import java.net.URL;
 import java.util.Objects;
 
 /**
- * The result of a call to {@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}
+ * The result of a call to {@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}
  */
 public class PartialURLMatch<V> {
 
@@ -101,15 +101,15 @@ public class PartialURLMatch<V> {
 
 	/**
 	 * Gets the completed {@link URL}, with {@code null} fields selected from the {@link FieldSource} used in
-	 * {@link PartialURLMap#get(com.aoindustries.net.partialurl.FieldSource)}.
+	 * {@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}.
 	 * <p>
 	 * <b>Implementation Note:</b><br>
-	 * this implementation uses {@link SinglePartialURL#toURL(com.aoindustries.net.partialurl.FieldSource)} on
+	 * this implementation uses {@link SinglePartialURL#toURL(com.aoapps.net.partialurl.FieldSource)} on
 	 * {@link #getSingleURL()}.
 	 * </p>
 	 *
 	 * @see  #getSingleURL()
-	 * @see  SinglePartialURL#toURL(com.aoindustries.net.partialurl.FieldSource)
+	 * @see  SinglePartialURL#toURL(com.aoapps.net.partialurl.FieldSource)
 	 */
 	public URL getUrl() {
 		return url;

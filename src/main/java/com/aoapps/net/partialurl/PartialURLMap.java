@@ -20,12 +20,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aoindustries.net.partialurl;
+package com.aoapps.net.partialurl;
 
-import com.aoindustries.collections.MinimalMap;
-import com.aoindustries.net.HostAddress;
-import com.aoindustries.net.Path;
-import com.aoindustries.net.Port;
+import com.aoapps.collections.MinimalMap;
+import com.aoapps.net.HostAddress;
+import com.aoapps.net.Path;
+import com.aoapps.net.Port;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -86,7 +86,7 @@ public class PartialURLMap<V> {
 	/**
 	 * For sequential implementation used for assertions only.
 	 *
-	 * @see  #getSequential(com.aoindustries.net.partialurl.FieldSource)
+	 * @see  #getSequential(com.aoapps.net.partialurl.FieldSource)
 	 */
 	private final SortedMap<SinglePartialURL, ImmutablePair<PartialURL, V>> sequential = ASSERTIONS_ENABLED ? new TreeMap<>() : null;
 
@@ -167,10 +167,10 @@ public class PartialURLMap<V> {
 	}
 
 	/**
-	 * Indexed implementation of {@link #get(com.aoindustries.net.partialurl.FieldSource)}.
+	 * Indexed implementation of {@link #get(com.aoapps.net.partialurl.FieldSource)}.
 	 *
 	 * @see  #index
-	 * @see  #get(com.aoindustries.net.partialurl.FieldSource)
+	 * @see  #get(com.aoapps.net.partialurl.FieldSource)
 	 */
 	private PartialURLMatch<V> getIndexed(FieldSource fieldSource) throws MalformedURLException {
 		// Must be holding readLock already
@@ -248,12 +248,12 @@ public class PartialURLMap<V> {
 	}
 
 	/**
-	 * Sequential implementation of {@link #get(com.aoindustries.net.partialurl.FieldSource)} used for assertions only.
-	 * Verifies that a sequential scan calling {@link SinglePartialURL#matches(com.aoindustries.net.partialurl.FieldSource)}
-	 * yields the same result as the indexed lookup performed in {@link #get(com.aoindustries.net.partialurl.FieldSource)}.
+	 * Sequential implementation of {@link #get(com.aoapps.net.partialurl.FieldSource)} used for assertions only.
+	 * Verifies that a sequential scan calling {@link SinglePartialURL#matches(com.aoapps.net.partialurl.FieldSource)}
+	 * yields the same result as the indexed lookup performed in {@link #get(com.aoapps.net.partialurl.FieldSource)}.
 	 *
 	 * @see  #sequential
-	 * @see  #get(com.aoindustries.net.partialurl.FieldSource)
+	 * @see  #get(com.aoapps.net.partialurl.FieldSource)
 	 */
 	private PartialURLMatch<V> getSequential(FieldSource fieldSource) throws MalformedURLException {
 		// Must be holding readLock already
@@ -280,9 +280,9 @@ public class PartialURLMap<V> {
 	 * Ordering is consistent with:
 	 * </p>
 	 * <ul>
-	 *   <li>{@link PartialURL#matches(com.aoindustries.net.partialurl.FieldSource)}</li>
+	 *   <li>{@link PartialURL#matches(com.aoapps.net.partialurl.FieldSource)}</li>
 	 *   <li>{@link PartialURL#getCombinations()}</li>
-	 *   <li>{@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)}</li>
+	 *   <li>{@link SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)}</li>
 	 * </ul>
 	 * <p>
 	 * <b>Implementation Note:</b><br>

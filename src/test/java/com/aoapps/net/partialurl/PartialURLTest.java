@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -20,13 +20,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aoindustries.net.partialurl;
+package com.aoapps.net.partialurl;
 
-import com.aoindustries.net.HostAddress;
-import com.aoindustries.net.Path;
-import com.aoindustries.net.Port;
-import com.aoindustries.net.Protocol;
-import com.aoindustries.validation.ValidationException;
+import com.aoapps.lang.validation.ValidationException;
+import com.aoapps.net.HostAddress;
+import com.aoapps.net.Path;
+import com.aoapps.net.Port;
+import com.aoapps.net.Protocol;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;

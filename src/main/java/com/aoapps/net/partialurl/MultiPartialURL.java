@@ -20,13 +20,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aoindustries.net.partialurl;
+package com.aoapps.net.partialurl;
 
-import com.aoindustries.collections.AoCollections;
-import com.aoindustries.math.SafeMath;
-import com.aoindustries.net.HostAddress;
-import com.aoindustries.net.Path;
-import com.aoindustries.net.Port;
+import com.aoapps.collections.AoCollections;
+import com.aoapps.lang.math.SafeMath;
+import com.aoapps.net.HostAddress;
+import com.aoapps.net.Path;
+import com.aoapps.net.Port;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -208,11 +208,11 @@ public class MultiPartialURL extends PartialURL {
 	}
 
 	/**
-	 * Sequential implementation of {@link #matches(com.aoindustries.net.partialurl.FieldSource)}, only
-	 * used for assertions.  This verifies the matching defined in {@link PartialURL#matches(com.aoindustries.net.partialurl.FieldSource)}.
+	 * Sequential implementation of {@link #matches(com.aoapps.net.partialurl.FieldSource)}, only
+	 * used for assertions.  This verifies the matching defined in {@link PartialURL#matches(com.aoapps.net.partialurl.FieldSource)}.
 	 *
-	 * @see  #matches(com.aoindustries.net.partialurl.FieldSource)
-	 * @see  PartialURL#matches(com.aoindustries.net.partialurl.FieldSource)
+	 * @see  #matches(com.aoapps.net.partialurl.FieldSource)
+	 * @see  PartialURL#matches(com.aoapps.net.partialurl.FieldSource)
 	 * @see  #getCombinations()
 	 */
 	private SinglePartialURL matchesSequential(FieldSource fieldSource) throws MalformedURLException {
@@ -322,7 +322,7 @@ public class MultiPartialURL extends PartialURL {
 	 * <ol>
 	 * <li>{@link #getHosts()}</li>
 	 * <li>{@link #getContextPaths()}</li>
-	 * <li>{@link #getPrefixes()} (sorted by deepest first for consistency with {@link SinglePartialURL#compareTo(com.aoindustries.net.partialurl.SinglePartialURL)})</li>
+	 * <li>{@link #getPrefixes()} (sorted by deepest first for consistency with {@link SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)})</li>
 	 * <li>{@link #getPorts()}</li>
 	 * <li>{@link #getSchemes()}</li>
 	 * </ol>
