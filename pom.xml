@@ -42,7 +42,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 				<li><a target="${javadoc.target}" href="https://oss.aoapps.com/net-partial-url/servlet/">AO Net Partial URL Servlet</a></li>
 			</ul>
 		</div>]]></javadoc.modules>
-		<!-- SonarCloud.io -->
+		<!-- SonarQube -->
 		<sonar.projectKey>${project.groupId}:${project.artifactId}</sonar.projectKey>
 		<sonar.organization>aoindustries</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>

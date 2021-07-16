@@ -9,6 +9,12 @@
 
 [![Build](https://github.com/aoindustries/ao-net-partial-url/workflows/Build/badge.svg?branch=master)](https://github.com/aoindustries/ao-net-partial-url/actions?query=workflow%3ABuild)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.aoapps/ao-net-partial-url/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.aoapps/ao-net-partial-url)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.aoapps%3Aao-net-partial-url&metric=alert_status)](https://sonarcloud.io/dashboard?branch=master&id=com.aoapps%3Aao-net-partial-url)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.aoapps%3Aao-net-partial-url&metric=ncloc)](https://sonarcloud.io/component_measures?branch=master&id=com.aoapps%3Aao-net-partial-url&metric=ncloc)  
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.aoapps%3Aao-net-partial-url&metric=reliability_rating)](https://sonarcloud.io/component_measures?branch=master&id=com.aoapps%3Aao-net-partial-url&metric=Reliability)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.aoapps%3Aao-net-partial-url&metric=security_rating)](https://sonarcloud.io/component_measures?branch=master&id=com.aoapps%3Aao-net-partial-url&metric=Security)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.aoapps%3Aao-net-partial-url&metric=sqale_rating)](https://sonarcloud.io/component_measures?branch=master&id=com.aoapps%3Aao-net-partial-url&metric=Maintainability)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.aoapps%3Aao-net-partial-url&metric=coverage)](https://sonarcloud.io/component_measures?branch=master&id=com.aoapps%3Aao-net-partial-url&metric=Coverage)
 
 Matches and resolves partial URLs.
 
