@@ -29,7 +29,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
-	<groupId>com.aoapps</groupId><artifactId>ao-net-partial-url-book</artifactId><version>0.1.0</version>
+	<groupId>com.aoapps</groupId><artifactId>ao-net-partial-url-book</artifactId><version>0.1.0-POST-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<properties>
@@ -74,7 +74,7 @@ along with ao-net-partial-url.  If not, see <http://www.gnu.org/licenses />.
 		<connection>scm:git:git://github.com/aoindustries/ao-net-partial-url.git</connection>
 		<developerConnection>scm:git:git@github.com:aoindustries/ao-net-partial-url.git</developerConnection>
 		<url>https://github.com/aoindustries/ao-net-partial-url</url>
-		<tag>ao-net-partial-url-book-0.1.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
