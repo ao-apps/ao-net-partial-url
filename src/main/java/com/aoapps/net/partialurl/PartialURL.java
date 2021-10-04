@@ -50,7 +50,7 @@ import org.apache.commons.collections4.functors.NotNullPredicate;
  * </p>
  */
 // TODO: Should this be an interface?  All methods are abstract.
-abstract public class PartialURL {
+public abstract class PartialURL {
 
 	/**
 	 * The http scheme.
@@ -288,13 +288,13 @@ abstract public class PartialURL {
 	}
 
 	@Override
-	abstract public String toString();
+	public abstract String toString();
 
 	@Override
-	abstract public boolean equals(Object obj);
+	public abstract boolean equals(Object obj);
 
 	@Override
-	abstract public int hashCode();
+	public abstract int hashCode();
 
 	/**
 	 * Checks if the given {@link FieldSource} matches this partial URL.
@@ -320,7 +320,7 @@ abstract public class PartialURL {
 	 *          When the match is {@link SinglePartialURL#equals(java.lang.Object) equals} the {@link #getPrimary() primary}, returns
 	 *          the same object as {@link #getPrimary()}.
 	 */
-	abstract public SinglePartialURL matches(FieldSource fieldSource) throws MalformedURLException;
+	public abstract SinglePartialURL matches(FieldSource fieldSource) throws MalformedURLException;
 
 	/**
 	 * Checks if this partial URL is complete (has no {@code null} fields other than prefix).
@@ -329,7 +329,7 @@ abstract public class PartialURL {
 	 *
 	 * @see  #toURL(com.aoapps.net.partialurl.FieldSource)
 	 */
-	abstract public boolean isComplete();
+	public abstract boolean isComplete();
 
 	/**
 	 * Gets the primary single partial URL for this partial URL.
@@ -339,7 +339,7 @@ abstract public class PartialURL {
 	 *
 	 * @see  #getCombinations()
 	 */
-	abstract public SinglePartialURL getPrimary();
+	public abstract SinglePartialURL getPrimary();
 
 	/**
 	 * Gets all combinations of single partial URLs represented by this partial URL.
@@ -359,7 +359,7 @@ abstract public class PartialURL {
 	 * @see  #getPrimary()
 	 * @see  SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)
 	 */
-	abstract public Iterable<SinglePartialURL> getCombinations();
+	public abstract Iterable<SinglePartialURL> getCombinations();
 
 	/**
 	 * Gets the general-purpose representation of {@link URL} for this partial URL.
@@ -372,5 +372,5 @@ abstract public class PartialURL {
 	 *
 	 * @see  #isComplete()
 	 */
-	abstract public URL toURL(FieldSource fieldSource) throws MalformedURLException;
+	public abstract URL toURL(FieldSource fieldSource) throws MalformedURLException;
 }
