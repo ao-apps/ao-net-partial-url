@@ -121,10 +121,7 @@ public class PartialURLMap<V> {
 				Path contextPath = singleURL.getContextPath();
 				MutablePair<Integer, Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>> contextPathPair = hostIndex.get(contextPath);
 				if(contextPathPair == null) {
-					contextPathPair = MutablePair.of(
-						slashCount,
-						(Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>)new HashMap<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>()
-					);
+					contextPathPair = MutablePair.of(slashCount, new HashMap<>());
 					hostIndex.put(contextPath, contextPathPair);
 				} else {
 					// Store the maximum path depth for prefix-based match, only parse this far while inside "get"
