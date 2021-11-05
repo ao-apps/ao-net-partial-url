@@ -98,7 +98,7 @@ public abstract class PartialURL {
 
 	/**
 	 * Gets a partial URL supporting requests across multiple schemes/hosts/ports/...
-	 * 
+	 *
 	 * @param scheme       (Optional) The scheme (http/https/...) to match and/or link to, converted to lower-case.
 	 * @param host         (Optional) The IP/host to match and/or link to
 	 * @param port         (Optional) The port to match and/or link to
@@ -143,7 +143,7 @@ public abstract class PartialURL {
 
 	/**
 	 * Gets a partial URL supporting requests across multiple schemes/hosts/ports/...
-	 * 
+	 *
 	 * @param schemes       (Optional) The scheme (http/https/...) to match and/or link to, converted to lower-case.
 	 *                                 {@code null} elements are skipped.
 	 * @param hosts         (Optional) The IP/host to match and/or link to
@@ -229,7 +229,7 @@ public abstract class PartialURL {
 
 	/**
 	 * Gets a partial URL supporting requests across multiple schemes/hosts/ports/...
-	 * 
+	 *
 	 * @param schemes       (Optional) The scheme (http/https/...) to match and/or link to, converted to lower-case.
 	 *                                 {@code null} elements are skipped.
 	 * @param hosts         (Optional) The IP/host to match and/or link to
@@ -285,6 +285,7 @@ public abstract class PartialURL {
 	}
 
 	protected PartialURL() {
+		// Do nothing
 	}
 
 	@Override
