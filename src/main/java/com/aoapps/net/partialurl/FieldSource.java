@@ -34,49 +34,49 @@ import java.net.MalformedURLException;
  */
 public interface FieldSource {
 
-	/**
-	 * Gets the scheme (such as https/http/other) for this URL.
-	 *
-	 * @throws MalformedURLException  When unable to obtain the scheme or the obtained scheme is invalid
-	 *
-	 * @see  SinglePartialURL#getScheme()
-	 */
-	String getScheme() throws MalformedURLException;
+  /**
+   * Gets the scheme (such as https/http/other) for this URL.
+   *
+   * @throws MalformedURLException  When unable to obtain the scheme or the obtained scheme is invalid
+   *
+   * @see  SinglePartialURL#getScheme()
+   */
+  String getScheme() throws MalformedURLException;
 
-	/**
-	 * Gets the IP address or hostname for this URL.
-	 *
-	 * @throws MalformedURLException  When unable to obtain the host or the obtained host is invalid
-	 *
-	 * @see  SinglePartialURL#getHost()
-	 */
-	HostAddress getHost() throws MalformedURLException;
+  /**
+   * Gets the IP address or hostname for this URL.
+   *
+   * @throws MalformedURLException  When unable to obtain the host or the obtained host is invalid
+   *
+   * @see  SinglePartialURL#getHost()
+   */
+  HostAddress getHost() throws MalformedURLException;
 
-	/**
-	 * Gets the port number for this URL.
-	 *
-	 * @throws MalformedURLException  When unable to obtain the port or the obtained port is invalid
-	 *
-	 * @see  SinglePartialURL#getPort()
-	 */
-	Port getPort() throws MalformedURLException;
+  /**
+   * Gets the port number for this URL.
+   *
+   * @throws MalformedURLException  When unable to obtain the port or the obtained port is invalid
+   *
+   * @see  SinglePartialURL#getPort()
+   */
+  Port getPort() throws MalformedURLException;
 
-	/**
-	 * Gets the context path for this URL, only ending in a slash (/) when is
-	 * {@link Path#ROOT the root context}.
-	 *
-	 * @throws MalformedURLException  When unable to obtain the context path or the obtained context path is invalid
-	 *
-	 * @see  SinglePartialURL#getContextPath()
-	 */
-	Path getContextPath() throws MalformedURLException;
+  /**
+   * Gets the context path for this URL, only ending in a slash (/) when is
+   * {@link Path#ROOT the root context}.
+   *
+   * @throws MalformedURLException  When unable to obtain the context path or the obtained context path is invalid
+   *
+   * @see  SinglePartialURL#getContextPath()
+   */
+  Path getContextPath() throws MalformedURLException;
 
-	/**
-	 * Gets the path for this URL or {@code null} when the path does not exist or is empty.
-	 *
-	 * @throws MalformedURLException  When unable to obtain the path or the obtained path is invalid
-	 *
-	 * @see  SinglePartialURL#getPrefix()
-	 */
-	Path getPath() throws MalformedURLException;
+  /**
+   * Gets the path for this URL or {@code null} when the path does not exist or is empty.
+   *
+   * @throws MalformedURLException  When unable to obtain the path or the obtained path is invalid
+   *
+   * @see  SinglePartialURL#getPrefix()
+   */
+  Path getPath() throws MalformedURLException;
 }

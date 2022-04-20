@@ -40,99 +40,103 @@ import java.net.URL;
  */
 public class URLFieldSource implements FieldSource {
 
-	private final URL url;
+  private final URL url;
 
-	// Cached results
-	private HostAddress host;
-	private Port port;
-	private Path path;
+  // Cached results
+  private HostAddress host;
+  private Port port;
+  private Path path;
 
-	public URLFieldSource(URL url) {
-		this.url = url;
-	}
+  public URLFieldSource(URL url) {
+    this.url = url;
+  }
 
-	/**
-	 * @see  URL#getProtocol()
-	 */
-	@Override
-	public String getScheme() {
-		return url.getProtocol();
-	}
+  /**
+   * @see  URL#getProtocol()
+   */
+  @Override
+  public String getScheme() {
+    return url.getProtocol();
+  }
 
-	/**
-	 * @see  URL#getHost()
-	 */
-	@Override
-	public HostAddress getHost() throws MalformedURLException {
-		if(host == null) {
-			try {
-				host = HostAddress.valueOf(url.getHost());
-			} catch(ValidationException e) {
-				MalformedURLException newErr = new MalformedURLException();
-				newErr.initCause(e);
-				throw newErr;
-			}
-		}
-		return host;
-	}
+  /**
+   * @see  URL#getHost()
+   */
+  @Override
+  public HostAddress getHost() throws MalformedURLException {
+    if (host == null) {
+      try {
+        host = HostAddress.valueOf(url.getHost());
+      } catch (ValidationException e) {
+        MalformedURLException newErr = new MalformedURLException();
+        newErr.initCause(e);
+        throw newErr;
+      }
+    }
+    return host;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * <b>Implementation Note:</b><br>
-	 * The implementation assumes {@link Protocol#TCP}.
-	 * </p>
-	 *
-	 * @see  URL#getPort()
-	 * @see  URL#getDefaultPort()
-	 */
-	@Override
-	public Port getPort() throws MalformedURLException {
-		if(port == null) {
-			try {
-				int urlPort = url.getPort();
-				if(urlPort == -1) {
-					urlPort = url.getDefaultPort();
-					if(urlPort == -1) throw new MalformedURLException("No default port for URL: " + url);
-				}
-				port = Port.valueOf(urlPort, Protocol.TCP);
-			} catch(ValidationException e) {
-				MalformedURLException newErr = new MalformedURLException();
-				newErr.initCause(e);
-				throw newErr;
-			}
-		}
-		return port;
-	}
+  /**
+   * {@inheritDoc}
+   * <p>
+   * <b>Implementation Note:</b><br>
+   * The implementation assumes {@link Protocol#TCP}.
+   * </p>
+   *
+   * @see  URL#getPort()
+   * @see  URL#getDefaultPort()
+   */
+  @Override
+  public Port getPort() throws MalformedURLException {
+    if (port == null) {
+      try {
+        int urlPort = url.getPort();
+        if (urlPort == -1) {
+          urlPort = url.getDefaultPort();
+          if (urlPort == -1) {
+            throw new MalformedURLException("No default port for URL: " + url);
+          }
+        }
+        port = Port.valueOf(urlPort, Protocol.TCP);
+      } catch (ValidationException e) {
+        MalformedURLException newErr = new MalformedURLException();
+        newErr.initCause(e);
+        throw newErr;
+      }
+    }
+    return port;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * <b>Implementation Note:</b><br>
-	 * This always returns {@link Path#ROOT}.
-	 * </p>
-	 */
-	@Override
-	public Path getContextPath() {
-		return Path.ROOT;
-	}
+  /**
+   * {@inheritDoc}
+   * <p>
+   * <b>Implementation Note:</b><br>
+   * This always returns {@link Path#ROOT}.
+   * </p>
+   */
+  @Override
+  public Path getContextPath() {
+    return Path.ROOT;
+  }
 
-	/**
-	 * @see  URL#getPath()
-	 */
-	@Override
-	public Path getPath() throws MalformedURLException {
-		String urlPath = url.getPath();
-		if(urlPath.isEmpty()) return null;
-		if(path == null) {
-			try {
-				path = Path.valueOf(urlPath);
-			} catch(ValidationException e) {
-				MalformedURLException newErr = new MalformedURLException();
-				newErr.initCause(e);
-				throw newErr;
-			}
-		}
-		return path;
-	}
+  /**
+   * @see  URL#getPath()
+   */
+  @Override
+  public Path getPath() throws MalformedURLException {
+    String urlPath = url.getPath();
+    if (urlPath.isEmpty()) {
+      return null;
+    }
+    if (path == null) {
+      try {
+        path = Path.valueOf(urlPath);
+      } catch (ValidationException e) {
+        MalformedURLException newErr = new MalformedURLException();
+        newErr.initCause(e);
+        throw newErr;
+      }
+    }
+    return path;
+  }
 }
