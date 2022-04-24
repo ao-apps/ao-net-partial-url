@@ -83,11 +83,11 @@ public class MultiPartialURL extends PartialURL {
     this.prefixes = prefixes;
     // Generate primary now
     primary = valueOf(
-      schemes == null ? null : schemes.iterator().next(),
-      hosts == null ? null : hosts.keySet().iterator().next(),
-      ports == null ? null : ports.iterator().next(),
-      contextPaths == null ? null : contextPaths.iterator().next(),
-      prefixes == null ? null : prefixes.iterator().next()
+        schemes == null ? null : schemes.iterator().next(),
+        hosts == null ? null : hosts.keySet().iterator().next(),
+        ports == null ? null : ports.iterator().next(),
+        contextPaths == null ? null : contextPaths.iterator().next(),
+        prefixes == null ? null : prefixes.iterator().next()
     );
   }
 
@@ -144,8 +144,8 @@ public class MultiPartialURL extends PartialURL {
       }
       int portNum = ports.iterator().next().getPort();
       if (
-        !(HTTP.equals(scheme) && portNum == 80)
-        && !(HTTPS.equals(scheme) && portNum == 443)
+          !(HTTP.equals(scheme) && portNum == 80)
+              && !(HTTPS.equals(scheme) && portNum == 443)
       ) {
         toString.append(':').append(portNum);
       }
@@ -209,23 +209,23 @@ public class MultiPartialURL extends PartialURL {
     if (!(obj instanceof MultiPartialURL)) {
       return false;
     }
-    MultiPartialURL other = (MultiPartialURL)obj;
+    MultiPartialURL other = (MultiPartialURL) obj;
     return
-      Objects.equals(schemes, other.schemes)
-      && Objects.equals((hosts == null) ? null : hosts.keySet(), (other.hosts == null) ? null : other.hosts.keySet())
-      && Objects.equals(ports, other.ports)
-      && Objects.equals(contextPaths, other.contextPaths)
-      && Objects.equals(prefixes, other.prefixes);
+        Objects.equals(schemes, other.schemes)
+            && Objects.equals((hosts == null) ? null : hosts.keySet(), (other.hosts == null) ? null : other.hosts.keySet())
+            && Objects.equals(ports, other.ports)
+            && Objects.equals(contextPaths, other.contextPaths)
+            && Objects.equals(prefixes, other.prefixes);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-      schemes,
-      hosts.keySet(),
-      ports,
-      contextPaths,
-      prefixes
+        schemes,
+        hosts.keySet(),
+        ports,
+        contextPaths,
+        prefixes
     );
   }
 
@@ -305,10 +305,10 @@ public class MultiPartialURL extends PartialURL {
   @Override
   public boolean isComplete() {
     return
-      schemes != null
-      && hosts != null
-      && ports != null
-      && contextPaths != null;
+        schemes != null
+            && hosts != null
+            && ports != null
+            && contextPaths != null;
   }
 
   /**
@@ -333,9 +333,10 @@ public class MultiPartialURL extends PartialURL {
    * Iterates a single null value.
    */
   private static final Iterable<?> NULL_ITERABLE = Collections.singleton(null);
+
   @SuppressWarnings("unchecked")
   private static <T> Iterable<T> nullIterable() {
-    return (Iterable<T>)NULL_ITERABLE;
+    return (Iterable<T>) NULL_ITERABLE;
   }
 
   /**
@@ -371,16 +372,16 @@ public class MultiPartialURL extends PartialURL {
   @Override
   public Iterable<SinglePartialURL> getCombinations() {
     long combinations = SafeMath.multiply(
-      (hosts        == null ? 1 : hosts.size()),
-      (contextPaths == null ? 1 : contextPaths.size()),
-      (prefixes     == null ? 1 : prefixes.size()),
-      (ports        == null ? 1 : ports.size()),
-      (schemes      == null ? 1 : schemes.size())
+        (hosts        == null ? 1 : hosts.size()),
+        (contextPaths == null ? 1 : contextPaths.size()),
+        (prefixes     == null ? 1 : prefixes.size()),
+        (ports        == null ? 1 : ports.size()),
+        (schemes      == null ? 1 : schemes.size())
     );
     if (combinations > Integer.MAX_VALUE) {
       throw new IllegalStateException("Too many combinations: " + combinations);
     }
-    Set<SinglePartialURL> results = AoCollections.newLinkedHashSet((int)combinations);
+    Set<SinglePartialURL> results = AoCollections.newLinkedHashSet((int) combinations);
 
     Iterable<HostAddress> hostIter;
     if (hosts == null) {
@@ -482,9 +483,9 @@ public class MultiPartialURL extends PartialURL {
       }
     }
     if (
-      // TODO: Could use URL#getDefaultPort() and moved this hard-coded check to HttpServletRequestFieldSource
-      (HTTP.equalsIgnoreCase(schemeStr) && portNum == 80)
-      || (HTTPS.equalsIgnoreCase(schemeStr) && portNum == 443)
+        // TODO: Could use URL#getDefaultPort() and moved this hard-coded check to HttpServletRequestFieldSource
+        (HTTP.equalsIgnoreCase(schemeStr) && portNum == 80)
+            || (HTTPS.equalsIgnoreCase(schemeStr) && portNum == 443)
     ) {
       portNum = -1;
     }
@@ -528,17 +529,17 @@ public class MultiPartialURL extends PartialURL {
     }
     try {
       URL url = new URL(
-        schemeStr,
-        hostStr,
-        portNum,
-        file
+          schemeStr,
+          hostStr,
+          portNum,
+          file
       );
       SinglePartialURL match;
       assert !(
-        fieldSource != null
-        && (prefixes == null || prefixes.size() == 1) // toURL prefix by original order, matches by deepest, but will be same order always when zero or one prefix
-        && (match = matches(fieldSource)) != null
-        && !match.toURL(fieldSource).equals(url)
+          fieldSource != null
+              && (prefixes == null || prefixes.size() == 1) // toURL prefix by original order, matches by deepest, but will be same order always when zero or one prefix
+              && (match = matches(fieldSource)) != null
+              && !match.toURL(fieldSource).equals(url)
       ) : "matches().toURL() must be consistent with toURL() when fieldSource provided and less than two prefixes";
       return url;
     } catch (MalformedURLException e) {

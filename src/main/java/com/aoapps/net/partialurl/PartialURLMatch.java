@@ -37,10 +37,10 @@ public class PartialURLMatch<V> {
   private final V value;
 
   PartialURLMatch(
-    PartialURL partialURL,
-    SinglePartialURL singleURL,
-    URL url,
-    V value
+      PartialURL partialURL,
+      SinglePartialURL singleURL,
+      URL url,
+      V value
   ) {
     this.partialURL = partialURL;
     this.singleURL = singleURL;
@@ -66,12 +66,12 @@ public class PartialURLMatch<V> {
     if (!(o instanceof PartialURLMatch<?>)) {
       return false;
     }
-    PartialURLMatch<?> other = (PartialURLMatch<?>)o;
+    PartialURLMatch<?> other = (PartialURLMatch<?>) o;
     return
-      value == other.value
-      && partialURL.equals(other.partialURL)
-      && singleURL.equals(other.singleURL)
-      && url.equals(other.url)
+        value == other.value
+            && partialURL.equals(other.partialURL)
+            && singleURL.equals(other.singleURL)
+            && url.equals(other.url)
     ;
   }
 

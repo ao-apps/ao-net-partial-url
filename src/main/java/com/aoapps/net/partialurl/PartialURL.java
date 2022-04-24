@@ -112,20 +112,20 @@ public abstract class PartialURL {
   // TODO: String/integer-only overloads?
   public static SinglePartialURL valueOf(String scheme, HostAddress host, Port port, Path contextPath, Path prefix) {
     if (
-      scheme == null
-      && host == null
-      && port == null
-      && contextPath == null
-      && prefix == null
+        scheme == null
+            && host == null
+            && port == null
+            && contextPath == null
+            && prefix == null
     ) {
       return DEFAULT;
     } else {
       return new SinglePartialURL(
-        (scheme == null) ? null : scheme.toLowerCase(Locale.ROOT),
-        host,
-        port,
-        contextPath,
-        prefix
+          (scheme == null) ? null : scheme.toLowerCase(Locale.ROOT),
+          host,
+          port,
+          contextPath,
+          prefix
       );
     }
   }
@@ -160,11 +160,11 @@ public abstract class PartialURL {
    * @see  MultiPartialURL#MultiPartialURL(java.util.Set, java.util.Map, java.util.Set, java.util.Set, java.util.Set)
    */
   public static PartialURL valueOf(
-    Iterable<? extends String> schemes,
-    Iterable<? extends HostAddress> hosts,
-    Iterable<? extends Port> ports,
-    Iterable<? extends Path> contextPaths,
-    Iterable<? extends Path> prefixes
+      Iterable<? extends String> schemes,
+      Iterable<? extends HostAddress> hosts,
+      Iterable<? extends Port> ports,
+      Iterable<? extends Path> contextPaths,
+      Iterable<? extends Path> prefixes
   ) {
     Set<String> schemeSet;
     if (schemes == null) {
@@ -194,7 +194,7 @@ public abstract class PartialURL {
       portSet = null;
     } else {
       portSet = AoCollections.unmodifiableCopySet(
-        IterableUtils.filteredIterable(ports, NotNullPredicate.notNullPredicate())
+          IterableUtils.filteredIterable(ports, NotNullPredicate.notNullPredicate())
       );
       if (portSet.isEmpty()) {
         portSet = null;
@@ -205,7 +205,7 @@ public abstract class PartialURL {
       contextPathSet = null;
     } else {
       contextPathSet = AoCollections.unmodifiableCopySet(
-        IterableUtils.filteredIterable(contextPaths, NotNullPredicate.notNullPredicate())
+          IterableUtils.filteredIterable(contextPaths, NotNullPredicate.notNullPredicate())
       );
       if (contextPathSet.isEmpty()) {
         contextPathSet = null;
@@ -216,25 +216,25 @@ public abstract class PartialURL {
       prefixSet = null;
     } else {
       prefixSet = AoCollections.unmodifiableCopySet(
-        IterableUtils.filteredIterable(prefixes, NotNullPredicate.notNullPredicate())
+          IterableUtils.filteredIterable(prefixes, NotNullPredicate.notNullPredicate())
       );
       if (prefixSet.isEmpty()) {
         prefixSet = null;
       }
     }
     if (
-      (schemeSet == null || schemeSet.size() == 1)
-      && (hostMap == null || hostMap.size() == 1)
-      && (portSet == null || portSet.size() == 1)
-      && (contextPathSet == null || contextPathSet.size() == 1)
-      && (prefixSet == null || prefixSet.size() == 1)
+        (schemeSet == null || schemeSet.size() == 1)
+            && (hostMap == null || hostMap.size() == 1)
+            && (portSet == null || portSet.size() == 1)
+            && (contextPathSet == null || contextPathSet.size() == 1)
+            && (prefixSet == null || prefixSet.size() == 1)
     ) {
       return PartialURL.valueOf(
-        schemeSet == null ? null : schemeSet.iterator().next(),
-        hostMap == null ? null : hostMap.keySet().iterator().next(),
-        portSet == null ? null : portSet.iterator().next(),
-        contextPathSet == null ? null : contextPathSet.iterator().next(),
-        prefixSet == null ? null : prefixSet.iterator().next()
+          schemeSet == null ? null : schemeSet.iterator().next(),
+          hostMap == null ? null : hostMap.keySet().iterator().next(),
+          portSet == null ? null : portSet.iterator().next(),
+          contextPathSet == null ? null : contextPathSet.iterator().next(),
+          prefixSet == null ? null : prefixSet.iterator().next()
       );
     } else {
       return new MultiPartialURL(schemeSet, hostMap, portSet, contextPathSet, prefixSet);
@@ -259,18 +259,18 @@ public abstract class PartialURL {
    * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
    */
   public static PartialURL valueOf(
-    String[] schemes,
-    HostAddress[] hosts,
-    Port[] ports,
-    Path[] contextPaths,
-    Path ... prefixes
+      String[] schemes,
+      HostAddress[] hosts,
+      Port[] ports,
+      Path[] contextPaths,
+      Path ... prefixes
   ) {
     return PartialURL.valueOf(
-      schemes == null ? null : Arrays.asList(schemes),
-      hosts == null ? null : Arrays.asList(hosts),
-      ports == null ? null : Arrays.asList(ports),
-      contextPaths == null ? null : Arrays.asList(contextPaths),
-      prefixes == null ? null : Arrays.asList(prefixes)
+        schemes == null ? null : Arrays.asList(schemes),
+        hosts == null ? null : Arrays.asList(hosts),
+        ports == null ? null : Arrays.asList(ports),
+        contextPaths == null ? null : Arrays.asList(contextPaths),
+        prefixes == null ? null : Arrays.asList(prefixes)
     );
   }
 

@@ -49,290 +49,291 @@ public class SinglePartialURLTest {
   @Test
   public void testToStringDefault() {
     assertEquals(
-      "//*:*/*/**",
-      PartialURL.DEFAULT.toString()
+        "//*:*/*/**",
+        PartialURL.DEFAULT.toString()
     );
   }
 
   @Test
   public void testToStringSchemeOnly() {
     assertEquals(
-      "https://*:*/*/**",
-      PartialURL.valueOf("hTtPS", null, null, null, null).toString()
+        "https://*:*/*/**",
+        PartialURL.valueOf("hTtPS", null, null, null, null).toString()
     );
   }
 
   @Test
   public void testToStringHostnameOnly() throws ValidationException {
     assertEquals(
-      "//aoindustries.com:*/*/**",
-      PartialURL.valueOf(null, HostAddress.valueOf("aoindustries.com"), null, null, null).toString()
+        "//aoindustries.com:*/*/**",
+        PartialURL.valueOf(null, HostAddress.valueOf("aoindustries.com"), null, null, null).toString()
     );
   }
 
   @Test
   public void testToStringIPv4Only() throws ValidationException {
     assertEquals(
-      "//192.0.2.45:*/*/**",
-      PartialURL.valueOf(null, HostAddress.valueOf("192.0.2.45"), null, null, null).toString()
+        "//192.0.2.45:*/*/**",
+        PartialURL.valueOf(null, HostAddress.valueOf("192.0.2.45"), null, null, null).toString()
     );
   }
 
   @Test
   public void testToStringIPv6Only() throws ValidationException {
     assertEquals(
-      "//[2001:db8::d0]:*/*/**",
-      PartialURL.valueOf(null, HostAddress.valueOf("2001:DB8::D0"), null, null, null).toString()
+        "//[2001:db8::d0]:*/*/**",
+        PartialURL.valueOf(null, HostAddress.valueOf("2001:DB8::D0"), null, null, null).toString()
     );
   }
 
   @Test
   public void testToStringIPv6OnlyBracketed() throws ValidationException {
     assertEquals(
-      "//[2001:db8::d0]:*/*/**",
-      PartialURL.valueOf(null, HostAddress.valueOf("[2001:DB8::D0]"), null, null, null).toString()
+        "//[2001:db8::d0]:*/*/**",
+        PartialURL.valueOf(null, HostAddress.valueOf("[2001:DB8::D0]"), null, null, null).toString()
     );
   }
 
   @Test
   public void testToStringPortOnly() throws ValidationException {
     assertEquals(
-      "//*:443/*/**",
-      PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.TCP), null, null).toString()
+        "//*:443/*/**",
+        PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.TCP), null, null).toString()
     );
   }
 
   @Test
   public void testToStringContextPathOnly() throws ValidationException {
     assertEquals(
-      "//*:*/context/**",
-      PartialURL.valueOf(null, null, null, Path.valueOf("/context"), null).toString()
+        "//*:*/context/**",
+        PartialURL.valueOf(null, null, null, Path.valueOf("/context"), null).toString()
     );
   }
 
   @Test
   public void testToStringContextPathOnlyRoot() {
     assertEquals(
-      "//*:*/**",
-      PartialURL.valueOf(null, null, null, Path.ROOT, null).toString()
+        "//*:*/**",
+        PartialURL.valueOf(null, null, null, Path.ROOT, null).toString()
     );
   }
 
   @Test
   public void testToStringPrefixOnly() throws ValidationException {
     assertEquals(
-      "//*:*/*/prefix/",
-      PartialURL.valueOf(null, null, null, null, Path.valueOf("/prefix/")).toString()
+        "//*:*/*/prefix/",
+        PartialURL.valueOf(null, null, null, null, Path.valueOf("/prefix/")).toString()
     );
   }
 
   @Test
   public void testToStringPrefixOnlyRoot() {
     assertEquals(
-      "//*:*/*/",
-      PartialURL.valueOf(null, null, null, null, Path.ROOT).toString()
+        "//*:*/*/",
+        PartialURL.valueOf(null, null, null, null, Path.ROOT).toString()
     );
   }
 
   @Test
   public void testToStringCompleteHttpDefaultPort() throws ValidationException {
     assertEquals(
-      "http://aoindustries.com/",
-      PartialURL.valueOf(
-        "http",
-        HostAddress.valueOf("aoindustries.com"),
-        Port.valueOf(80, Protocol.TCP),
-        Path.ROOT,
-        Path.ROOT
-      ).toString()
+        "http://aoindustries.com/",
+        PartialURL.valueOf(
+            "http",
+            HostAddress.valueOf("aoindustries.com"),
+            Port.valueOf(80, Protocol.TCP),
+            Path.ROOT,
+            Path.ROOT
+        ).toString()
     );
   }
 
   @Test
   public void testToStringCompleteHttpPort443() throws ValidationException {
     assertEquals(
-      "http://aoindustries.com:443/",
-      PartialURL.valueOf(
-        "HTtp",
-        HostAddress.valueOf("aoindustries.com"),
-        Port.valueOf(443, Protocol.TCP),
-        Path.ROOT,
-        Path.ROOT
-      ).toString()
+        "http://aoindustries.com:443/",
+        PartialURL.valueOf(
+            "HTtp",
+            HostAddress.valueOf("aoindustries.com"),
+            Port.valueOf(443, Protocol.TCP),
+            Path.ROOT,
+            Path.ROOT
+        ).toString()
     );
   }
 
   @Test
   public void testToStringCompleteHttpsDefaultPort() throws ValidationException {
     assertEquals(
-      "https://aoindustries.com/",
-      PartialURL.valueOf(
-        "httpS",
-        HostAddress.valueOf("aoindustries.com"),
-        Port.valueOf(443, Protocol.TCP),
-        Path.ROOT,
-        Path.ROOT
-      ).toString()
+        "https://aoindustries.com/",
+        PartialURL.valueOf(
+            "httpS",
+            HostAddress.valueOf("aoindustries.com"),
+            Port.valueOf(443, Protocol.TCP),
+            Path.ROOT,
+            Path.ROOT
+        ).toString()
     );
   }
 
   @Test
   public void testToStringCompleteHttpsPort80() throws ValidationException {
     assertEquals(
-      "https://aoindustries.com:80/",
-      PartialURL.valueOf(
-        "HTtps",
-        HostAddress.valueOf("aoindustries.com"),
-        Port.valueOf(80, Protocol.TCP),
-        Path.ROOT,
-        Path.ROOT
-      ).toString()
+        "https://aoindustries.com:80/",
+        PartialURL.valueOf(
+            "HTtps",
+            HostAddress.valueOf("aoindustries.com"),
+            Port.valueOf(80, Protocol.TCP),
+            Path.ROOT,
+            Path.ROOT
+        ).toString()
     );
   }
+
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc="Test compareTo">
   @Test
   public void testCompareToHostOnlyBeforeDefault() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf(null, HostAddress.valueOf("aoindustries.com"), null, null, null).compareTo(
-        PartialURL.DEFAULT
-      ) < 0
+        PartialURL.valueOf(null, HostAddress.valueOf("aoindustries.com"), null, null, null).compareTo(
+            PartialURL.DEFAULT
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToContextPathOnlyBeforeDefault() {
     assertTrue(
-      PartialURL.valueOf(null, null, null, Path.ROOT, null).compareTo(
-        PartialURL.DEFAULT
-      ) < 0
+        PartialURL.valueOf(null, null, null, Path.ROOT, null).compareTo(
+            PartialURL.DEFAULT
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToPrefixOnlyBeforeDefault() {
     assertTrue(
-      PartialURL.valueOf(null, null, null, null, Path.ROOT).compareTo(
-        PartialURL.DEFAULT
-      ) < 0
+        PartialURL.valueOf(null, null, null, null, Path.ROOT).compareTo(
+            PartialURL.DEFAULT
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToPortOnlyBeforeDefault() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf(null, null, Port.valueOf(45, Protocol.TCP), null, null).compareTo(
-        PartialURL.DEFAULT
-      ) < 0
+        PartialURL.valueOf(null, null, Port.valueOf(45, Protocol.TCP), null, null).compareTo(
+            PartialURL.DEFAULT
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToSchemeOnlyBeforeDefault() {
     assertTrue(
-      PartialURL.valueOf("other", null, null, null, null).compareTo(
-        PartialURL.DEFAULT
-      ) < 0
+        PartialURL.valueOf("other", null, null, null, null).compareTo(
+            PartialURL.DEFAULT
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToHostOrderingByTld() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf(null, HostAddress.valueOf("xyz.com"), null, null, null).compareTo(
-        PartialURL.valueOf(null, HostAddress.valueOf("abc.org"), null, null, null)
-      ) < 0
+        PartialURL.valueOf(null, HostAddress.valueOf("xyz.com"), null, null, null).compareTo(
+            PartialURL.valueOf(null, HostAddress.valueOf("abc.org"), null, null, null)
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToHostOrderingBySubdomainAfter() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf(null, HostAddress.valueOf("aoindustries.com"), null, null, null).compareTo(
-        PartialURL.valueOf(null, HostAddress.valueOf("www.aoindustries.com"), null, null, null)
-      ) < 0
+        PartialURL.valueOf(null, HostAddress.valueOf("aoindustries.com"), null, null, null).compareTo(
+            PartialURL.valueOf(null, HostAddress.valueOf("www.aoindustries.com"), null, null, null)
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToContextPathOrdering() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf(null, null, null, Path.valueOf("/context"), null).compareTo(
-        PartialURL.valueOf(null, null, null, Path.valueOf("/context/deeper"), null)
-      ) < 0
+        PartialURL.valueOf(null, null, null, Path.valueOf("/context"), null).compareTo(
+            PartialURL.valueOf(null, null, null, Path.valueOf("/context/deeper"), null)
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToPrefixOrderingLexical() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf(null, null, null, null, Path.valueOf("/abc/deeper/")).compareTo(
-        PartialURL.valueOf(null, null, null, null, Path.valueOf("/xyz/deeper/"))
-      ) < 0
+        PartialURL.valueOf(null, null, null, null, Path.valueOf("/abc/deeper/")).compareTo(
+            PartialURL.valueOf(null, null, null, null, Path.valueOf("/xyz/deeper/"))
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToPrefixOrderingDeeperFirst() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf(null, null, null, null, Path.valueOf("/path/deeper/")).compareTo(
-        PartialURL.valueOf(null, null, null, null, Path.valueOf("/path/"))
-      ) < 0
+        PartialURL.valueOf(null, null, null, null, Path.valueOf("/path/deeper/")).compareTo(
+            PartialURL.valueOf(null, null, null, null, Path.valueOf("/path/"))
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToPortOrdering() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf(null, null, Port.valueOf(80, Protocol.TCP), null, null).compareTo(
-        PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.TCP), null, null)
-      ) < 0
+        PartialURL.valueOf(null, null, Port.valueOf(80, Protocol.TCP), null, null).compareTo(
+            PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.TCP), null, null)
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToSchemeHttpBeforeHttps() {
     assertTrue(
-      PartialURL.valueOf("http", null, null, null, null).compareTo(
-        PartialURL.valueOf("HTTPS", null, null, null, null)
-      ) < 0
+        PartialURL.valueOf("http", null, null, null, null).compareTo(
+            PartialURL.valueOf("HTTPS", null, null, null, null)
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToHostBeforeContextPath() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf(null, HostAddress.valueOf("aoindustries.com"), null, Path.valueOf("/xyz"), null).compareTo(
-        PartialURL.valueOf(null, HostAddress.valueOf("semanticcms.com"), null, Path.valueOf("/abc"), null)
-      ) < 0
+        PartialURL.valueOf(null, HostAddress.valueOf("aoindustries.com"), null, Path.valueOf("/xyz"), null).compareTo(
+            PartialURL.valueOf(null, HostAddress.valueOf("semanticcms.com"), null, Path.valueOf("/abc"), null)
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToContextPathBeforePrefix() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf(null, null, null, Path.valueOf("/abc"), Path.valueOf("/xyz/")).compareTo(
-        PartialURL.valueOf(null, null, null, Path.valueOf("/xyz"), Path.valueOf("/abc/"))
-      ) < 0
+        PartialURL.valueOf(null, null, null, Path.valueOf("/abc"), Path.valueOf("/xyz/")).compareTo(
+            PartialURL.valueOf(null, null, null, Path.valueOf("/xyz"), Path.valueOf("/abc/"))
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToPrefixBeforePort() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.TCP), null, Path.valueOf("/abc/")).compareTo(
-        PartialURL.valueOf(null, null, Port.valueOf(80, Protocol.TCP), null, Path.valueOf("/xyz/"))
-      ) < 0
+        PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.TCP), null, Path.valueOf("/abc/")).compareTo(
+            PartialURL.valueOf(null, null, Port.valueOf(80, Protocol.TCP), null, Path.valueOf("/xyz/"))
+        ) < 0
     );
   }
 
   @Test
   public void testCompareToPortBeforeScheme() throws ValidationException {
     assertTrue(
-      PartialURL.valueOf("https", null, Port.valueOf(80, Protocol.TCP), null, null).compareTo(
-        PartialURL.valueOf("http", null, Port.valueOf(443, Protocol.TCP), null, null)
-      ) < 0
+        PartialURL.valueOf("https", null, Port.valueOf(80, Protocol.TCP), null, null).compareTo(
+            PartialURL.valueOf("http", null, Port.valueOf(443, Protocol.TCP), null, null)
+        ) < 0
     );
   }
   // </editor-fold>
@@ -347,6 +348,7 @@ public class SinglePartialURLTest {
   private static final FieldSource testUrlSource;
   private static final FieldSource testUrlSourceIPv4;
   private static final FieldSource testUrlSourceIPv6;
+
   static {
     try {
       testUrl = new URL("HTTPS", "aoindustries.com", 443, "/contact");
@@ -375,8 +377,8 @@ public class SinglePartialURLTest {
   @Test
   public void testDefaultMatchesNullFieldSource() throws MalformedURLException {
     assertEquals(
-      PartialURL.DEFAULT,
-      PartialURL.DEFAULT.matches(null)
+        PartialURL.DEFAULT,
+        PartialURL.DEFAULT.matches(null)
     );
   }
 
@@ -384,8 +386,8 @@ public class SinglePartialURLTest {
   public void testSchemeMatches() throws MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf("https", null, null, null, null);
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSource)
+        singleURL,
+        singleURL.matches(testUrlSource)
     );
   }
 
@@ -393,7 +395,7 @@ public class SinglePartialURLTest {
   public void testSchemeNotMatches() throws MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf("http", null, null, null, null);
     assertNull(
-      singleURL.matches(testUrlSource)
+        singleURL.matches(testUrlSource)
     );
   }
 
@@ -401,8 +403,8 @@ public class SinglePartialURLTest {
   public void testHostMatchesHostname() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("AOIndustries.COM"), null, null, null);
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSource)
+        singleURL,
+        singleURL.matches(testUrlSource)
     );
   }
 
@@ -410,7 +412,7 @@ public class SinglePartialURLTest {
   public void testSchemeNotMatchesHostname() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("WWW.AOIndustries.COM"), null, null, null);
     assertNull(
-      singleURL.matches(testUrlSource)
+        singleURL.matches(testUrlSource)
     );
   }
 
@@ -418,8 +420,8 @@ public class SinglePartialURLTest {
   public void testHostMatchesIPv4() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("192.0.2.38"), null, null, null);
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSourceIPv4)
+        singleURL,
+        singleURL.matches(testUrlSourceIPv4)
     );
   }
 
@@ -427,7 +429,7 @@ public class SinglePartialURLTest {
   public void testSchemeNotMatchesIPv4() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("192.0.2.39"), null, null, null);
     assertNull(
-      singleURL.matches(testUrlSourceIPv4)
+        singleURL.matches(testUrlSourceIPv4)
     );
   }
 
@@ -435,8 +437,8 @@ public class SinglePartialURLTest {
   public void testHostMatchesIPv6() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("2001:db8::d0"), null, null, null);
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSourceIPv6)
+        singleURL,
+        singleURL.matches(testUrlSourceIPv6)
     );
   }
 
@@ -444,7 +446,7 @@ public class SinglePartialURLTest {
   public void testSchemeNotMatchesIPv6() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("2001:db8::d1"), null, null, null);
     assertNull(
-      singleURL.matches(testUrlSourceIPv6)
+        singleURL.matches(testUrlSourceIPv6)
     );
   }
 
@@ -452,8 +454,8 @@ public class SinglePartialURLTest {
   public void testHostMatchesIPv6Bracketed() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("[2001:db8::d0]"), null, null, null);
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSourceIPv6)
+        singleURL,
+        singleURL.matches(testUrlSourceIPv6)
     );
   }
 
@@ -461,7 +463,7 @@ public class SinglePartialURLTest {
   public void testSchemeNotMatchesIPv6Bracketed() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("[2001:db8::d1]"), null, null, null);
     assertNull(
-      singleURL.matches(testUrlSourceIPv6)
+        singleURL.matches(testUrlSourceIPv6)
     );
   }
 
@@ -469,8 +471,8 @@ public class SinglePartialURLTest {
   public void testPortMatches() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.TCP), null, null);
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSource)
+        singleURL,
+        singleURL.matches(testUrlSource)
     );
   }
 
@@ -478,7 +480,7 @@ public class SinglePartialURLTest {
   public void testPortNotMatchesPort() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, null, Port.valueOf(80, Protocol.TCP), null, null);
     assertNull(
-      singleURL.matches(testUrlSource)
+        singleURL.matches(testUrlSource)
     );
   }
 
@@ -486,7 +488,7 @@ public class SinglePartialURLTest {
   public void testPortNotMatchesProtocol() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.UDP), null, null);
     assertNull(
-      singleURL.matches(testUrlSource)
+        singleURL.matches(testUrlSource)
     );
   }
 
@@ -494,8 +496,8 @@ public class SinglePartialURLTest {
   public void testContextPathMatches() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, Path.valueOf("/context"), null);
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSource)
+        singleURL,
+        singleURL.matches(testUrlSource)
     );
   }
 
@@ -503,7 +505,7 @@ public class SinglePartialURLTest {
   public void testContextPathNotMatchesRoot() throws MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, Path.ROOT, null);
     assertNull(
-      singleURL.matches(testUrlSource)
+        singleURL.matches(testUrlSource)
     );
   }
 
@@ -511,7 +513,7 @@ public class SinglePartialURLTest {
   public void testContextPathNotMatchesSubpath() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, Path.valueOf("/context/sub"), null);
     assertNull(
-      singleURL.matches(testUrlSource)
+        singleURL.matches(testUrlSource)
     );
   }
 
@@ -519,16 +521,16 @@ public class SinglePartialURLTest {
   public void testPrefixMatchesRoot() throws MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, null, Path.ROOT);
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSource)
+        singleURL,
+        singleURL.matches(testUrlSource)
     );
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSourceIPv4)
+        singleURL,
+        singleURL.matches(testUrlSourceIPv4)
     );
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSourceIPv6)
+        singleURL,
+        singleURL.matches(testUrlSourceIPv6)
     );
   }
 
@@ -536,15 +538,15 @@ public class SinglePartialURLTest {
   public void testPrefixMatchesContact() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, null, Path.valueOf("/contact/"));
     assertNull(
-      singleURL.matches(testUrlSource)
+        singleURL.matches(testUrlSource)
     );
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSourceIPv4)
+        singleURL,
+        singleURL.matches(testUrlSourceIPv4)
     );
     assertEquals(
-      singleURL,
-      singleURL.matches(testUrlSourceIPv6)
+        singleURL,
+        singleURL.matches(testUrlSourceIPv6)
     );
   }
 
@@ -552,251 +554,255 @@ public class SinglePartialURLTest {
   public void testPrefixNotMatchesContactOther() throws ValidationException, MalformedURLException {
     SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, null, Path.valueOf("/contact/other/"));
     assertNull(
-      singleURL.matches(testUrlSource)
+        singleURL.matches(testUrlSource)
     );
     assertNull(
-      singleURL.matches(testUrlSourceIPv4)
+        singleURL.matches(testUrlSourceIPv4)
     );
     assertNull(
-      singleURL.matches(testUrlSourceIPv6)
+        singleURL.matches(testUrlSourceIPv6)
     );
   }
+
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc="Test isComplete">
   @Test
   public void testIsComplete() throws ValidationException {
     assertTrue(
-      "Is complete with prefix",
-      PartialURL.valueOf(
-        "https",
-        HostAddress.valueOf("aoindustries.com"),
-        Port.valueOf(443, Protocol.TCP),
-        Path.ROOT,
-        Path.ROOT
-      ).isComplete()
+        "Is complete with prefix",
+        PartialURL.valueOf(
+            "https",
+            HostAddress.valueOf("aoindustries.com"),
+            Port.valueOf(443, Protocol.TCP),
+            Path.ROOT,
+            Path.ROOT
+        ).isComplete()
     );
     assertTrue(
-      "Is also complete without prefix",
-      PartialURL.valueOf(
-        "https",
-        HostAddress.valueOf("aoindustries.com"),
-        Port.valueOf(443, Protocol.TCP),
-        Path.ROOT,
-        null
-      ).isComplete()
+        "Is also complete without prefix",
+        PartialURL.valueOf(
+            "https",
+            HostAddress.valueOf("aoindustries.com"),
+            Port.valueOf(443, Protocol.TCP),
+            Path.ROOT,
+            null
+        ).isComplete()
     );
   }
 
   @Test
   public void testIncompleteScheme() throws ValidationException {
     assertFalse(
-      PartialURL.valueOf(
-        null,
-        HostAddress.valueOf("aoindustries.com"),
-        Port.valueOf(443, Protocol.TCP),
-        Path.ROOT,
-        Path.ROOT
-      ).isComplete()
+        PartialURL.valueOf(
+            null,
+            HostAddress.valueOf("aoindustries.com"),
+            Port.valueOf(443, Protocol.TCP),
+            Path.ROOT,
+            Path.ROOT
+        ).isComplete()
     );
   }
 
   @Test
   public void testIncompleteHost() throws ValidationException {
     assertFalse(
-      PartialURL.valueOf(
-        "https",
-        null,
-        Port.valueOf(443, Protocol.TCP),
-        Path.ROOT,
-        Path.ROOT
-      ).isComplete()
+        PartialURL.valueOf(
+            "https",
+            null,
+            Port.valueOf(443, Protocol.TCP),
+            Path.ROOT,
+            Path.ROOT
+        ).isComplete()
     );
   }
 
   @Test
   public void testIncompletePort() throws ValidationException {
     assertFalse(
-      PartialURL.valueOf(
-        "https",
-        HostAddress.valueOf("aoindustries.com"),
-        null,
-        Path.ROOT,
-        Path.ROOT
-      ).isComplete()
+        PartialURL.valueOf(
+            "https",
+            HostAddress.valueOf("aoindustries.com"),
+            null,
+            Path.ROOT,
+            Path.ROOT
+        ).isComplete()
     );
   }
 
   @Test
   public void testIncompleteContextPath() throws ValidationException {
     assertFalse(
-      PartialURL.valueOf(
-        "https",
-        HostAddress.valueOf("aoindustries.com"),
-        Port.valueOf(443, Protocol.TCP),
-        null,
-        Path.ROOT
-      ).isComplete()
+        PartialURL.valueOf(
+            "https",
+            HostAddress.valueOf("aoindustries.com"),
+            Port.valueOf(443, Protocol.TCP),
+            null,
+            Path.ROOT
+        ).isComplete()
     );
   }
+
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc="Test getPrimary">
   @Test
   public void testGetPrimaryDefault() {
     assertEquals(
-      PartialURL.DEFAULT,
-      PartialURL.DEFAULT.getPrimary()
+        PartialURL.DEFAULT,
+        PartialURL.DEFAULT.getPrimary()
     );
   }
 
   @Test
   public void testGetPrimaryComplete() throws ValidationException {
     SinglePartialURL singleURL = PartialURL.valueOf(
-      "https",
-      HostAddress.valueOf("aoindustries.com"),
-      Port.valueOf(443, Protocol.TCP),
-      Path.ROOT,
-      Path.ROOT
+        "https",
+        HostAddress.valueOf("aoindustries.com"),
+        Port.valueOf(443, Protocol.TCP),
+        Path.ROOT,
+        Path.ROOT
     );
     assertEquals(
-      singleURL,
-      singleURL.getPrimary()
+        singleURL,
+        singleURL.getPrimary()
     );
   }
+
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc="Test getCombinations">
   @Test
   public void testGetCombinationsDefault() {
     assertEquals(
-      Collections.singleton(PartialURL.DEFAULT),
-      AoCollections.unmodifiableCopySet(PartialURL.DEFAULT.getCombinations())
+        Collections.singleton(PartialURL.DEFAULT),
+        AoCollections.unmodifiableCopySet(PartialURL.DEFAULT.getCombinations())
     );
   }
 
   @Test
   public void testGetCombinationsComplete() throws ValidationException {
     SinglePartialURL singleURL = PartialURL.valueOf(
-      "https",
-      HostAddress.valueOf("aoindustries.com"),
-      Port.valueOf(443, Protocol.TCP),
-      Path.ROOT,
-      Path.ROOT
+        "https",
+        HostAddress.valueOf("aoindustries.com"),
+        Port.valueOf(443, Protocol.TCP),
+        Path.ROOT,
+        Path.ROOT
     );
     assertEquals(
-      Collections.singleton(singleURL),
-      AoCollections.unmodifiableCopySet(singleURL.getCombinations())
+        Collections.singleton(singleURL),
+        AoCollections.unmodifiableCopySet(singleURL.getCombinations())
     );
   }
+
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc="Test toURL">
   @Test
   public void testToURLDefault() throws MalformedURLException {
     assertEquals(
-      testUrlToURL,
-      PartialURL.DEFAULT.toURL(testUrlSource)
+        testUrlToURL,
+        PartialURL.DEFAULT.toURL(testUrlSource)
     );
   }
 
   @Test
   public void testToURLDefaultIPv4() throws MalformedURLException {
     assertEquals(
-      testUrlIPv4ToURL,
-      PartialURL.DEFAULT.toURL(testUrlSourceIPv4)
+        testUrlIPv4ToURL,
+        PartialURL.DEFAULT.toURL(testUrlSourceIPv4)
     );
   }
 
   @Test
   public void testToURLDefaultIPv6() throws MalformedURLException {
     assertEquals(
-      testUrlIPv6ToURL,
-      PartialURL.DEFAULT.toURL(testUrlSourceIPv6)
+        testUrlIPv6ToURL,
+        PartialURL.DEFAULT.toURL(testUrlSourceIPv6)
     );
   }
 
   @Test
   public void testToURLNoScheme() throws ValidationException, MalformedURLException {
     assertEquals(
-      new URL("HTTPS", "aorepo.org", 80, "/otherContext/otherPath/"),
-      PartialURL.valueOf(
-        null,
-        HostAddress.valueOf("aorepo.org"),
-        Port.valueOf(80, Protocol.TCP),
-        Path.valueOf("/otherContext"),
-        Path.valueOf("/otherPath/")
-      ).toURL(testUrlSource)
+        new URL("HTTPS", "aorepo.org", 80, "/otherContext/otherPath/"),
+        PartialURL.valueOf(
+            null,
+            HostAddress.valueOf("aorepo.org"),
+            Port.valueOf(80, Protocol.TCP),
+            Path.valueOf("/otherContext"),
+            Path.valueOf("/otherPath/")
+        ).toURL(testUrlSource)
     );
   }
 
   @Test
   public void testToURLNoHost() throws ValidationException, MalformedURLException {
     assertEquals(
-      new URL("https", "aoindustries.com", 80, "/otherContext/otherPath/"),
-      PartialURL.valueOf(
-        "https",
-        null,
-        Port.valueOf(80, Protocol.TCP),
-        Path.valueOf("/otherContext"),
-        Path.valueOf("/otherPath/")
-      ).toURL(testUrlSource)
+        new URL("https", "aoindustries.com", 80, "/otherContext/otherPath/"),
+        PartialURL.valueOf(
+            "https",
+            null,
+            Port.valueOf(80, Protocol.TCP),
+            Path.valueOf("/otherContext"),
+            Path.valueOf("/otherPath/")
+        ).toURL(testUrlSource)
     );
   }
 
   @Test
   public void testToURLNoPort() throws ValidationException, MalformedURLException {
     assertEquals(
-      new URL("https", "aorepo.org", -1, "/otherContext/otherPath/"),
-      PartialURL.valueOf(
-        "https",
-        HostAddress.valueOf("aorepo.org"),
-        null,
-        Path.valueOf("/otherContext"),
-        Path.valueOf("/otherPath/")
-      ).toURL(testUrlSource)
+        new URL("https", "aorepo.org", -1, "/otherContext/otherPath/"),
+        PartialURL.valueOf(
+            "https",
+            HostAddress.valueOf("aorepo.org"),
+            null,
+            Path.valueOf("/otherContext"),
+            Path.valueOf("/otherPath/")
+        ).toURL(testUrlSource)
     );
   }
 
   @Test
   public void testToURLNoContextPath() throws ValidationException, MalformedURLException {
     assertEquals(
-      new URL("https", "aorepo.org", 80, "/context/otherPath/"),
-      PartialURL.valueOf(
-        "https",
-        HostAddress.valueOf("aorepo.org"),
-        Port.valueOf(80, Protocol.TCP),
-        null,
-        Path.valueOf("/otherPath/")
-      ).toURL(testUrlSource)
+        new URL("https", "aorepo.org", 80, "/context/otherPath/"),
+        PartialURL.valueOf(
+            "https",
+            HostAddress.valueOf("aorepo.org"),
+            Port.valueOf(80, Protocol.TCP),
+            null,
+            Path.valueOf("/otherPath/")
+        ).toURL(testUrlSource)
     );
   }
 
   @Test
   public void testToURLNoPrefix() throws ValidationException, MalformedURLException {
     assertEquals(
-      new URL("https", "aorepo.org", 80, "/otherContext"),
-      PartialURL.valueOf(
-        "https",
-        HostAddress.valueOf("aorepo.org"),
-        Port.valueOf(80, Protocol.TCP),
-        Path.valueOf("/otherContext"),
-        null
-      ).toURL(null)
+        new URL("https", "aorepo.org", 80, "/otherContext"),
+        PartialURL.valueOf(
+            "https",
+            HostAddress.valueOf("aorepo.org"),
+            Port.valueOf(80, Protocol.TCP),
+            Path.valueOf("/otherContext"),
+            null
+        ).toURL(null)
     );
   }
 
   @Test
   public void testToURLComplete() throws ValidationException, MalformedURLException {
     assertEquals(
-      new URL("https", "aorepo.org", 80, "/otherContext/otherPath/"),
-      PartialURL.valueOf(
-        "https",
-        HostAddress.valueOf("aorepo.org"),
-        Port.valueOf(80, Protocol.TCP),
-        Path.valueOf("/otherContext"),
-        Path.valueOf("/otherPath/")
-      ).toURL(null)
+        new URL("https", "aorepo.org", 80, "/otherContext/otherPath/"),
+        PartialURL.valueOf(
+            "https",
+            HostAddress.valueOf("aorepo.org"),
+            Port.valueOf(80, Protocol.TCP),
+            Path.valueOf("/otherContext"),
+            Path.valueOf("/otherPath/")
+        ).toURL(null)
     );
   }
   // </editor-fold>

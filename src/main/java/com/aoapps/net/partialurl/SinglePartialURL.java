@@ -70,22 +70,22 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
   public String toString() {
     String hostStr = (host == null ? WILDCARD_STRING : host.toBracketedString());
     int toStringLen =
-      (
-        (scheme == null) ? 0 : (
-          scheme.length()
-          + 1 // ':'
+        (
+            (scheme == null) ? 0 : (
+                scheme.length()
+                    + 1// ':'
+            )
         )
-      )
-      + 2 // "//"
-      + hostStr.length();
+            + 2 // "//"
+            + hostStr.length();
     String portStr;
     if (port == null) {
       portStr = WILDCARD_STRING;
     } else {
       int portNum = port.getPort();
       if (
-        (HTTP.equals(scheme) && portNum == 80)
-        || (HTTPS.equals(scheme) && portNum == 443)
+          (HTTP.equals(scheme) && portNum == 80)
+              || (HTTPS.equals(scheme) && portNum == 443)
       ) {
         portStr = null;
       } else {
@@ -94,8 +94,8 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
     }
     if (portStr != null) {
       toStringLen +=
-        1 // ':'
-        + portStr.length();
+          1 // ':'
+              + portStr.length();
     }
     String contextPathStr;
     if (contextPath != null) {
@@ -124,23 +124,23 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
     if (!(obj instanceof SinglePartialURL)) {
       return false;
     }
-    SinglePartialURL other = (SinglePartialURL)obj;
+    SinglePartialURL other = (SinglePartialURL) obj;
     return
-      Objects.equals(scheme, other.scheme)
-      && Objects.equals(host, other.host)
-      && Objects.equals(port, other.port)
-      && Objects.equals(contextPath, other.contextPath)
-      && Objects.equals(prefix, other.prefix);
+        Objects.equals(scheme, other.scheme)
+            && Objects.equals(host, other.host)
+            && Objects.equals(port, other.port)
+            && Objects.equals(contextPath, other.contextPath)
+            && Objects.equals(prefix, other.prefix);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-      scheme,
-      host,
-      port,
-      contextPath,
-      prefix
+        scheme,
+        host,
+        port,
+        contextPath,
+        prefix
     );
   }
 
@@ -213,28 +213,28 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
   public SinglePartialURL matches(FieldSource fieldSource) throws MalformedURLException {
     Path fieldPath;
     return
-      (scheme == null || scheme.equals(fieldSource.getScheme().toLowerCase(Locale.ROOT)))
-      && (host == null || host.equals(fieldSource.getHost()))
-      && (port == null || port.equals(fieldSource.getPort()))
-      && (contextPath == null || contextPath.equals(fieldSource.getContextPath()))
-      && (
-        prefix == null
-        || (
-          (fieldPath = fieldSource.getPath()) != null
-          && fieldPath.toString().startsWith(prefix.toString())
+        (scheme == null || scheme.equals(fieldSource.getScheme().toLowerCase(Locale.ROOT)))
+            && (host == null || host.equals(fieldSource.getHost()))
+            && (port == null || port.equals(fieldSource.getPort()))
+            && (contextPath == null || contextPath.equals(fieldSource.getContextPath()))
+            && (
+            prefix == null
+                || (
+                (fieldPath = fieldSource.getPath()) != null
+                    && fieldPath.toString().startsWith(prefix.toString())
+            )
         )
-      )
-      ? this
-      : null;
+            ? this
+            : null;
   }
 
   @Override
   public boolean isComplete() {
     return
-      scheme != null
-      && host != null
-      && port != null
-      && contextPath != null;
+        scheme != null
+            && host != null
+            && port != null
+            && contextPath != null;
   }
 
   /**
@@ -268,9 +268,9 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
     String schemeStr = (scheme == null) ? fieldSource.getScheme() : scheme;
     int portNum = ((port == null) ? fieldSource.getPort() : port).getPort();
     if (
-      // TODO: Could use URL#getDefaultPort() and moved this hard-coded check to HttpServletRequestFieldSource
-      (HTTP.equalsIgnoreCase(schemeStr) && portNum == 80)
-      || (HTTPS.equalsIgnoreCase(schemeStr) && portNum == 443)
+        // TODO: Could use URL#getDefaultPort() and moved this hard-coded check to HttpServletRequestFieldSource
+        (HTTP.equalsIgnoreCase(schemeStr) && portNum == 80)
+            || (HTTPS.equalsIgnoreCase(schemeStr) && portNum == 443)
     ) {
       portNum = -1;
     }
@@ -298,10 +298,10 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
     }
     try {
       return new URL(
-        schemeStr,
-        hostStr,
-        portNum,
-        file
+          schemeStr,
+          hostStr,
+          portNum,
+          file
       );
     } catch (MalformedURLException e) {
       throw new AssertionError(e);

@@ -49,6 +49,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 public class PartialURLMap<V> {
 
   private static final boolean ASSERTIONS_ENABLED;
+
   static {
     boolean assertsEnabled = false;
     assert (assertsEnabled = true); // Intentional side effects
@@ -61,27 +62,27 @@ public class PartialURLMap<V> {
   private final Lock writeLock = readWriteLock.writeLock();
 
   private final Map<
-    HostAddress,
-    Map<
-      Path,
-      MutablePair<
-        Integer,
-        Map<
-          String,
-          Map<
-            Port,
-            Map<
-              String,
-              ImmutableTriple<
-                PartialURL,
-                SinglePartialURL,
-                V
+      HostAddress,
+      Map<
+          Path,
+          MutablePair<
+              Integer,
+              Map<
+                  String,
+                  Map<
+                      Port,
+                      Map<
+                          String,
+                          ImmutableTriple<
+                              PartialURL,
+                              SinglePartialURL,
+                              V
+                          >
+                      >
+                  >
               >
-            >
           >
-        >
       >
-    >
   > index = new HashMap<>();
 
   /**
@@ -149,13 +150,13 @@ public class PartialURLMap<V> {
         ImmutableTriple<PartialURL, SinglePartialURL, V> existing = portIndex.get(scheme);
         if (existing != null) {
           throw new IllegalStateException(
-            "Partial URL already in index: partialURL = " + partialURL
-              + ", singleURL = " + singleURL
-              + ", existing = " + existing.getLeft());
+              "Partial URL already in index: partialURL = " + partialURL
+                  + ", singleURL = " + singleURL
+                  + ", existing = " + existing.getLeft());
         }
         portIndex.put(
-          scheme,
-          ImmutableTriple.of(partialURL, singleURL, value)
+            scheme,
+            ImmutableTriple.of(partialURL, singleURL, value)
         );
         if (ASSERTIONS_ENABLED) {
           if (sequential.put(singleURL, ImmutablePair.of(partialURL, value)) != null) {
@@ -179,12 +180,12 @@ public class PartialURLMap<V> {
     // TODO: CompletePartialURL (subclassing single) instead of toURL?
     // TODO: A sequential implementation for assertions, like in PathSpace?
     // TODO: Write tests
-    HostAddress[] hostSearchOrder = new HostAddress[] {fieldSource.getHost(), null};
-    Path[] contextPathSearchOrder = new Path[] {fieldSource.getContextPath(), null};
+    HostAddress[] hostSearchOrder = new HostAddress[]{fieldSource.getHost(), null};
+    Path[] contextPathSearchOrder = new Path[]{fieldSource.getContextPath(), null};
     Path path = fieldSource.getPath();
     String pathStr = (path == null) ? "" : path.toString();
-    Port[] portSearchOrder = new Port[] {fieldSource.getPort(), null};
-    String[] schemeSearchOrder = new String[] {fieldSource.getScheme().toLowerCase(Locale.ROOT), null};
+    Port[] portSearchOrder = new Port[]{fieldSource.getPort(), null};
+    String[] schemeSearchOrder = new String[]{fieldSource.getScheme().toLowerCase(Locale.ROOT), null};
     for (HostAddress host : hostSearchOrder) {
       Map<Path, MutablePair<Integer, Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>>> hostIndex = index.get(host);
       if (hostIndex != null) {
@@ -230,10 +231,10 @@ public class PartialURLMap<V> {
                         assert Objects.equals(match.left.matches(fieldSource), match.middle) : "Get inconsistent with matches";
                         assert Objects.equals(match.middle.matches(fieldSource), match.middle) : "Get inconsistent with matches";
                         return new PartialURLMatch<>(
-                          match.left,
-                          match.middle,
-                          match.middle.toURL(fieldSource),
-                          match.right
+                            match.left,
+                            match.middle,
+                            match.middle.toURL(fieldSource),
+                            match.right
                         );
                       }
                     }
@@ -268,10 +269,10 @@ public class PartialURLMap<V> {
         assert match == singleURL;
         ImmutablePair<PartialURL, V> pair = entry.getValue();
         return new PartialURLMatch<>(
-          pair.left,
-          singleURL,
-          singleURL.toURL(fieldSource),
-          pair.right
+            pair.left,
+            singleURL,
+            singleURL.toURL(fieldSource),
+            pair.right
         );
       }
     }
