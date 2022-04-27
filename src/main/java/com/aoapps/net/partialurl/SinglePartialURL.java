@@ -68,7 +68,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
 
   @Override
   public String toString() {
-    String hostStr = (host == null ? WILDCARD_STRING : host.toBracketedString());
+    String hostStr = host == null ? WILDCARD_STRING : host.toBracketedString();
     int toStringLen =
         (
             (scheme == null) ? 0 : (
