@@ -46,7 +46,7 @@ public class MultiPartialURL extends PartialURL {
 
   private final Set<String> schemes;
   /**
-   * Maps to self for canonicalization
+   * Maps to self for canonicalization.
    */
   private final Map<HostAddress, HostAddress> hosts;
   private final Set<Port> ports;
@@ -56,6 +56,8 @@ public class MultiPartialURL extends PartialURL {
   private final SinglePartialURL primary;
 
   /**
+   * Creates a new multi-partial-URL.
+   *
    * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
    */
   MultiPartialURL(Set<String> schemes, Map<HostAddress, HostAddress> hosts, Set<Port> ports, Set<Path> contextPaths, Set<Path> prefixes) {
@@ -455,33 +457,33 @@ public class MultiPartialURL extends PartialURL {
   @SuppressWarnings("AssertWithSideEffects")
   public URL toURL(FieldSource fieldSource) throws MalformedURLException {
     String schemeStr;
-    {
-      if (schemes == null) {
-        assert fieldSource != null;
-        schemeStr = fieldSource.getScheme();
-      } else {
-        String sourceSchemeLower;
-        if (fieldSource != null && schemes.contains(sourceSchemeLower = fieldSource.getScheme().toLowerCase(Locale.ROOT))) {
-          schemeStr = sourceSchemeLower;
+      {
+        if (schemes == null) {
+          assert fieldSource != null;
+          schemeStr = fieldSource.getScheme();
         } else {
-          schemeStr = schemes.iterator().next();
+          String sourceSchemeLower;
+          if (fieldSource != null && schemes.contains(sourceSchemeLower = fieldSource.getScheme().toLowerCase(Locale.ROOT))) {
+            schemeStr = sourceSchemeLower;
+          } else {
+            schemeStr = schemes.iterator().next();
+          }
         }
       }
-    }
     int portNum;
-    {
-      if (ports == null) {
-        assert fieldSource != null;
-        portNum = fieldSource.getPort().getPort();
-      } else {
-        Port sourcePort;
-        if (fieldSource != null && ports.contains(sourcePort = fieldSource.getPort())) {
-          portNum = sourcePort.getPort();
+      {
+        if (ports == null) {
+          assert fieldSource != null;
+          portNum = fieldSource.getPort().getPort();
         } else {
-          portNum = ports.iterator().next().getPort();
+          Port sourcePort;
+          if (fieldSource != null && ports.contains(sourcePort = fieldSource.getPort())) {
+            portNum = sourcePort.getPort();
+          } else {
+            portNum = ports.iterator().next().getPort();
+          }
         }
       }
-    }
     if (
         // TODO: Could use URL#getDefaultPort() and moved this hard-coded check to HttpServletRequestFieldSource
         (HTTP.equalsIgnoreCase(schemeStr) && portNum == 80)
@@ -490,33 +492,33 @@ public class MultiPartialURL extends PartialURL {
       portNum = -1;
     }
     String hostStr;
-    {
-      if (hosts == null) {
-        assert fieldSource != null;
-        hostStr = fieldSource.getHost().toBracketedString();
-      } else {
-        HostAddress canonical;
-        if (fieldSource != null && (canonical = hosts.get(fieldSource.getHost())) != null) {
-          hostStr = canonical.toBracketedString();
+      {
+        if (hosts == null) {
+          assert fieldSource != null;
+          hostStr = fieldSource.getHost().toBracketedString();
         } else {
-          hostStr = hosts.keySet().iterator().next().toBracketedString();
+          HostAddress canonical;
+          if (fieldSource != null && (canonical = hosts.get(fieldSource.getHost())) != null) {
+            hostStr = canonical.toBracketedString();
+          } else {
+            hostStr = hosts.keySet().iterator().next().toBracketedString();
+          }
         }
       }
-    }
     Path contextPath;
-    {
-      if (contextPaths == null) {
-        assert fieldSource != null;
-        contextPath = fieldSource.getContextPath();
-      } else {
-        Path sourceContextPath;
-        if (fieldSource != null && contextPaths.contains(sourceContextPath = fieldSource.getContextPath())) {
-          contextPath = sourceContextPath;
+      {
+        if (contextPaths == null) {
+          assert fieldSource != null;
+          contextPath = fieldSource.getContextPath();
         } else {
-          contextPath = contextPaths.iterator().next();
+          Path sourceContextPath;
+          if (fieldSource != null && contextPaths.contains(sourceContextPath = fieldSource.getContextPath())) {
+            contextPath = sourceContextPath;
+          } else {
+            contextPath = contextPaths.iterator().next();
+          }
         }
       }
-    }
     String file;
     if (contextPath == Path.ROOT) {
       file = (prefixes == null) ? "" : prefixes.iterator().next().toString();

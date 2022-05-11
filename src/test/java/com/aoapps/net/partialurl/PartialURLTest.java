@@ -23,6 +23,9 @@
 
 package com.aoapps.net.partialurl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
 import com.aoapps.lang.validation.ValidationException;
 import com.aoapps.net.HostAddress;
 import com.aoapps.net.Path;
@@ -32,12 +35,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import org.junit.Test;
 
 /**
- * @see PartialURL
+ * Tests {@link PartialURL}.
  *
  * @author  AO Industries, Inc.
  */
@@ -46,10 +47,10 @@ public class PartialURLTest {
   // <editor-fold defaultstate="collapsed" desc="Test valueOf">
   @Test
   public void testOfDefault() {
-    List<String> emptySchemes = Collections.emptyList();
-    List<String> nullSchemes = Arrays.asList(null, null, null, null);
-    List<Path> emptyPrefixes = Collections.emptyList();
-    List<Path> nullPrefixes = Arrays.asList(null, null, null, null);
+    final List<String> emptySchemes = Collections.emptyList();
+    final List<String> nullSchemes = Arrays.asList(null, null, null, null);
+    final List<Path> emptyPrefixes = Collections.emptyList();
+    final List<Path> nullPrefixes = Arrays.asList(null, null, null, null);
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf((String) null, null, null, null, null));
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf((Path) null));
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf((Iterable<? extends String>) null, null, null, null, null));
@@ -167,34 +168,34 @@ public class PartialURLTest {
 
   @Test
   public void testOfOneSchemeIsSingle() {
-    SinglePartialURL singleURL = PartialURL.valueOf("https", null, null, null, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf("https", null, null, null, null);
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(new String[]{"https"}, null, null, null)
     );
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(new String[]{"hTTps", null}, null, null, null)
     );
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(new String[]{"https", "HTTPS"}, null, null, null)
     );
   }
 
   @Test
   public void testOfOneHostIsSingle() throws ValidationException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("aoindustries.com"), null, null, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, HostAddress.valueOf("aoindustries.com"), null, null, null);
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, new HostAddress[]{HostAddress.valueOf("AOIndustries.COM")}, null, null)
     );
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, new HostAddress[]{HostAddress.valueOf("AOIndustries.COM"), null}, null, null)
     );
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, new HostAddress[]{HostAddress.valueOf("aoindustries.com"), HostAddress.valueOf("AOIndustries.COM")}, null, null)
     );
   }
@@ -202,17 +203,17 @@ public class PartialURLTest {
   @Test
   public void testOfOnePortIsSingle() throws ValidationException {
     Port port80 = Port.valueOf(80, Protocol.TCP);
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, port80, null, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, port80, null, null);
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, null, new Port[]{port80}, null)
     );
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, null, new Port[]{port80, null}, null)
     );
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, null, new Port[]{port80, port80}, null)
     );
   }
@@ -220,17 +221,17 @@ public class PartialURLTest {
   @Test
   public void testOfOneContextPathIsSingle() throws ValidationException {
     Path contextPath = Path.valueOf("/context");
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, contextPath, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, null, contextPath, null);
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, null, null, new Path[]{contextPath})
     );
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, null, null, new Path[]{contextPath, null})
     );
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, null, null, new Path[]{contextPath, contextPath})
     );
   }
@@ -238,17 +239,17 @@ public class PartialURLTest {
   @Test
   public void testOfOnePrefixIsSingle() throws ValidationException {
     Path prefix = Path.valueOf("/prefix/");
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, null, prefix);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, null, null, prefix);
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, null, null, null, new Path[]{prefix})
     );
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, null, null, null, new Path[]{prefix, null})
     );
     assertEquals(
-        singleURL,
+        singleUrl,
         PartialURL.valueOf(null, null, null, null, new Path[]{prefix, prefix})
     );
   }

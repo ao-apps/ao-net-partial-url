@@ -47,6 +47,8 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
   private final Path prefix;
 
   /**
+   * Creates a new single-partial-URL.
+   *
    * @see  #valueOf(java.lang.String, com.aoapps.net.HostAddress, com.aoapps.net.Port, com.aoapps.net.Path, com.aoapps.net.Path)
    */
   SinglePartialURL(String scheme, HostAddress host, Port port, Path contextPath, Path prefix) {
@@ -176,7 +178,10 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
   };
 
   /**
+   * {@inheritDoc}
+   * <p>
    * Ordering is consistent with:
+   * </p>
    * <ul>
    *   <li>{@link PartialURL#matches(com.aoapps.net.partialurl.FieldSource)}</li>
    *   <li>{@link PartialURL#getCombinations()}</li>
@@ -207,6 +212,8 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
   }
 
   /**
+   * {@inheritDoc}
+   *
    * @return  {@code this} when matches, or {@code null} when does not match.
    */
   @Override

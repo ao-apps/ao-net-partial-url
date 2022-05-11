@@ -83,7 +83,7 @@ public class PartialURLMap<V> {
               >
           >
       >
-  > index = new HashMap<>();
+      > index = new HashMap<>();
 
   /**
    * For sequential implementation used for assertions only.
@@ -104,23 +104,23 @@ public class PartialURLMap<V> {
    *
    * @throws  IllegalStateException  If the partial URL conflicts with an existing entry.
    */
-  public void put(PartialURL partialURL, V value) throws IllegalStateException {
+  public void put(PartialURL partialUrl, V value) throws IllegalStateException {
     writeLock.lock();
     try {
-      for (SinglePartialURL singleURL : partialURL.getCombinations()) {
-        Path prefix = singleURL.getPrefix();
+      for (SinglePartialURL singleUrl : partialUrl.getCombinations()) {
+        Path prefix = singleUrl.getPrefix();
         @SuppressWarnings("deprecation")
         String prefixStr = Objects.toString(prefix, null);
         int slashCount = (prefixStr == null) ? 0 : StringUtils.countMatches(prefixStr, Path.SEPARATOR_CHAR);
         // host
-        HostAddress host = singleURL.getHost();
+        HostAddress host = singleUrl.getHost();
         Map<Path, MutablePair<Integer, Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>>> hostIndex = index.get(host);
         if (hostIndex == null) {
           hostIndex = new HashMap<>();
           index.put(host, hostIndex);
         }
         // contextPath
-        Path contextPath = singleURL.getContextPath();
+        Path contextPath = singleUrl.getContextPath();
         MutablePair<Integer, Map<String, Map<Port, Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>>>>> contextPathPair = hostIndex.get(contextPath);
         if (contextPathPair == null) {
           contextPathPair = MutablePair.of(slashCount, new HashMap<>());
@@ -139,28 +139,28 @@ public class PartialURLMap<V> {
           contextPathIndex.put(prefixStr, prefixIndex);
         }
         // port
-        Port port = singleURL.getPort();
+        Port port = singleUrl.getPort();
         Map<String, ImmutableTriple<PartialURL, SinglePartialURL, V>> portIndex = prefixIndex.get(port);
         if (portIndex == null) {
           portIndex = new HashMap<>();
           prefixIndex.put(port, portIndex);
         }
         // scheme
-        String scheme = singleURL.getScheme();
+        String scheme = singleUrl.getScheme();
         ImmutableTriple<PartialURL, SinglePartialURL, V> existing = portIndex.get(scheme);
         if (existing != null) {
           throw new IllegalStateException(
-              "Partial URL already in index: partialURL = " + partialURL
-                  + ", singleURL = " + singleURL
+              "Partial URL already in index: partialUrl = " + partialUrl
+                  + ", singleUrl = " + singleUrl
                   + ", existing = " + existing.getLeft());
         }
         portIndex.put(
             scheme,
-            ImmutableTriple.of(partialURL, singleURL, value)
+            ImmutableTriple.of(partialUrl, singleUrl, value)
         );
         if (ASSERTIONS_ENABLED) {
-          if (sequential.put(singleURL, ImmutablePair.of(partialURL, value)) != null) {
-            throw new AssertionError("Duplicate singleURL: " + singleURL);
+          if (sequential.put(singleUrl, ImmutablePair.of(partialUrl, value)) != null) {
+            throw new AssertionError("Duplicate singleUrl: " + singleUrl);
           }
         }
       }
@@ -263,15 +263,15 @@ public class PartialURLMap<V> {
   private PartialURLMatch<V> getSequential(FieldSource fieldSource) throws MalformedURLException {
     // Must be holding readLock already
     for (Map.Entry<SinglePartialURL, ImmutablePair<PartialURL, V>> entry : sequential.entrySet()) {
-      SinglePartialURL singleURL = entry.getKey();
-      SinglePartialURL match = singleURL.matches(fieldSource);
+      SinglePartialURL singleUrl = entry.getKey();
+      SinglePartialURL match = singleUrl.matches(fieldSource);
       if (match != null) {
-        assert match == singleURL;
+        assert match == singleUrl;
         ImmutablePair<PartialURL, V> pair = entry.getValue();
         return new PartialURLMatch<>(
             pair.left,
-            singleURL,
-            singleURL.toURL(fieldSource),
+            singleUrl,
+            singleUrl.toURL(fieldSource),
             pair.right
         );
       }

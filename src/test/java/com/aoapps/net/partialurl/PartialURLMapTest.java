@@ -23,6 +23,9 @@
 
 package com.aoapps.net.partialurl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import com.aoapps.lang.validation.ValidationException;
 import com.aoapps.net.HostAddress;
 import com.aoapps.net.Path;
@@ -30,12 +33,10 @@ import com.aoapps.net.Port;
 import com.aoapps.net.Protocol;
 import java.net.MalformedURLException;
 import java.net.URL;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 /**
- * @see PartialURLMap
+ * Tests {@link PartialURLMap}.
  *
  * @author  AO Industries, Inc.
  */

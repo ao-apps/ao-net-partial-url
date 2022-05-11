@@ -27,39 +27,39 @@ import java.net.URL;
 import java.util.Objects;
 
 /**
- * The result of a call to {@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}
+ * The result of a call to {@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}.
  */
 public class PartialURLMatch<V> {
 
-  private final PartialURL partialURL;
-  private final SinglePartialURL singleURL;
+  private final PartialURL partialUrl;
+  private final SinglePartialURL singleUrl;
   private final URL url;
   private final V value;
 
   PartialURLMatch(
-      PartialURL partialURL,
-      SinglePartialURL singleURL,
+      PartialURL partialUrl,
+      SinglePartialURL singleUrl,
       URL url,
       V value
   ) {
-    this.partialURL = partialURL;
-    this.singleURL = singleURL;
+    this.partialUrl = partialUrl;
+    this.singleUrl = singleUrl;
     this.url = url;
     this.value = value;
   }
 
   @Override
   public String toString() {
-    if (partialURL == singleURL) {
-      return singleURL + " -> " + url;
+    if (partialUrl == singleUrl) {
+      return singleUrl + " -> " + url;
     } else {
-      return partialURL + " -> " + singleURL + " -> " + url;
+      return partialUrl + " -> " + singleUrl + " -> " + url;
     }
   }
 
   /**
-   * Two matches are equal when they have the same partialURL (by .equals),
-   * singleURL (by .equals), url (by .equals), and value (by identity).
+   * Two matches are equal when they have the same partialUrl (by .equals),
+   * singleUrl (by .equals), url (by .equals), and value (by identity).
    */
   @Override
   public boolean equals(Object o) {
@@ -69,16 +69,15 @@ public class PartialURLMatch<V> {
     PartialURLMatch<?> other = (PartialURLMatch<?>) o;
     return
         value == other.value
-            && partialURL.equals(other.partialURL)
-            && singleURL.equals(other.singleURL)
-            && url.equals(other.url)
-    ;
+            && partialUrl.equals(other.partialUrl)
+            && singleUrl.equals(other.singleUrl)
+            && url.equals(other.url);
   }
 
   @Override
   public int hashCode() {
-    int hash = partialURL.hashCode();
-    hash = hash * 31 + singleURL.hashCode();
+    int hash = partialUrl.hashCode();
+    hash = hash * 31 + singleUrl.hashCode();
     hash = hash * 31 + url.hashCode();
     hash = hash * 31 + Objects.hashCode(value);
     return hash;
@@ -89,7 +88,7 @@ public class PartialURLMatch<V> {
    * This might be a {@link MultiPartialURL}.
    */
   public PartialURL getPartialURL() {
-    return partialURL;
+    return partialUrl;
   }
 
   /**
@@ -99,7 +98,7 @@ public class PartialURLMatch<V> {
    * when is a {@link MultiPartialURL}.
    */
   public SinglePartialURL getSingleURL() {
-    return singleURL;
+    return singleUrl;
   }
 
   /**

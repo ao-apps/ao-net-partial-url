@@ -23,6 +23,11 @@
 
 package com.aoapps.net.partialurl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import com.aoapps.collections.AoCollections;
 import com.aoapps.lang.validation.ValidationException;
 import com.aoapps.net.HostAddress;
@@ -32,14 +37,10 @@ import com.aoapps.net.Protocol;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
- * @see SinglePartialURL
+ * Tests {@link SinglePartialURL}.
  *
  * @author  AO Industries, Inc.
  */
@@ -71,7 +72,7 @@ public class SinglePartialURLTest {
   }
 
   @Test
-  public void testToStringIPv4Only() throws ValidationException {
+  public void testToStringIpv4Only() throws ValidationException {
     assertEquals(
         "//192.0.2.45:*/*/**",
         PartialURL.valueOf(null, HostAddress.valueOf("192.0.2.45"), null, null, null).toString()
@@ -79,7 +80,7 @@ public class SinglePartialURLTest {
   }
 
   @Test
-  public void testToStringIPv6Only() throws ValidationException {
+  public void testToStringIpv6Only() throws ValidationException {
     assertEquals(
         "//[2001:db8::d0]:*/*/**",
         PartialURL.valueOf(null, HostAddress.valueOf("2001:DB8::D0"), null, null, null).toString()
@@ -87,7 +88,7 @@ public class SinglePartialURLTest {
   }
 
   @Test
-  public void testToStringIPv6OnlyBracketed() throws ValidationException {
+  public void testToStringIpv6OnlyBracketed() throws ValidationException {
     assertEquals(
         "//[2001:db8::d0]:*/*/**",
         PartialURL.valueOf(null, HostAddress.valueOf("[2001:DB8::D0]"), null, null, null).toString()
@@ -341,22 +342,22 @@ public class SinglePartialURLTest {
   // <editor-fold defaultstate="collapsed" desc="Test matches">
   private static final URL testUrl;
   private static final URL testUrlToURL;
-  private static final URL testUrlIPv4;
-  private static final URL testUrlIPv4ToURL;
-  private static final URL testUrlIPv6;
-  private static final URL testUrlIPv6ToURL;
+  private static final URL testUrlIpv4;
+  private static final URL testUrlIpv4ToURL;
+  private static final URL testUrlIpv6;
+  private static final URL testUrlIpv6ToURL;
   private static final FieldSource testUrlSource;
-  private static final FieldSource testUrlSourceIPv4;
-  private static final FieldSource testUrlSourceIPv6;
+  private static final FieldSource testUrlSourceIpv4;
+  private static final FieldSource testUrlSourceIpv6;
 
   static {
     try {
       testUrl = new URL("HTTPS", "aoindustries.com", 443, "/contact");
       testUrlToURL = new URL("HTTPS", "aoindustries.com", -1, "/context");
-      testUrlIPv4 = new URL("HTTPS", "192.0.2.38", 443, "/contact/");
-      testUrlIPv4ToURL = new URL("HTTPS", "192.0.2.38", -1, "");
-      testUrlIPv6 = new URL("HTTPS", "[2001:DB8::D0]", 443, "/contact/other");
-      testUrlIPv6ToURL = new URL("HTTPS", "[2001:DB8::D0]", -1, "");
+      testUrlIpv4 = new URL("HTTPS", "192.0.2.38", 443, "/contact/");
+      testUrlIpv4ToURL = new URL("HTTPS", "192.0.2.38", -1, "");
+      testUrlIpv6 = new URL("HTTPS", "[2001:DB8::D0]", 443, "/contact/other");
+      testUrlIpv6ToURL = new URL("HTTPS", "[2001:DB8::D0]", -1, "");
       testUrlSource = new URLFieldSource(testUrl) {
         @Override
         public Path getContextPath() {
@@ -367,8 +368,8 @@ public class SinglePartialURLTest {
           }
         }
       };
-      testUrlSourceIPv4 = new URLFieldSource(testUrlIPv4);
-      testUrlSourceIPv6 = new URLFieldSource(testUrlIPv6);
+      testUrlSourceIpv4 = new URLFieldSource(testUrlIpv4);
+      testUrlSourceIpv6 = new URLFieldSource(testUrlIpv6);
     } catch (MalformedURLException e) {
       throw new AssertionError(e);
     }
@@ -384,183 +385,183 @@ public class SinglePartialURLTest {
 
   @Test
   public void testSchemeMatches() throws MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf("https", null, null, null, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf("https", null, null, null, null);
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSource)
+        singleUrl,
+        singleUrl.matches(testUrlSource)
     );
   }
 
   @Test
   public void testSchemeNotMatches() throws MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf("http", null, null, null, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf("http", null, null, null, null);
     assertNull(
-        singleURL.matches(testUrlSource)
+        singleUrl.matches(testUrlSource)
     );
   }
 
   @Test
   public void testHostMatchesHostname() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("AOIndustries.COM"), null, null, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, HostAddress.valueOf("AOIndustries.COM"), null, null, null);
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSource)
+        singleUrl,
+        singleUrl.matches(testUrlSource)
     );
   }
 
   @Test
   public void testSchemeNotMatchesHostname() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("WWW.AOIndustries.COM"), null, null, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, HostAddress.valueOf("WWW.AOIndustries.COM"), null, null, null);
     assertNull(
-        singleURL.matches(testUrlSource)
+        singleUrl.matches(testUrlSource)
     );
   }
 
   @Test
-  public void testHostMatchesIPv4() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("192.0.2.38"), null, null, null);
+  public void testHostMatchesIpv4() throws ValidationException, MalformedURLException {
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, HostAddress.valueOf("192.0.2.38"), null, null, null);
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSourceIPv4)
+        singleUrl,
+        singleUrl.matches(testUrlSourceIpv4)
     );
   }
 
   @Test
-  public void testSchemeNotMatchesIPv4() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("192.0.2.39"), null, null, null);
+  public void testSchemeNotMatchesIpv4() throws ValidationException, MalformedURLException {
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, HostAddress.valueOf("192.0.2.39"), null, null, null);
     assertNull(
-        singleURL.matches(testUrlSourceIPv4)
+        singleUrl.matches(testUrlSourceIpv4)
     );
   }
 
   @Test
-  public void testHostMatchesIPv6() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("2001:db8::d0"), null, null, null);
+  public void testHostMatchesIpv6() throws ValidationException, MalformedURLException {
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, HostAddress.valueOf("2001:db8::d0"), null, null, null);
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSourceIPv6)
+        singleUrl,
+        singleUrl.matches(testUrlSourceIpv6)
     );
   }
 
   @Test
-  public void testSchemeNotMatchesIPv6() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("2001:db8::d1"), null, null, null);
+  public void testSchemeNotMatchesIpv6() throws ValidationException, MalformedURLException {
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, HostAddress.valueOf("2001:db8::d1"), null, null, null);
     assertNull(
-        singleURL.matches(testUrlSourceIPv6)
+        singleUrl.matches(testUrlSourceIpv6)
     );
   }
 
   @Test
-  public void testHostMatchesIPv6Bracketed() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("[2001:db8::d0]"), null, null, null);
+  public void testHostMatchesIpv6Bracketed() throws ValidationException, MalformedURLException {
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, HostAddress.valueOf("[2001:db8::d0]"), null, null, null);
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSourceIPv6)
+        singleUrl,
+        singleUrl.matches(testUrlSourceIpv6)
     );
   }
 
   @Test
-  public void testSchemeNotMatchesIPv6Bracketed() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, HostAddress.valueOf("[2001:db8::d1]"), null, null, null);
+  public void testSchemeNotMatchesIpv6Bracketed() throws ValidationException, MalformedURLException {
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, HostAddress.valueOf("[2001:db8::d1]"), null, null, null);
     assertNull(
-        singleURL.matches(testUrlSourceIPv6)
+        singleUrl.matches(testUrlSourceIpv6)
     );
   }
 
   @Test
   public void testPortMatches() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.TCP), null, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.TCP), null, null);
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSource)
+        singleUrl,
+        singleUrl.matches(testUrlSource)
     );
   }
 
   @Test
   public void testPortNotMatchesPort() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, Port.valueOf(80, Protocol.TCP), null, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, Port.valueOf(80, Protocol.TCP), null, null);
     assertNull(
-        singleURL.matches(testUrlSource)
+        singleUrl.matches(testUrlSource)
     );
   }
 
   @Test
   public void testPortNotMatchesProtocol() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.UDP), null, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, Port.valueOf(443, Protocol.UDP), null, null);
     assertNull(
-        singleURL.matches(testUrlSource)
+        singleUrl.matches(testUrlSource)
     );
   }
 
   @Test
   public void testContextPathMatches() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, Path.valueOf("/context"), null);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, null, Path.valueOf("/context"), null);
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSource)
+        singleUrl,
+        singleUrl.matches(testUrlSource)
     );
   }
 
   @Test
   public void testContextPathNotMatchesRoot() throws MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, Path.ROOT, null);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, null, Path.ROOT, null);
     assertNull(
-        singleURL.matches(testUrlSource)
+        singleUrl.matches(testUrlSource)
     );
   }
 
   @Test
   public void testContextPathNotMatchesSubpath() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, Path.valueOf("/context/sub"), null);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, null, Path.valueOf("/context/sub"), null);
     assertNull(
-        singleURL.matches(testUrlSource)
+        singleUrl.matches(testUrlSource)
     );
   }
 
   @Test
   public void testPrefixMatchesRoot() throws MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, null, Path.ROOT);
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, null, null, Path.ROOT);
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSource)
+        singleUrl,
+        singleUrl.matches(testUrlSource)
     );
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSourceIPv4)
+        singleUrl,
+        singleUrl.matches(testUrlSourceIpv4)
     );
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSourceIPv6)
+        singleUrl,
+        singleUrl.matches(testUrlSourceIpv6)
     );
   }
 
   @Test
   public void testPrefixMatchesContact() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, null, Path.valueOf("/contact/"));
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, null, null, Path.valueOf("/contact/"));
     assertNull(
-        singleURL.matches(testUrlSource)
+        singleUrl.matches(testUrlSource)
     );
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSourceIPv4)
+        singleUrl,
+        singleUrl.matches(testUrlSourceIpv4)
     );
     assertEquals(
-        singleURL,
-        singleURL.matches(testUrlSourceIPv6)
+        singleUrl,
+        singleUrl.matches(testUrlSourceIpv6)
     );
   }
 
   @Test
   public void testPrefixNotMatchesContactOther() throws ValidationException, MalformedURLException {
-    SinglePartialURL singleURL = PartialURL.valueOf(null, null, null, null, Path.valueOf("/contact/other/"));
+    SinglePartialURL singleUrl = PartialURL.valueOf(null, null, null, null, Path.valueOf("/contact/other/"));
     assertNull(
-        singleURL.matches(testUrlSource)
+        singleUrl.matches(testUrlSource)
     );
     assertNull(
-        singleURL.matches(testUrlSourceIPv4)
+        singleUrl.matches(testUrlSourceIpv4)
     );
     assertNull(
-        singleURL.matches(testUrlSourceIPv6)
+        singleUrl.matches(testUrlSourceIpv6)
     );
   }
 
@@ -656,7 +657,7 @@ public class SinglePartialURLTest {
 
   @Test
   public void testGetPrimaryComplete() throws ValidationException {
-    SinglePartialURL singleURL = PartialURL.valueOf(
+    SinglePartialURL singleUrl = PartialURL.valueOf(
         "https",
         HostAddress.valueOf("aoindustries.com"),
         Port.valueOf(443, Protocol.TCP),
@@ -664,8 +665,8 @@ public class SinglePartialURLTest {
         Path.ROOT
     );
     assertEquals(
-        singleURL,
-        singleURL.getPrimary()
+        singleUrl,
+        singleUrl.getPrimary()
     );
   }
 
@@ -682,7 +683,7 @@ public class SinglePartialURLTest {
 
   @Test
   public void testGetCombinationsComplete() throws ValidationException {
-    SinglePartialURL singleURL = PartialURL.valueOf(
+    SinglePartialURL singleUrl = PartialURL.valueOf(
         "https",
         HostAddress.valueOf("aoindustries.com"),
         Port.valueOf(443, Protocol.TCP),
@@ -690,8 +691,8 @@ public class SinglePartialURLTest {
         Path.ROOT
     );
     assertEquals(
-        Collections.singleton(singleURL),
-        AoCollections.unmodifiableCopySet(singleURL.getCombinations())
+        Collections.singleton(singleUrl),
+        AoCollections.unmodifiableCopySet(singleUrl.getCombinations())
     );
   }
 
@@ -707,18 +708,18 @@ public class SinglePartialURLTest {
   }
 
   @Test
-  public void testToURLDefaultIPv4() throws MalformedURLException {
+  public void testToURLDefaultIpv4() throws MalformedURLException {
     assertEquals(
-        testUrlIPv4ToURL,
-        PartialURL.DEFAULT.toURL(testUrlSourceIPv4)
+        testUrlIpv4ToURL,
+        PartialURL.DEFAULT.toURL(testUrlSourceIpv4)
     );
   }
 
   @Test
-  public void testToURLDefaultIPv6() throws MalformedURLException {
+  public void testToURLDefaultIpv6() throws MalformedURLException {
     assertEquals(
-        testUrlIPv6ToURL,
-        PartialURL.DEFAULT.toURL(testUrlSourceIPv6)
+        testUrlIpv6ToURL,
+        PartialURL.DEFAULT.toURL(testUrlSourceIpv6)
     );
   }
 
