@@ -28,4 +28,4 @@ module com.aoapps.net.partialurl {
   requires com.aoapps.net.types; // <groupId>com.aoapps</groupId><artifactId>ao-net-types</artifactId>
   requires org.apache.commons.collections4; // <groupId>org.apache.commons</groupId><artifactId>commons-collections4</artifactId>
   requires org.apache.commons.lang3; // <groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId>
-} // TODO: Avoiding rewrite-maven-plugin-4.22.2 truncation
+}
