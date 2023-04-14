@@ -22,7 +22,7 @@ Matches and resolves partial URLs.
 * [Project Home](https://oss.aoapps.com/net-partial-url/)
 * [Changelog](https://oss.aoapps.com/net-partial-url/changelog)
 * [API Docs](https://oss.aoapps.com/net-partial-url/apidocs/)
-* [Maven Central Repository](https://central.sonatype.com/search?namespace=com.aoapps&q=a%3Aao-net-partial-url)
+* [Maven Central Repository](https://central.sonatype.com/artifact/com.aoapps/ao-net-partial-url)
 * [GitHub](https://github.com/ao-apps/ao-net-partial-url)
 
 ## Modules
