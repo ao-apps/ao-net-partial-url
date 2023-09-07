@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -51,9 +51,9 @@ public class PartialURLMatch<V> {
   @Override
   public String toString() {
     if (partialUrl == singleUrl) {
-      return singleUrl + " -> " + url;
+      return singleUrl + " → " + url;
     } else {
-      return partialUrl + " -> " + singleUrl + " -> " + url;
+      return partialUrl + " → " + singleUrl + " → " + url;
     }
   }
 
