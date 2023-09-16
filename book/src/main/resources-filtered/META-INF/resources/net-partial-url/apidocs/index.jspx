@@ -39,5 +39,6 @@ along with ao-net-partial-url.  If not, see <https://www.gnu.org/licenses/>.
     shortTitle="API Docs"
     datePublished="2018-06-18T21:57:56-05:00"
     dateModified="${ao:getLastModified('index.html')}"
+    allowRobots="false"
   />
 </jsp:root>
