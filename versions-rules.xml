@@ -33,5 +33,10 @@ along with ao-net-partial-url.  If not, see <https://www.gnu.org/licenses/>.
         <ignoreVersion type="regex">.*-M[0-9]+</ignoreVersion>
       </ignoreVersions>
     </rule>
+    <rule groupId="org.hamcrest" comparisonMethod="maven">
+      <ignoreVersions>
+        <ignoreVersion type="regex">.*-rc[0-9]+</ignoreVersion>
+      </ignoreVersions>
+    </rule>
   </rules>
 </ruleset>
