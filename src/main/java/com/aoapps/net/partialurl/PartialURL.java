@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -298,6 +298,9 @@ public abstract class PartialURL {
     return PartialURL.valueOf(Arrays.asList(prefixes));
   }
 
+  /**
+   * Creates a new partial URL.
+   */
   protected PartialURL() {
     // Do nothing
   }

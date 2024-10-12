@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2018, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -47,6 +47,9 @@ public class URLFieldSource implements FieldSource {
   private Port port;
   private Path path;
 
+  /**
+   * Creates a field source for the given URL.
+   */
   public URLFieldSource(URL url) {
     this.url = url;
   }
