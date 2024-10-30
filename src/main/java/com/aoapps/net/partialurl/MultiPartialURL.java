@@ -315,14 +315,12 @@ public class MultiPartialURL extends PartialURL {
 
   /**
    * {@inheritDoc}
-   * <p>
-   * When there is not more than one {@link #getPrefixes() prefix}, this will
-   * be the first value returned from {@link #getCombinations()}.
-   * </p>
-   * <p>
-   * <b>Implementation Note:</b><br>
-   * Uses the first value from each set.
-   * </p>
+   *
+   * <p>When there is not more than one {@link #getPrefixes() prefix}, this will
+   * be the first value returned from {@link #getCombinations()}.</p>
+   *
+   * <p><b>Implementation Note:</b><br>
+   * Uses the first value from each set.</p>
    *
    * @see  #getCombinations()
    */
@@ -343,9 +341,9 @@ public class MultiPartialURL extends PartialURL {
 
   /**
    * {@inheritDoc}
-   * <p>
-   * Sets are iterated in the following order:
-   * </p>
+   *
+   * <p>Sets are iterated in the following order:</p>
+   *
    * <ol>
    * <li>{@link #getHosts()}</li>
    * <li>{@link #getContextPaths()}</li>
@@ -353,21 +351,18 @@ public class MultiPartialURL extends PartialURL {
    * <li>{@link #getPorts()}</li>
    * <li>{@link #getSchemes()}</li>
    * </ol>
-   * <p>
-   * When there is not more than one {@link #getPrefixes() prefix}, the first value returned
-   * will be the {@link #getPrimary() primary}.
-   * </p>
-   * <p>
-   * TODO: A more space-efficient implementation could generate these on-the-fly.
+   *
+   * <p>When there is not more than one {@link #getPrefixes() prefix}, the first value returned
+   * will be the {@link #getPrimary() primary}.</p>
+   *
+   * <p>TODO: A more space-efficient implementation could generate these on-the-fly.
    * Or should we just return the generated {@link Set}?
-   * Will depend on how his is used.
-   * </p>
-   * <p>
-   * <b>Implementation Note:</b><br>
+   * Will depend on how his is used.</p>
+   *
+   * <p><b>Implementation Note:</b><br>
    * This currently generates the full set at the time of method invocation.
    * This is not a performance-oriented implementation.  Please see
-   * {@link  PartialURLMap} for a fast way to index partial URLs.
-   * </p>
+   * {@link  PartialURLMap} for a fast way to index partial URLs.</p>
    *
    * @see  #getPrimary()
    */
@@ -448,10 +443,9 @@ public class MultiPartialURL extends PartialURL {
 
   /**
    * {@inheritDoc}
-   * <p>
-   * <b>Implementation Note:</b><br>
-   * This selects the specifically matching fields from each set when field source is non-null.
-   * </p>
+   *
+   * <p><b>Implementation Note:</b><br>
+   * This selects the specifically matching fields from each set when field source is non-null.</p>
    */
   @Override
   @SuppressWarnings("AssertWithSideEffects")

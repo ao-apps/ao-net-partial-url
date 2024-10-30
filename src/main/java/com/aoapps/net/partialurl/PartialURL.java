@@ -41,14 +41,12 @@ import org.apache.commons.collections4.functors.NotNullPredicate;
 /**
  * A {@link PartialURL} matches and completes URLs.
  * All fields are optional.
- * <p>
- * This is not a general-purpose representation of a URL.  It only contains the
+ *
+ * <p>This is not a general-purpose representation of a URL.  It only contains the
  * fields specifically used for matching a request to a virtual host (TODO: Links to projects).  For
- * an instance of {@link URL}, see {@link #toURL(com.aoapps.net.partialurl.FieldSource)}.
- * </p>
- * <p>
- * All partial URLs are immutable value types.
- * </p>
+ * an instance of {@link URL}, see {@link #toURL(com.aoapps.net.partialurl.FieldSource)}.</p>
+ *
+ * <p>All partial URLs are immutable value types.</p>
  */
 // TODO: Should this be an interface?  All methods are abstract.
 public abstract class PartialURL {
@@ -90,10 +88,9 @@ public abstract class PartialURL {
   /**
    * A {@link SinglePartialURL} consisting of all null fields that will match
    * all requests and can serve as a match for a default host.
-   * <p>
-   * This default host is after all others in {@link SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)}
-   * and {@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}.
-   * </p>
+   *
+   * <p>This default host is after all others in {@link SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)}
+   * and {@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}.</p>
    */
   public static final SinglePartialURL DEFAULT = new SinglePartialURL(null, null, null, null, null);
 
@@ -316,16 +313,15 @@ public abstract class PartialURL {
 
   /**
    * Checks if the given {@link FieldSource} matches this partial URL.
-   * <p>
-   * The {@link SinglePartialURL} returned, if any, is also in the set of partial URLs provided by
+   *
+   * <p>The {@link SinglePartialURL} returned, if any, is also in the set of partial URLs provided by
    * {@link #getCombinations()}.  Specifically, the match must be equivalent to
    * the first match found by iterative calls to the results of {@link #getCombinations()},
    * using {@link SinglePartialURL#matches(com.aoapps.net.partialurl.FieldSource)}
-   * on each single partial.  The implementation, however, does not need to be iterative.
-   * </p>
-   * <p>
-   * Ordering is consistent with:
-   * </p>
+   * on each single partial.  The implementation, however, does not need to be iterative.</p>
+   *
+   * <p>Ordering is consistent with:</p>
+   *
    * <ul>
    *   <li>{@link #getCombinations()}</li>
    *   <li>{@link SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)}</li>
@@ -351,9 +347,8 @@ public abstract class PartialURL {
 
   /**
    * Gets the primary single partial URL for this partial URL.
-   * <p>
-   * This will always be found in {@link #getCombinations()}.
-   * </p>
+   *
+   * <p>This will always be found in {@link #getCombinations()}.</p>
    *
    * @see  #getCombinations()
    */
@@ -361,18 +356,17 @@ public abstract class PartialURL {
 
   /**
    * Gets all combinations of single partial URLs represented by this partial URL.
-   * <p>
-   * Ordering is consistent with:
-   * </p>
+   *
+   * <p>Ordering is consistent with:</p>
+   *
    * <ul>
    *   <li>{@link #matches(com.aoapps.net.partialurl.FieldSource)}</li>
    *   <li>{@link SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)}</li>
    *   <li>{@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}</li>
    * </ul>
-   * <p>
-   * When one of the results is {@link SinglePartialURL#equals(java.lang.Object) equal} to the
-   * {@link #getPrimary() primary}, returns the same object instance as {@link #getPrimary()}.
-   * </p>
+   *
+   * <p>When one of the results is {@link SinglePartialURL#equals(java.lang.Object) equal} to the
+   * {@link #getPrimary() primary}, returns the same object instance as {@link #getPrimary()}.</p>
    *
    * @see  #getPrimary()
    * @see  SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)

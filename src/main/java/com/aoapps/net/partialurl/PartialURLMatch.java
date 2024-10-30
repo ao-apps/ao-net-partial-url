@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2023, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -104,11 +104,10 @@ public class PartialURLMatch<V> {
   /**
    * Gets the completed {@link URL}, with {@code null} fields selected from the {@link FieldSource} used in
    * {@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}.
-   * <p>
-   * <b>Implementation Note:</b><br>
+   *
+   * <p><b>Implementation Note:</b><br>
    * this implementation uses {@link SinglePartialURL#toURL(com.aoapps.net.partialurl.FieldSource)} on
-   * {@link #getSingleURL()}.
-   * </p>
+   * {@link #getSingleURL()}.</p>
    *
    * @see  #getSingleURL()
    * @see  SinglePartialURL#toURL(com.aoapps.net.partialurl.FieldSource)

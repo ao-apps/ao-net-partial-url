@@ -33,10 +33,9 @@ import java.net.URL;
 
 /**
  * Obtains fields for {@link PartialURL} from a {@link URL}.
- * <p>
- * <b>Implementation Note:</b><br>
- * This implementation is not thread safe due to results caching.
- * </p>
+ *
+ * <p><b>Implementation Note:</b><br>
+ * This implementation is not thread safe due to results caching.</p>
  */
 public class URLFieldSource implements FieldSource {
 
@@ -85,10 +84,9 @@ public class URLFieldSource implements FieldSource {
 
   /**
    * {@inheritDoc}
-   * <p>
-   * <b>Implementation Note:</b><br>
-   * The implementation assumes {@link Protocol#TCP}.
-   * </p>
+   *
+   * <p><b>Implementation Note:</b><br>
+   * The implementation assumes {@link Protocol#TCP}.</p>
    *
    * @see  URL#getPort()
    * @see  URL#getDefaultPort()
@@ -116,10 +114,9 @@ public class URLFieldSource implements FieldSource {
 
   /**
    * {@inheritDoc}
-   * <p>
-   * <b>Implementation Note:</b><br>
-   * This always returns {@link Path#ROOT}.
-   * </p>
+   *
+   * <p><b>Implementation Note:</b><br>
+   * This always returns {@link Path#ROOT}.</p>
    */
   @Override
   public Path getContextPath() {

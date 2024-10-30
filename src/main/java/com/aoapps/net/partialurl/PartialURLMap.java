@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -94,13 +94,11 @@ public class PartialURLMap<V> {
 
   /**
    * Adds a new partial URL to this map while checking for conflicts.
-   * <p>
-   * TODO: Use {@link MinimalMap} in the index?
-   * </p>
-   * <p>
-   * <b>Implementation Note:</b><br>
-   * Currently, when an exception occurs, the index may be in a partial state.  Changes are not rolled-back.
-   * </p>
+   *
+   * <p>TODO: Use {@link MinimalMap} in the index?</p>
+   *
+   * <p><b>Implementation Note:</b><br>
+   * Currently, when an exception occurs, the index may be in a partial state.  Changes are not rolled-back.</p>
    *
    * @throws  IllegalStateException  If the partial URL conflicts with an existing entry.
    */
@@ -281,20 +279,19 @@ public class PartialURLMap<V> {
 
   /**
    * Gets the value associated with the given URL, returning the most specific match.
-   * <p>
-   * Ordering is consistent with:
-   * </p>
+   *
+   * <p>Ordering is consistent with:</p>
+   *
    * <ul>
    *   <li>{@link PartialURL#matches(com.aoapps.net.partialurl.FieldSource)}</li>
    *   <li>{@link PartialURL#getCombinations()}</li>
    *   <li>{@link SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)}</li>
    * </ul>
-   * <p>
-   * <b>Implementation Note:</b><br>
+   *
+   * <p><b>Implementation Note:</b><br>
    * The maximum number of internal map lookups is: {@code (host, null) * (contextPath, null) * (maxSlashCount + 1) * (scheme, null) * (port, null)},
    * or {@code 2 * 2 * (maxSlashCount + 1) * 2 * 2}, or {@code 16 * (maxSlashCount + 1)}.  The actual number of map lookups
-   * will typically be much less than this due to a sparsely populated index.
-   * </p>
+   * will typically be much less than this due to a sparsely populated index.</p>
    *
    * @return  The matching value or {@code null} of no match
    */
