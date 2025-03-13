@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2021, 2022, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -53,13 +53,13 @@ public class PartialURLTest {
     final List<Path> nullPrefixes = Arrays.asList(null, null, null, null);
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf((String) null, null, null, null, null));
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf((Path) null));
-    assertSame(PartialURL.DEFAULT, PartialURL.valueOf((Iterable<? extends String>) null, null, null, null, null));
+    assertSame(PartialURL.DEFAULT, PartialURL.valueOf((Iterable<String>) null, null, null, null, null));
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf(emptySchemes, null, null, null, null));
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf(nullSchemes, null, null, null, null));
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf((String[]) null, null, null, null));
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf(new String[0], null, null, null));
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf(new String[]{null, null, null}, null, null, null));
-    assertSame(PartialURL.DEFAULT, PartialURL.valueOf((Iterable<? extends Path>) null));
+    assertSame(PartialURL.DEFAULT, PartialURL.valueOf((Iterable<Path>) null));
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf(emptyPrefixes));
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf(nullPrefixes));
     assertSame(PartialURL.DEFAULT, PartialURL.valueOf());

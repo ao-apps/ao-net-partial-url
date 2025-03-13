@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2024, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -157,11 +157,11 @@ public abstract class PartialURL {
    * @see  MultiPartialURL#MultiPartialURL(java.util.Set, java.util.Map, java.util.Set, java.util.Set, java.util.Set)
    */
   public static PartialURL valueOf(
-      Iterable<? extends String> schemes,
-      Iterable<? extends HostAddress> hosts,
-      Iterable<? extends Port> ports,
-      Iterable<? extends Path> contextPaths,
-      Iterable<? extends Path> prefixes
+      Iterable<String> schemes,
+      Iterable<HostAddress> hosts,
+      Iterable<Port> ports,
+      Iterable<Path> contextPaths,
+      Iterable<Path> prefixes
   ) {
     Set<String> schemeSet;
     if (schemes == null) {
@@ -279,7 +279,7 @@ public abstract class PartialURL {
    *
    * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
    */
-  public static PartialURL valueOf(Iterable<? extends Path> prefixes) {
+  public static PartialURL valueOf(Iterable<Path> prefixes) {
     return PartialURL.valueOf(null, null, null, null, prefixes);
   }
 
