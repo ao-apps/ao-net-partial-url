@@ -1,6 +1,6 @@
 /*
  * ao-net-partial-url - Matches and resolves partial URLs.
- * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021, 2022, 2024, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -451,33 +451,33 @@ public class MultiPartialURL extends PartialURL {
   @SuppressWarnings("AssertWithSideEffects")
   public URL toURL(FieldSource fieldSource) throws MalformedURLException {
     String schemeStr;
-      {
-        if (schemes == null) {
-          assert fieldSource != null;
-          schemeStr = fieldSource.getScheme();
+    {
+      if (schemes == null) {
+        assert fieldSource != null;
+        schemeStr = fieldSource.getScheme();
+      } else {
+        String sourceSchemeLower;
+        if (fieldSource != null && schemes.contains(sourceSchemeLower = fieldSource.getScheme().toLowerCase(Locale.ROOT))) {
+          schemeStr = sourceSchemeLower;
         } else {
-          String sourceSchemeLower;
-          if (fieldSource != null && schemes.contains(sourceSchemeLower = fieldSource.getScheme().toLowerCase(Locale.ROOT))) {
-            schemeStr = sourceSchemeLower;
-          } else {
-            schemeStr = schemes.iterator().next();
-          }
+          schemeStr = schemes.iterator().next();
         }
       }
+    }
     int portNum;
-      {
-        if (ports == null) {
-          assert fieldSource != null;
-          portNum = fieldSource.getPort().getPort();
+    {
+      if (ports == null) {
+        assert fieldSource != null;
+        portNum = fieldSource.getPort().getPort();
+      } else {
+        Port sourcePort;
+        if (fieldSource != null && ports.contains(sourcePort = fieldSource.getPort())) {
+          portNum = sourcePort.getPort();
         } else {
-          Port sourcePort;
-          if (fieldSource != null && ports.contains(sourcePort = fieldSource.getPort())) {
-            portNum = sourcePort.getPort();
-          } else {
-            portNum = ports.iterator().next().getPort();
-          }
+          portNum = ports.iterator().next().getPort();
         }
       }
+    }
     if (
         // TODO: Could use URL#getDefaultPort() and moved this hard-coded check to HttpServletRequestFieldSource
         (HTTP.equalsIgnoreCase(schemeStr) && portNum == 80)
@@ -486,33 +486,33 @@ public class MultiPartialURL extends PartialURL {
       portNum = -1;
     }
     String hostStr;
-      {
-        if (hosts == null) {
-          assert fieldSource != null;
-          hostStr = fieldSource.getHost().toBracketedString();
+    {
+      if (hosts == null) {
+        assert fieldSource != null;
+        hostStr = fieldSource.getHost().toBracketedString();
+      } else {
+        HostAddress canonical;
+        if (fieldSource != null && (canonical = hosts.get(fieldSource.getHost())) != null) {
+          hostStr = canonical.toBracketedString();
         } else {
-          HostAddress canonical;
-          if (fieldSource != null && (canonical = hosts.get(fieldSource.getHost())) != null) {
-            hostStr = canonical.toBracketedString();
-          } else {
-            hostStr = hosts.keySet().iterator().next().toBracketedString();
-          }
+          hostStr = hosts.keySet().iterator().next().toBracketedString();
         }
       }
+    }
     Path contextPath;
-      {
-        if (contextPaths == null) {
-          assert fieldSource != null;
-          contextPath = fieldSource.getContextPath();
+    {
+      if (contextPaths == null) {
+        assert fieldSource != null;
+        contextPath = fieldSource.getContextPath();
+      } else {
+        Path sourceContextPath;
+        if (fieldSource != null && contextPaths.contains(sourceContextPath = fieldSource.getContextPath())) {
+          contextPath = sourceContextPath;
         } else {
-          Path sourceContextPath;
-          if (fieldSource != null && contextPaths.contains(sourceContextPath = fieldSource.getContextPath())) {
-            contextPath = sourceContextPath;
-          } else {
-            contextPath = contextPaths.iterator().next();
-          }
+          contextPath = contextPaths.iterator().next();
         }
       }
+    }
     String file;
     if (contextPath == Path.ROOT) {
       file = (prefixes == null) ? "" : prefixes.iterator().next().toString();
