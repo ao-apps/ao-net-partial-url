@@ -260,7 +260,7 @@ public abstract class PartialURL {
       HostAddress[] hosts,
       Port[] ports,
       Path[] contextPaths,
-      Path ... prefixes
+      Path... prefixes
   ) {
     return PartialURL.valueOf(
         schemes == null ? null : Arrays.asList(schemes),
@@ -291,7 +291,7 @@ public abstract class PartialURL {
    *
    * @see  #valueOf(java.lang.Iterable)
    */
-  public static PartialURL valueOf(Path ... prefixes) {
+  public static PartialURL valueOf(Path... prefixes) {
     return PartialURL.valueOf(Arrays.asList(prefixes));
   }
 
