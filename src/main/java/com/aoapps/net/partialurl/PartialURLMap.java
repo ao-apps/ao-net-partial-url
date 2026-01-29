@@ -88,7 +88,7 @@ public class PartialURLMap<V> {
   /**
    * For sequential implementation used for assertions only.
    *
-   * @see  #getSequential(com.aoapps.net.partialurl.FieldSource)
+   * @see  PartialURLMap#getSequential(com.aoapps.net.partialurl.FieldSource)
    */
   private final SortedMap<SinglePartialURL, ImmutablePair<PartialURL, V>> sequential = ASSERTIONS_ENABLED ? new TreeMap<>() : null;
 
@@ -168,10 +168,10 @@ public class PartialURLMap<V> {
   }
 
   /**
-   * Indexed implementation of {@link #get(com.aoapps.net.partialurl.FieldSource)}.
+   * Indexed implementation of {@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}.
    *
-   * @see  #index
-   * @see  #get(com.aoapps.net.partialurl.FieldSource)
+   * @see  PartialURLMap#index
+   * @see  PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)
    */
   private PartialURLMatch<V> getIndexed(FieldSource fieldSource) throws MalformedURLException {
     // Must be holding readLock already
@@ -251,12 +251,12 @@ public class PartialURLMap<V> {
   }
 
   /**
-   * Sequential implementation of {@link #get(com.aoapps.net.partialurl.FieldSource)} used for assertions only.
+   * Sequential implementation of {@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)} used for assertions only.
    * Verifies that a sequential scan calling {@link SinglePartialURL#matches(com.aoapps.net.partialurl.FieldSource)}
-   * yields the same result as the indexed lookup performed in {@link #get(com.aoapps.net.partialurl.FieldSource)}.
+   * yields the same result as the indexed lookup performed in {@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}.
    *
-   * @see  #sequential
-   * @see  #get(com.aoapps.net.partialurl.FieldSource)
+   * @see  PartialURLMap#sequential
+   * @see  PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)
    */
   private PartialURLMatch<V> getSequential(FieldSource fieldSource) throws MalformedURLException {
     // Must be holding readLock already

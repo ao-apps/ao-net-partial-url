@@ -49,7 +49,7 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
   /**
    * Creates a new single-partial-URL.
    *
-   * @see  #valueOf(java.lang.String, com.aoapps.net.HostAddress, com.aoapps.net.Port, com.aoapps.net.Path, com.aoapps.net.Path)
+   * @see  SinglePartialURL#valueOf(java.lang.String, com.aoapps.net.HostAddress, com.aoapps.net.Port, com.aoapps.net.Path, com.aoapps.net.Path)
    */
   SinglePartialURL(String scheme, HostAddress host, Port port, Path contextPath, Path prefix) {
     this.scheme = scheme;
@@ -318,8 +318,8 @@ public class SinglePartialURL extends PartialURL implements Comparable<SinglePar
    *
    * @return  The scheme or {@code null} when {@link FieldSource#getScheme()} should be used.
    *
-   * @see  #HTTP
-   * @see  #HTTPS
+   * @see  SinglePartialURL#HTTP
+   * @see  SinglePartialURL#HTTPS
    *
    * @see  FieldSource#getScheme()
    */

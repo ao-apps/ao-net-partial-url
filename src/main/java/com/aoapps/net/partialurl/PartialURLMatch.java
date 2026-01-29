@@ -93,7 +93,7 @@ public class PartialURLMatch<V> {
 
   /**
    * Gets the single partial URL that matched the lookup.
-   * This will be the same object as {@link #getPartialURL()} when it is a
+   * This will be the same object as {@link PartialURLMatch#getPartialURL()} when it is a
    * {@link SinglePartialURL}.  Will be one of the {@link MultiPartialURL#getCombinations()}
    * when is a {@link MultiPartialURL}.
    */
@@ -107,9 +107,9 @@ public class PartialURLMatch<V> {
    *
    * <p><b>Implementation Note:</b><br>
    * this implementation uses {@link SinglePartialURL#toURL(com.aoapps.net.partialurl.FieldSource)} on
-   * {@link #getSingleURL()}.</p>
+   * {@link PartialURLMatch#getSingleURL()}.</p>
    *
-   * @see  #getSingleURL()
+   * @see  PartialURLMatch#getSingleURL()
    * @see  SinglePartialURL#toURL(com.aoapps.net.partialurl.FieldSource)
    */
   public URL getUrl() {

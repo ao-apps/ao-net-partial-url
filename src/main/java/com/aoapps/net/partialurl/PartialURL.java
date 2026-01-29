@@ -44,7 +44,7 @@ import org.apache.commons.collections4.functors.NotNullPredicate;
  *
  * <p>This is not a general-purpose representation of a URL.  It only contains the
  * fields specifically used for matching a request to a virtual host (TODO: Links to projects).  For
- * an instance of {@link URL}, see {@link #toURL(com.aoapps.net.partialurl.FieldSource)}.</p>
+ * an instance of {@link URL}, see {@link PartialURL#toURL(com.aoapps.net.partialurl.FieldSource)}.</p>
  *
  * <p>All partial URLs are immutable value types.</p>
  */
@@ -64,14 +64,14 @@ public abstract class PartialURL {
   /**
    * The character used to represent request-value substitutions.
    *
-   * @see  #WILDCARD_STRING
+   * @see  PartialURL#WILDCARD_STRING
    */
   protected static final char WILDCARD_CHAR = '*';
 
   /**
    * The character used to represent request-value substitutions.
    *
-   * @see  #WILDCARD_CHAR
+   * @see  PartialURL#WILDCARD_CHAR
    */
   protected static final String WILDCARD_STRING = String.valueOf(WILDCARD_CHAR);
 
@@ -133,7 +133,7 @@ public abstract class PartialURL {
    * @param prefix       (Optional) The prefix to match against the path or {@code null} to match all.
    *                                Must be either {@code null} or always ends in a slash (/).
    *
-   * @see  #valueOf(java.lang.String, com.aoapps.net.HostAddress, com.aoapps.net.Port, com.aoapps.net.Path, com.aoapps.net.Path)
+   * @see  PartialURL#valueOf(java.lang.String, com.aoapps.net.HostAddress, com.aoapps.net.Port, com.aoapps.net.Path, com.aoapps.net.Path)
    */
   public static SinglePartialURL valueOf(Path prefix) {
     return PartialURL.valueOf(null, null, null, null, prefix);
@@ -253,7 +253,7 @@ public abstract class PartialURL {
    *                                 Must be either {@code null} or always ends in a slash (/).
    *                                 {@code null} elements are skipped.
    *
-   * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
+   * @see  PartialURL#valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
    */
   public static PartialURL valueOf(
       String[] schemes,
@@ -277,7 +277,7 @@ public abstract class PartialURL {
    * @param prefixes  (Optional) The prefix to match against the path or {@code null} to match all.
    *                             Must be either {@code null} or always ends in a slash (/).
    *
-   * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
+   * @see  PartialURL#valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
    */
   public static PartialURL valueOf(Iterable<Path> prefixes) {
     return PartialURL.valueOf(null, null, null, null, prefixes);
@@ -289,7 +289,7 @@ public abstract class PartialURL {
    * @param prefixes  (Optional) The prefix to match against the path or {@code null} to match all.
    *                             Must be either {@code null} or always ends in a slash (/).
    *
-   * @see  #valueOf(java.lang.Iterable)
+   * @see  PartialURL#valueOf(java.lang.Iterable)
    */
   public static PartialURL valueOf(Path... prefixes) {
     return PartialURL.valueOf(Arrays.asList(prefixes));
@@ -315,24 +315,24 @@ public abstract class PartialURL {
    * Checks if the given {@link FieldSource} matches this partial URL.
    *
    * <p>The {@link SinglePartialURL} returned, if any, is also in the set of partial URLs provided by
-   * {@link #getCombinations()}.  Specifically, the match must be equivalent to
-   * the first match found by iterative calls to the results of {@link #getCombinations()},
+   * {@link PartialURL#getCombinations()}.  Specifically, the match must be equivalent to
+   * the first match found by iterative calls to the results of {@link PartialURL#getCombinations()},
    * using {@link SinglePartialURL#matches(com.aoapps.net.partialurl.FieldSource)}
    * on each single partial.  The implementation, however, does not need to be iterative.</p>
    *
    * <p>Ordering is consistent with:</p>
    *
    * <ul>
-   *   <li>{@link #getCombinations()}</li>
+   *   <li>{@link PartialURL#getCombinations()}</li>
    *   <li>{@link SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)}</li>
    *   <li>{@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}</li>
    * </ul>
    *
-   * @param  fieldSource  When all fields are {@code null} (this is {@link #DEFAULT}), this is not used and may be {@code null}.
+   * @param  fieldSource  When all fields are {@code null} (this is {@link PartialURL#DEFAULT}), this is not used and may be {@code null}.
    *
    * @return  The {@link SinglePartialURL} with non-null fields selected to match the field source, or {@code null} when does not match.
-   *          When the match is {@link SinglePartialURL#equals(java.lang.Object) equals} the {@link #getPrimary() primary}, returns
-   *          the same object as {@link #getPrimary()}.
+   *          When the match is {@link SinglePartialURL#equals(java.lang.Object) equals} the {@link PartialURL#getPrimary() primary}, returns
+   *          the same object as {@link PartialURL#getPrimary()}.
    */
   public abstract SinglePartialURL matches(FieldSource fieldSource) throws MalformedURLException;
 
@@ -341,16 +341,16 @@ public abstract class PartialURL {
    * A complete URL may be converted to a {@link URL} without any
    * {@link FieldSource field source} provided.
    *
-   * @see  #toURL(com.aoapps.net.partialurl.FieldSource)
+   * @see  PartialURL#toURL(com.aoapps.net.partialurl.FieldSource)
    */
   public abstract boolean isComplete();
 
   /**
    * Gets the primary single partial URL for this partial URL.
    *
-   * <p>This will always be found in {@link #getCombinations()}.</p>
+   * <p>This will always be found in {@link PartialURL#getCombinations()}.</p>
    *
-   * @see  #getCombinations()
+   * @see  PartialURL#getCombinations()
    */
   public abstract SinglePartialURL getPrimary();
 
@@ -360,15 +360,15 @@ public abstract class PartialURL {
    * <p>Ordering is consistent with:</p>
    *
    * <ul>
-   *   <li>{@link #matches(com.aoapps.net.partialurl.FieldSource)}</li>
+   *   <li>{@link PartialURL#matches(com.aoapps.net.partialurl.FieldSource)}</li>
    *   <li>{@link SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)}</li>
    *   <li>{@link PartialURLMap#get(com.aoapps.net.partialurl.FieldSource)}</li>
    * </ul>
    *
    * <p>When one of the results is {@link SinglePartialURL#equals(java.lang.Object) equal} to the
-   * {@link #getPrimary() primary}, returns the same object instance as {@link #getPrimary()}.</p>
+   * {@link PartialURL#getPrimary() primary}, returns the same object instance as {@link PartialURL#getPrimary()}.</p>
    *
-   * @see  #getPrimary()
+   * @see  PartialURL#getPrimary()
    * @see  SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)
    */
   public abstract Iterable<SinglePartialURL> getCombinations();
@@ -382,7 +382,7 @@ public abstract class PartialURL {
    *
    * @throws NullPointerException when {@code fieldSource} not provided and at least one field is {@code null}.
    *
-   * @see  #isComplete()
+   * @see  PartialURL#isComplete()
    */
   public abstract URL toURL(FieldSource fieldSource) throws MalformedURLException;
 }

@@ -58,7 +58,7 @@ public class MultiPartialURL extends PartialURL {
   /**
    * Creates a new multi-partial-URL.
    *
-   * @see  #valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
+   * @see  MultiPartialURL#valueOf(java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable, java.lang.Iterable)
    */
   MultiPartialURL(Set<String> schemes, Map<HostAddress, HostAddress> hosts, Set<Port> ports, Set<Path> contextPaths, Set<Path> prefixes) {
     this.schemes = schemes;
@@ -232,12 +232,12 @@ public class MultiPartialURL extends PartialURL {
   }
 
   /**
-   * Sequential implementation of {@link #matches(com.aoapps.net.partialurl.FieldSource)}, only
+   * Sequential implementation of {@link MultiPartialURL#matches(com.aoapps.net.partialurl.FieldSource)}, only
    * used for assertions.  This verifies the matching defined in {@link PartialURL#matches(com.aoapps.net.partialurl.FieldSource)}.
    *
-   * @see  #matches(com.aoapps.net.partialurl.FieldSource)
+   * @see  MultiPartialURL#matches(com.aoapps.net.partialurl.FieldSource)
    * @see  PartialURL#matches(com.aoapps.net.partialurl.FieldSource)
-   * @see  #getCombinations()
+   * @see  MultiPartialURL#getCombinations()
    */
   private SinglePartialURL matchesSequential(FieldSource fieldSource) throws MalformedURLException {
     for (SinglePartialURL single : getCombinations()) {
@@ -316,13 +316,13 @@ public class MultiPartialURL extends PartialURL {
   /**
    * {@inheritDoc}
    *
-   * <p>When there is not more than one {@link #getPrefixes() prefix}, this will
-   * be the first value returned from {@link #getCombinations()}.</p>
+   * <p>When there is not more than one {@link MultiPartialURL#getPrefixes() prefix}, this will
+   * be the first value returned from {@link MultiPartialURL#getCombinations()}.</p>
    *
    * <p><b>Implementation Note:</b><br>
    * Uses the first value from each set.</p>
    *
-   * @see  #getCombinations()
+   * @see  MultiPartialURL#getCombinations()
    */
   @Override
   public SinglePartialURL getPrimary() {
@@ -345,15 +345,15 @@ public class MultiPartialURL extends PartialURL {
    * <p>Sets are iterated in the following order:</p>
    *
    * <ol>
-   * <li>{@link #getHosts()}</li>
-   * <li>{@link #getContextPaths()}</li>
-   * <li>{@link #getPrefixes()} (sorted by deepest first for consistency with {@link SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)})</li>
-   * <li>{@link #getPorts()}</li>
-   * <li>{@link #getSchemes()}</li>
+   * <li>{@link MultiPartialURL#getHosts()}</li>
+   * <li>{@link MultiPartialURL#getContextPaths()}</li>
+   * <li>{@link MultiPartialURL#getPrefixes()} (sorted by deepest first for consistency with {@link SinglePartialURL#compareTo(com.aoapps.net.partialurl.SinglePartialURL)})</li>
+   * <li>{@link MultiPartialURL#getPorts()}</li>
+   * <li>{@link MultiPartialURL#getSchemes()}</li>
    * </ol>
    *
-   * <p>When there is not more than one {@link #getPrefixes() prefix}, the first value returned
-   * will be the {@link #getPrimary() primary}.</p>
+   * <p>When there is not more than one {@link MultiPartialURL#getPrefixes() prefix}, the first value returned
+   * will be the {@link MultiPartialURL#getPrimary() primary}.</p>
    *
    * <p>TODO: A more space-efficient implementation could generate these on-the-fly.
    * Or should we just return the generated {@link Set}?
@@ -364,7 +364,7 @@ public class MultiPartialURL extends PartialURL {
    * This is not a performance-oriented implementation.  Please see
    * {@link  PartialURLMap} for a fast way to index partial URLs.</p>
    *
-   * @see  #getPrimary()
+   * @see  MultiPartialURL#getPrimary()
    */
   @Override
   public Iterable<SinglePartialURL> getCombinations() {
@@ -548,8 +548,8 @@ public class MultiPartialURL extends PartialURL {
    *
    * @return  The schemes or {@code null} when {@link FieldSource#getScheme()} should be used.
    *
-   * @see  #HTTP
-   * @see  #HTTPS
+   * @see  MultiPartialURL#HTTP
+   * @see  MultiPartialURL#HTTPS
    *
    * @see  FieldSource#getScheme()
    */
